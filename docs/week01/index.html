@@ -19,214 +19,107 @@
 		<span>Understanding of life begins with the understanding of patterns.</span>
 		<p class="style1">- Fritjof Capra</p>
 	</blockquote>
+
+  <blockquote class="style1">
+    <span>Smart data structures and dumb code works a lot better than the other way around.</span>
+    <p class="style1">- Eric S. Raymond</p>
+  </blockquote>
 </p>
 <h2>The Why of Patterns and Data Structures</h2>
 <p>
-Welcome! You are about to embark on a learning adventure that will affect your
-life in a surprising number of good ways. Learning to think algorithmically
-means taking a measured and measurable look at how you spend your time, and
-thus your life. While you may not be looking at a future as a computer
-professional, you will almost certainly use computers every day of your life.
-This course is designed for everyone, the computer career aspiring to the
-non-computer-focused career aspiring, from accountants or beauticians to chefs
-or zoologists, and everyone in between. In this course you will learn a little
-math, and a little computer science, but only such as is well within your
-grasp, whatever your background.
+Welcome! You are about to embark on a learning adventure that will change 
+the way you design and write code. The generations of programmers that 
+came before you have exprimented, learned, grown, and shared what they've 
+learned with each other and you. In this class, you step out of being limited 
+by a single language and start to explore what is already known about 
+language-free functional programming.  
 </p>
-<dfn>Pattern</dfn>
 <p>
+  This class is just the beginning of your learning adventure. All through your 
+  career you will experiment, learn, grow, and share what you have learned. 
+  This is part of being a professional that cares about their craft. Part of this 
+  adventure that lies in your path is exploring the vast set of 
+  writings on patterns and data structures, both professional and academic.
+</p>
+<p>
+  As your understanding of the patterns and data structures discovered by those 
+  who came before you increases and improves, your professionalism and skill 
+  will also increase and improve. Gone will be time wasted rediscovering 
+  something already in this body of knowledge contributed by others. 
+  Eventually, you too will contribute to that body of knowledge as you share 
+  new patterns and data structures you discover as you solve significant problems for 
+  companies for whom you work.
+</p>
+
+<aside class="left">
+  <h4>Some Definitions</h4>
+  
+<p>
+  <dfn>Pattern</dfn>: a particular way in which something usually happens or is done
+</p>
+  <dfn>Data Structure</dfn>:  a defined pattern for efficiently storing, accessing, and processing data
+<p>
+</aside>
+
 Are you ready for the ride? Then strap on your seat belt, and let&rsquo;s begin! Take
 notes on your impressions regarding what you are about to read. You will need these
 notes when you meet with your team on Friday of this week.
 </p>
-<h2>What is Algorithmic Thinking?</h2>
+<h2>Patterns and Data Structures and Algorithms...Oh My!</h2>
 <p>
-A giant of computer science, Donald E. Knuth, once said that algorithmic
-thinkers are flexible, adaptable thinkers. Well, what he actually said was:
+  These big three parts of programming, regardless of the language you choose, are related. An 
+  Algorithm is a pattern consisting of a series of steps that is known to accomplish a 
+  specific task with a known efficiency. A Data Structure is a pattern that lays out how to 
+  store, retrieve, and manipulate data with a known efficiency. 
+  This connection between patterns, data structures, and algorithms means that we can, and will, 
+  use the more abstract word pattern to describe both of the other two types, reserving the 
+  more detailed words, algorithm and data structure, when they illuminate the topic.
 </p>
+<p>
+  As time goes by, you will realize that algorithms and data structures interact as well. 
+  Useful algorithms use or produce one or more data structures, and data structures use one or more 
+  algorithms. Such is the complexity and recursiveness of life. 
+  Nothing is actually independent of everything else. Instead, everything is dependent, directly or 
+  indirectly, on everything else. The lives of mothers and fathers change the lives of their children 
+  and the lives of the children change the lives of their mothers and fathers. Families, of all kinds, 
+  are complex systems.
+</p>
+<aside class="right">
+  <h4>A Few Books on Complexity Theory</h4>
+  <p><a href="https://www.amazon.com/Introduction-Complex-Systems-Nonlinear-Dynamics/dp/3319446053/ref=sr_1_11?dchild=1&keywords=complexity+theory&qid=1611613359&sr=8-11">An Introduction</a></p>
+  <p><a href="https://www.amazon.com/Self-Modifying-Systems-Biology-Cognitive-Science/dp/0080369790/ref=sr_1_1?dchild=1&keywords=self+modifying+systems+kampis&qid=1611613663&sr=8-1">A Detailed Computer Science and 
+  Mathematical Description</a></p>
+</aside>
 <blockquote>
 <p>
-Such people are especially good at dealing with situations where different
-rules apply in different cases; they are individuals who can rapidly change
-levels of abstraction, simultaneously seeing things &ldquo;in the large&rdquo; and &ldquo;in the
-small.&rdquo;
+ All complex systems continually and recursively modify themselves... One part of any recursive routine is the 
+ routine  itself. Or in terms of complex systems, part of a complex system's existence is to bring itself into 
+ existence anew - to continuously emerge - or as expressed by Kampis, to evolve. This evolution results in 
+ the increasing complexity of complex systems.(<a href="https://journals.library.ualberta.ca/complicity/index.php/complicity/article/view/24198/19190">Barney and Maughan</a>) 
 </p>
 </blockquote>
 
 <p>
-Let&rsquo;s apply this thought to the gospel, and in the process see why algorithmic
-thinking is firstly <b>intentional</b>, secondly <b>providential</b>, and
-thirdly <b>logical</b>.
+  Let&rsquo;s get out of cold philosophy and into the realm of the gospel where greater warmth, truth, and light 
+  lies. Elder Oaks taught in 
+  a conference talk about how The gospel of Jesus Christ challenges us to become.
 </p>
-
-<p>
-We think simultaneously in the large and in the small when we keep an eternal
-perspective even as we mind the daily details of life. And life must be lived
-day by day. The Savior said &ldquo;sufficient unto the day is the evil thereof&rdquo; which
-translates to modern vernacular as &ldquo;take life one day at a time&rdquo;. (Need a
-better translation?!)
-</p>
-
-<p>
-But are not planning and preparation essential to successful daily living?
-Indeed! If we&rsquo;re smart we plan our meals to meet our daily nutritional needs
-and pleasure wants (ideally, we find eating pleasurable &#x2014; otherwise we would
-be satisfied being fed intravenously with the exact right balance of nutrients
-our bodies need!)
-</p>
-
-<p>
-First, algorithmic thinking is <b>intentional</b> thinking.
-</p>
-
-<p>
-It is purposeful, goal-driven. Think about the inspired new Youth (and
-Everyone) Program that urges us to Discover, Plan, Act, and Reflect in
-the Spiritual, Social, Intellectual and Physical areas of our lives.
-</p>
-
-<p>
-(An aside: Such thinking does not appeal to &ldquo;free spirits&rdquo; for whom life is a
-lark &#x2014; who &ldquo;just go with the flow&rdquo; &#x2014; who value spontaneity over planning
-and see their life as a playground of fun-seeking diversion &#x2014; until reality
-sets in.)
-</p>
-
-<p>
-Second, algorithmic thinking is <b>providential</b> thinking.
-</p>
-
-<p>
-Alma 12:24 says this life is a time to prepare to meet God. God says organize
-yourselves, prepare every needful thing.
-</p>
-
-<p>
-Before going further, let&rsquo;s pause to answer the burning question &#x2014; &ldquo;What <b>is</b>
-an algorithm, exactly?&rdquo;
-</p>
-
-<p>
-In answering this question the recipe analogy is often used, and it&rsquo;s a good
-one, as both are step-by-step problem-solving or solution-seeking procedures
-that take inputs (ingredients for recipes) and produce outputs (delicious
-dishes, yes?). The &ldquo;List of Ingredients&rdquo; is typically the first component of a
-recipe, with &ldquo;Directions&rdquo; second. So we might say that recipes feature an
-implicit &ldquo;Step 0&rdquo; that could be made explicit as: &ldquo;Acquire all required
-ingredients in the proper quantities.&rdquo; Steps 1, 2, 3, &hellip; are all spelled out
-(we hope unambiguously) to guide the determined cook to the desired end.
-</p>
-
-<p>
-But recipes for cooking are not the only kind. For another, far more weighty
-example, see
-</p>
-
-<p>
-<a href="https://www.lds.org/general-conference/2008/04/the-gospel-of-jesus-christ?lang=eng">https://www.lds.org/general-conference/2008/04/the-gospel-of-jesus-christ?lang=eng</a>
-</p>
-
-<p>
-It&rsquo;s interesting that Elder Perry ties the gospel recipe back to the cooking kind!
-</p>
-
-<p>
-&ldquo;It is important to begin with the end in mind&#x2026;&rdquo;
-</p>
-
-<p>
-Back to thinking in the large and in the small, here&rsquo;s Moroni&rsquo;s algorithm for
-a successful life &#x2014; becoming &ldquo;perfect in Christ&rdquo;:
-</p>
-
 <blockquote>
-<p>
-Yea, come unto Christ, and be perfected in him, and deny yourselves of all
-ungodliness; and <b>if</b> ye shall deny yourselves of all ungodliness, and love God
-with all your might, mind and strength, <b>then</b> is his grace sufficient for you,
-that by his grace ye may be perfect in Christ &hellip; (Moroni 10:32, emphasis added.)
-</p>
+  <p>
+    The Final Judgment is not just an evaluation of a sum total of good and evil acts - what we have done. It is an acknowledgment of the final effect of our acts and thoughts - what we have become. It is not enough for anyone just to go through the motions. The commandments, ordinances, and covenants of the gospel are not a list of deposits required to be made in some heavenly account. The gospel of Jesus Christ is a plan that shows us how to become what our Heavenly Father desires us to become. (<a href="https://www.churchofjesuschrist.org/study/general-conference/2000/10/the-challenge-to-become?lang=eng">Dallin H. Oaks</a>)
+  </p>
 </blockquote>
+
 <p>
-Perhaps Moroni would smile if we took liberties and interpreted his algorithm thus:
+  The gospel of Jesus Christ teaches us that the only thing that can change us is us. As we become what we can, 
+  should, and need to become, our becoming opens up the ability to become even more. Light begets light until 
+  we are filled with light. Or, if we turn from Christ, darkness begets further darkness until we loose all that we 
+  once had. Each of us is complex and part of a greater complexity that is our family, friends, aquaintances, 
+  those we don't know, nature, space, galaxies, and universes.
 </p>
 
 <p>
-Iterate (repeat) these three steps
-</p>
-
-<p>
-Until perfected in Christ:
-</p>
-
-<ol class="org-ol">
-<li>Come unto Christ (several substeps here)</li>
-<li>Falter and stumble (sin)</li>
-<li>Repent and go to step 1.</li>
-</ol>
-
-<div class="figure">
-    <p><img src="images/fig-moronis-algorithm.png" alt="Moroni&rsquo;s Algorithm" title="Moroni&rsquo;s Algorithm for becoming Perfect in Christ" />
-    </p>
-</div>
-
-<p>
-(This actually follows an algorithm design technique named <i>Iterative
-Improvement</i> &#x2014; as the hymn says, &ldquo;Improvement and progression have one
-eternal round.&rdquo; Perhaps round means cyclical. Cycles feature small and big in
-our time-driven lives: minutes, hours, days, weeks, months, years, &hellip;,
-eternities.)
-</p>
-
-<p>
-Note that Moroni uses conditional language, a logical if-then proposition.
-Which brings us to the third characteristic of algorithmic thinking:
-</p>
-
-<p>
-Third, algorithmic thinking is <b>logical</b> thinking.
-</p>
-
-<p>
-Consider this: Alma 11:40 affirms that &ldquo;salvation cometh to none else&rdquo; than
-those &ldquo;that shall have eternal life&rdquo; &#x2014; logically speaking, do those two
-terms mean the same thing? (You might connect this verse to Moses 1:39, and
-Doctrine and Covenants 6:13 and 14:7, and ask where immortality fits in with
-salvation and eternal life. Refer back to Elder Perry on this too.)
-</p>
-
-<p>
-A rather more mundane kind of logical algorithmic thinking has many
-applications in everyday life.
-</p>
-
-<p>
-Every time you get dressed in the morning you are thinking logically and
-algorithmically when you decide to put your socks on before your shoes.
-This may seem automatic, and a no-brainer, but consider that there are many
-different ways (orderings) of putting on your clothes that work. There&rsquo;s not
-just one fixed way to do it. So which way is best? Does it matter?
-</p>
-<h2>Considerations</h2>
-
-<p>
-In general, when you have a task to perform, what is the shortest path to
-completion of that task? Can you prove it is the shortest of all the possible
-paths? How to best answer this and other types of questions about algorithms are explored
-throughout this course. It&rsquo;s going to be a blast!
-</p>
-
-<p>
-Jeanette Wing is an amazing role model for you. Read two of the articles she wrote about
-algorithmic thinking (remember to take notes for discussion with your team). The first article
-introduces algorithmic thinking as
-<a href="http://www.cs.cmu.edu/afs/cs/usr/wing/www/publications/Wing06.pdf">computational thinking</a>
-and claims &ldquo;it represents a universally applicable attitude and skill set everyone,
-not just computer scientists, would be eager to learn and use.&rdquo;
-</p>
-
-<p>
-The second is her realizations after thinking about algorithmic thinking for an additional ten years. <a href="https://www.microsoft.com/en-us/research/blog/computational-thinking-10-years-later/">Read it</a>, see what you think, and take notes on this one too for your team discussion.
+  Exploring the complexity that is algorithms, data structures, and patterns is the journey we now begin.
 </p>
 
 <footer>
