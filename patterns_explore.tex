@@ -1,0 +1,73 @@
+
+\documentclass[12pt]{amsart}
+\usepackage{geometry} % see geometry.pdf on how to lay out the page. There's lots.
+\geometry{a4paper} % or letter or a5paper or ... etc
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsaddr}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{dirtytalk}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+ \title{Exploration of Patterns for use in Class}
+
+\date{\today}
+
+%%% BEGIN DOCUMENT
+\begin{document}
+\maketitle
+
+\section{Fundamental Patterns}
+\section{Definitions}
+\begin{enumerate}
+	\item Singleton: A set with one value.
+	\item Set: A mathematical set. Ex. An undirected graph is a set of edge descriptions.
+	\item Sequence: A mathematical sequence. Ex. A digraph is a sequence of edge descriptions.
+\end{enumerate}
+\section{Functor Pattern}
+A  pattern that allows a generic function to apply a specific function  without changing or modifying the generic function.$\\$
+
+\section{Fold Pattern:set or sequence to singleton} 
+For function $f$, set or sequence $S$, and singleton $a,\\$
+
+\begin{align*}
+ fold(f,S,a) &=
+  \begin{cases}
+   a & \text{if } S=\varnothing\\
+   fold(f,S,f(x:x\in S,a)) & \text{otherwise}
+  \end{cases}
+\end{align*}
+\section{Unfold Pattern:singleton to set or sequence}
+For function $f$, and singleton $d\\$
+\begin{align*}
+unfold(f,d) &=
+  \begin{cases}
+   \varnothing & \text{if }f(d)=\varnothing\\
+   f(d)\cup unfold(f,f(d)) & \text{otherwise}
+  \end{cases}
+\end{align*}
+
+\section{Derived Patterns}
+\subsection{Hylomorphism Pattern}
+For functions $f$ and $g$, singleton $d$, and singleton $a,\\$
+\begin{align*}
+hylo(f,g,d,a) &= fold(f,unfold(g,d),a)
+\end{align*}	
+\subsection{Map Pattern}
+For set or sequence $A=\varnothing$, set or sequence $S$, and function $f$, where $f(s:s\in S, A)$ performs some transformation $t$ as well as $\{t(s)\}\cup A,\\$ 
+\begin{align*}
+map(f,S) &= fold(f,S,A)
+\end{align*}
+\subsection{Filter Pattern}
+For set or sequence $A=\varnothing$, set or sequence $S$, and function $f$, where $f(s:s\in S, A)$ performs some comparison $c$ and $\{t(s)\}\cup A$ when $c(s)=true,\\$
+\begin{align*}
+filter(f,S) &= fold(f,S,A)
+\end{align*}
+\subsection{Monad Pattern}
+
+\subsection{Sream Pattern}
+unfold pattern derivative (Stream is the same as Lazy Evaluation)
+\end{document}

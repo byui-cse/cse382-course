@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{1. Fundamental Patterns}{}% 1
+\BOOKMARK [1][-]{section.2}{2. Definitions}{}% 2
+\BOOKMARK [1][-]{section.3}{3. Functor Pattern}{}% 3
+\BOOKMARK [1][-]{section.4}{4. Fold Pattern:set or sequence to singleton}{}% 4
+\BOOKMARK [1][-]{section.5}{5. Unfold Pattern:singleton to set or sequence}{}% 5
+\BOOKMARK [1][-]{section.6}{6. Derived Patterns}{}% 6
+\BOOKMARK [2][-]{subsection.6.1}{6.1. Hylomorphism Pattern}{section.6}% 7
+\BOOKMARK [2][-]{subsection.6.2}{6.2. Map Pattern}{section.6}% 8
+\BOOKMARK [2][-]{subsection.6.3}{6.3. Filter Pattern}{section.6}% 9
+\BOOKMARK [2][-]{subsection.6.4}{6.4. Monad Pattern}{section.6}% 10
+\BOOKMARK [2][-]{subsection.6.5}{6.5. Sream Pattern}{section.6}% 11
