@@ -19,47 +19,234 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 02</h1>
-    <p>Order vs. Disorder</p>
+    <h1>CSE 381: Week 02</h1>
+    <p>Lists</p>
   </div>
 </div>
+
+	<blockquote class="style1">
+		<span>Every program depends on algorithms and data structures, 
+		but few programs depend on the invention of brand new ones.</span>
+		<p class="style1">- Kernighan & Pike</p>
+	</blockquote>
 <p>
-  In our lives we often experience periods of order and other periods when our lives seem to be a mess and disordered. During the times of disorder we
-  sometimes become very discouraged, stressed, anxious, and slip into depression. When we find ourselves heading in this direction, the Gospel of Jesus Christ
-  has answers for us. Brother Jackie Nygaard gave a <a href="https://www.byui.edu/devotionals/jackie-nygaard" target="_blank">devotional talk</a> in 2018
-  where he pointed out that the gospel contains algorithms that help us have order in our lives. He also taught how these algorithms help us, as part of our daily
-  lives, to learn and grow personally and spiritually.
+  Lists are a fundimental data structure in all strongly functional programming languages. Because of this it is 
+  very important to understand the patterns functional languages use to deal with the many ways lists need to be 
+  used when writing code. There are many postings on the internet by people who don't understand that 
+  functional programming languages work with lists differently than other languages. Because of this lack of 
+  understanding, they draw false conclusions about the speed and memory footprint of applications written in 
+  functional programming languages.
 </p>
 <p>
-  Brother Nygaard is not alone in making this connection. Elder Maxwell, an apostle, gave an address on <a href="https://www.churchofjesuschrist.org/study/ensign/1994/06/wisdom-and-order?lang=eng" target="_blank">creating order in our lives</a>. In it, he pointed out that wisdom and order work together and
-  when we apply them in our lives we gain clarity. This is especially important during those periods in our lives that seem out of control and full of disorder.
-</p>
-<h2>Producing Order</h2>
-<p>
-  There are a bunch of well-known algorithms for ordering things. The one of interest this week is known as bubble sort. When you use bubble sort, you first have
-  to decide what property of the group of things is what you want to use to sort the things. Think about this situation. You have a bunch of cats that, for
-  some strange reason, you need to sort. You decide to sort them by the darkness of their fur. In the end, you want the lightest colored cats on the left, and the
-  darkest colored cats on the right. You manage to get these highly cooperative kitties into a single row.
-</p>
-<img src="royalty-free-cats.jpg" alt="Three cats sitting on a road"/>
-<p>The way you would bubble sort these cats would be to
-  start with the one on the left. You pick it up and if the one in your arms is darker in color than the next one in the row, you move the one in the row to the
-  left leaving a gap in the row where it used to be. Now you compare the cat in your arms with the cat just to the right of the gap. If it is lighter, move it
-  into the gap. You keep doing this until you find a cat that is darker than the one in your arms.
+  This week we'll dive deep into how functional programming lists work and are worked on by functions. This 
+  will forearm you with acurate information. This does not mean you should engage in strong discussions or 
+  arguments regarding 'what language is best.' Such discussions are meaningless since no scope is given. 
+  These types of arguments are also a form of contention. 
 </p>
 <p>
-  When you run into this situation, you put the cat in your arms into the gap and pick up the darker cat, if there is one. Then you compare the cat you just
-  picked up with the one on the right of the new gap. Once you get to the end of the row, you have to go back to the beginning of the row, the cat on the
-  furthest left, and go again. Do you see the repetition? Do you see the comparison done? To get all of the cats in order you have to keep doing this until
-  you don&rsquo;t move any cats. Then you&rsquo;re done!&#127881;&#127881; It can be a little hard to envision this in your mind. You should watch <a href="https://youtu.be/MtcrEhrt_K0"> an animation of bubble sort</a> to help with that.
+	In 1989, President Nelson gave <a href="https://www.churchofjesuschrist.org/study/general-conference/1989/04/the-canker-of-contention?lang=eng">a conference talk</a> about how arguments 
+	destroy us. In the address he taught,
+	<blockquote>
+		<span>As we dread any disease that undermines the health of the body, so should we deplore contention, which is a corroding canker of the spirit. I appreciate the counsel of Abraham Lincoln, who said:
+
+"Quarrel not at all. No man resolved to make the most of himself can spare time for personal contention. ... Better give your path to a dog than be bitten by him." (Letter to J. M. Cutts, 26 Oct. 1863, in Concise Lincoln Dictionary of Thoughts and Statements, comp. and arr. Ralph B. Winn, New York: New York Philosophical Library, 1959, p. 107.)</span>
+	</blockquote>
 </p>
 <p>
-  I think they misnamed this. To me <a href="https://www.britannica.com/video/185615/liquefaction-event-soil-particles-earthquake-combination-water">liquefaction</a> sort sounds like a better name. In liquefaction, heavy things sink and light things float. To me, that&rsquo;s what the algorithm seems to be doing. But that&rsquo;s just me.&#129322;
+  It is possible, and good, to have a discussion around 'my opinion as to what could be a good language' for 
+  some specific situation.
+</p>
+<h2>Internal Pieces</h2>
+<p>
+  All languages, functional or <a href="https://stackoverflow.com/questions/17826380/what-is-difference-between-functional-and-imperative-programming-languages">imperative</a>, implement lists in similar ways using nodes and edges. You may recognize these terms from  lists, trees, and graphs 
+  in your study of Discrete Math or Algorithms. There is a difference between those definitions and the ones used 
+  in computing.
+</p>
+	<aside class="right">
+	<figure>
+		<img src="images/node.png" alt="the value and next portions of a node"> 
+		<figcaption>Fig.1 - The two parts of a node, the value storage and next indicator.</figcaption>
+	</figure>
+	</aside>
+<p>
+  Each node consists of two parts - memory for the storage of the list element, and memory for 
+  that indicates the location of the next node in the list. Anything can be a list element. It could be data 
+  as simple as a single character or as complicated as you can imagine. Many languages allow you to store 
+  different types of elements in the same list. Others require all elements of the list to be of the same 
+  type. Regardless of if your language's list contents are restrictive or expansive, the list nodes behave the same.
+</p>
+<p>
+	 As with all things in computing, nodes and their associated lists need to be used with discression. If you 
+	 don't need a list, don't use one. When you need a list, don't try to force something else into your 
+	 code. This is a good pattern to follow for all of the data structures you will learn about this semester 
+	 and beyond.
+</p>
+	<aside class="left">
+	<figure>
+		<img src="images/two_nodes.png" alt="two nodes with elements 'f' and 'a' made into a list"> 
+		<figcaption>Fig.2 - A next indicator showing that the node with the element 'f' has a next node with the element 'a'.</figcaption>
+	</figure>
+	</aside>
+<p>
+	In this course, diagrams will use the arrow to indicate that a node has a next node. If there is no arrow, 
+	there is no next node and the end of the list has been reached. Figure 2 follows this pattern. In the figure 
+	there are two nodes making up the entire list. The characters 'f' and 'a' have been stored in the list. The 
+	node containing the element 'a' is the next node for the node containing the element 'f'. 
+</p>
+<p>
+	It is useful to understand how these nodes are used to make lists in both imperative and functional programming 
+	languages. Especially when you are trying to decide what language or type of language would be good to select 
+	for writing all or part of a specific application.
+</p>
+<h3>Functional Programming Lists</h3>
+<p>
+	A fundimental principle of functional programming is that once a value has been stored in a variable, the value 
+	can not be changed. Values can be anything. That includes lists. Yet lists need to grow, merge, and get values 
+	removed from them. There appears to be a problem. How can the modification needs of lists align with the 
+	principle that values are fixed?
+</p>
+<p>
+	The easy, but computationally and memory expensive, way is to make a copy of the list every time you want to 
+	change it. Ouch. This is not a good choice. The creators of functional programming languages know this. That's 
+	why they got outside of the box and found a solution.
+</p>
+<h4>Appending Lists</h4>
+<p>
+	Consider the two lists in Figure 3. List A has the characters 'b','i',and 'g' stored in it. List B has the characters 'f','a',and 'd' stored in it.
+</p>
+<figure>
+  <img src="images/independent_lists.png" alt="Lists A and B with their elements as independent lists">
+  <figcaption>Figure 3. - Lists A and B with their elements.</figcaption>
+</figure>
+<p>
+	Appending the lists to form a list C, <kbd>A:B&#10230;C</kbd>, using the functional programming pattern requires only copying list A, not both. List A had to be copied since the last element was changed to refer to the first 
+	node in List B. List B doesn't need to be copied since it wasn't changed.
+</p>
+<figure>
+  <img src="images/two_appended_lists.png" alt="List B appended to A to form list C">
+  <figcaption>Figure 4. - List C, <kbd>A:B&#10230;C</kbd>.</figcaption>
+</figure>
+<p>
+	Copying all of list A may seem like a big waste of memory and computation time, but please keep in mind that 
+	merging two lists of significant size is not a common programming behavior, let alone a functional programming 
+	one. If your app, in any language, is written to merge large lists, it is designed wrong and needs a good 
+	reworking. Let's look at another example of the impact of the accepted functional programming pattern.
+</p>
+<h4>Modifying a Value in a List</h4>
+<p>
+	Say you want to change a value in a list. What happens then? Imagine you had a list named N storing the numbers 
+	7, 13, 0, 5, -3, and 15 in that order and you wanted to change the 0 to be 6 and named the changed List U, 
+	<kbd>f::0 6 N &#10230;U</kbd> where <kbd>f</kbd> is a function that modifies N. The third node, containing the 
+	value 0, has to be changed. Therefore it has to be copied and modified. That triggers a cascade of requirements 
+	to copy all of the proceeding nodes. The list U, then, consists of copies of the first two nodes, a copied node 
+	updated to contain the value 6, and three uncopied nodes from list N like you see in Figure 5.
+</p>
+<figure>
+  <img src="images/modified_list.png" alt="List N modified to be List U">
+  <figcaption>Figure 5. - List U,the modified version of list N.</figcaption>
+</figure>
+<p>
+	Again, this type of behavior is expensive in ALL types of languages and should be avoided if at all possible 
+	in all languages. Both of these behaviors are included in the list pattern for all languages so they are 
+	available if there is no other way to create what you need. Rarely is that the case.
+</p>
+<h4>Prepending a Value to a List</h4>
+<p>
+	Now let's take a look at a list behavior where functional programming really shines. Imagine you wanted to 
+	prepend the value 50 to the begining of list N and call the result P, <kbd>50:N&#10230;P</kbd>. In Figure 6 you see that no copying 
+	is required. All that is needed is to create a node to contain the value 50 and have it refer to the first 
+	node in list N. Done!  
 </p>
 
+<figure>
+  <img src="images/prepend_list.png" alt="The value 50 prepended to list N">
+  <figcaption>Figure 5. - The value 50 prepended to list N.</figcaption>
+</figure>
+<p>
+	Notice that list N still has a value of 0 in its third node, not 6. That's because all modifications for 
+	lists in functional programming languages, including the value change done above, are non-destructive. 
+	Any change you make doesn't destroy the original list unlike non-functional languages like Python. 
+	Non-destructive list modification is very helpful, especially when you are writing concurrent code. 
+	(More on that later in another course.)
+</p>
 
+<aside class="left">
+	If you are interested in concurrent computing, and let's face it...who isn't &#128526, BYU-Idaho offers 
+	a course subsequent to this one you can take.
+	<a href="">Put a link here to the massively parallel course description</a> 	
+</aside>
+<h4>Appending a Value to a List</h4>
+<p>
+	Having seen that when you modify a value in a list a cascade of copying is triggered of all previous 
+	nodes in a list, it should come as no suprise that appending to a list triggers the same behavior. Let's 
+	append a 75 to list N and put the result in list E, <kbd>N:75&#10230;E</kbd>.
+</p>
+<figure>
+  <img src="images/append_list.png" alt="The value 75 appended to list N">
+  <figcaption>Figure 6. - The value 75 appended to list N.</figcaption>
+</figure>
+<p>
+	Notice in Figure 6 that every node in list N was copied. This is very expensive. That's why, if you are building a 
+	list by repeatedly adding elements to the list, most functional programming languages urge you to not 
+	build lists by repeated appending. Instead, if you need the appended list ordering, they advise you to 
+	prepend each additional value to a list and then reverse the list. That makes only one copy and 
+	then when the function in which this copy is made, the memory for the original list is freed up. 
+</p>
+<p>
+	This reversing of the list does require a temporary increase in the amount of memory being used and 
+	has a cost computationally. The developers of the Erlang language and compiler stated that they 
+	have resolved the 'appending problem' in their latest, as of 2020, version of Erlang. They advise 
+	Erlang programmers to preppend when that makes sense engineering-wise, and append otherwise.&#128077;
+</p>
+<h4>Removing Values</h4>
+<p>
+	Along with adding a value to the begining of a list, a very common behavior is removing, usually repeatedly as 
+	part of a recursive function, the head of a list <kbd>f::N &#10230;h|t</kbd>. Here <kbd>h</kbd> is the first 
+	element of the original list, the head, and <kbd>t</kbd> is the rest of the original list, the tail.
+</p>
+<figure>
+  <img src="images/head_remove_list.png" alt="t pointing at the second value in list N">
+  <figcaption>Figure 7. - The tail, <kbd>t</kbd>, of the list after retrieving the head value.</figcaption>
+</figure>
+<p>
+	It is unsuprising that this very common behavior is highly optimized. Notice that list t contains 
+	no copies and list N has not been modified.
+</p>
+<p>
+	Removing a value from the end of a list is a very different matter. Let R be the list N with the last element 
+	removed, <kbd>f::N&#10230;R</kbd> where <kbd>f</kbd> is a function that removes the last element from N.
+</p>
+<figure>
+  <img src="images/tail_remove_list.png" alt="All values of N except the last duplicated">
+  <figcaption>Figure 7. - R consists of copies of all of list N's nodes except the last.</figcaption>
+</figure>
+<p>
+	For the list R to end before list N does, the next to the last element of N has to be copied and modified. 
+	This, again, triggers a cascade of copies and changes for all of the nodes of N that are before the next 
+	to the last one. This behavior is expensive and should be engineered out of applications if at all possible.
+</p>
+
+<h3>Non-Functional Programming Lists</h3>
+<p>
+	So now, let's compare what you've learned about how functional programming languages create, modify, and use 
+	lists with non-functional programming languages of which Python is one. In these languages lists are 
+	usually NOT a fundimental part of the language. Often they are an addition in some sort of library you 
+	can choose to include in your application or not. This second-class status does not always relegate 
+	these lists to the dust bin. Let's take a look at how these languages treat lists following the same order 
+	of exploration as we did with functional programming language lists.
+</p>
+<h4>Appending Lists</h4>
+
+<h4>Modifying a Value in a List</h4>
+
+<h4>Prepending a Value to a List</h4>
+
+<h4>Appending a Value to a List</h4>
+
+
+<h4>Removing Values</h4>
 <footer>
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. Cat image used with permission from <a href="https://pixabay.com/photos/cats-stray-in-a-row-three-cute-1753883/">pixabay</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
 </body>
 </html>
