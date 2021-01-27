@@ -235,16 +235,117 @@
 	these lists to the dust bin. Let's take a look at how these languages treat lists following the same order 
 	of exploration as we did with functional programming language lists.
 </p>
+<p>
+	Before diving in please understand that values, including lists, in non-functional programming languages 
+	can be changed. Take Python as an example. There you can change the values of variables all you want. Also, 
+	when you use list methods like append, remove, pop, sort, and others, the original list is changed. This 
+	is a destructive use of the list since the list as it originally was is now gone. Because of this, the 
+	images below will have a before and after section showing you how the list(s) have changed.
+</p>
 <h4>Appending Lists</h4>
+<p>
+	Let's use the same two lists, A and B, that we did before. Just like before, A contains the characters 
+	'b','i', 'g' and B contains the characters 'f', 'a', and 'd'. Let C be the list that is B appended to 
+	A, <kbd>A:B&#10230;C</kbd>.
+</p>
+<p>
+	What happens when C is created, is that, without duplication, the last element of list A is changed 
+	so that it refers to the first element of list B. This means that there is no list A that ends as 
+	it did previously. This is why merging lists in this non-functional way is destructive. A, by itself, 
+	can no longer be used. That's why it would be dangerous to keep the A list variable around. Using it 
+	would lead to a lot of serious bugs in the code. Destructive modification also has a lot of serious 
+	implications for concurrent applications. That's why the A list variable has been removed from Figure 8. 
+	It's what you have to do in these languages to keep the bugs at bay. 
+</p>
+<figure>
+  <img src="images/non-functional_two_appended_lists.png" alt="No nodes are duplicated only one is altered">
+  <figcaption>Figure 8. - List C consists of all of list A's and all of list B's nodes.</figcaption>
+</figure>
 
 <h4>Modifying a Value in a List</h4>
+<p>
+	This time, let's reuse the list N to show how non-functional modification works. Initially N contains 
+	the numbers 7, 13, 0, 5, -3, and 15 in that order. As before, let's change the 0 to be a 6.
+</p>
+<p>
+	What happens here is called 'modify in place.' That means no new list is created,<kbd>f:: 0 6 N&#10230;N</kbd>. 
+	Instead, the node containing the 0 value is modified to contain a 6 instead as you can see in Figure 9.
+</p>
+<figure>
+  <img src="images/non-functional_modified_list.png" alt="No nodes are duplicated only the one originally 
+  containing 0 is altered">
+  <figcaption>Figure 9. - List N modified in place.</figcaption>
+</figure>
+<p>
+	Again, this is  destructive modification because the original list containing a 0 value no longer exists.
+</p>
 
 <h4>Prepending a Value to a List</h4>
-
+<p>
+	It is possible to do a non-destructive prepend to a non-functional programming list. This, however is 
+	rarely done since it would break the pattern. It would be bad engineering-wise to have some actions on a 
+	list be destructive and others not. It would be too hard to remember which actions do what. So prepending 
+	50 to N is destructive, <kbd>50:N&#10230;N</kbd>.
+</p>
+<figure>
+  <img src="images/non-functional_prepend_list.png" alt="No nodes are duplicated only the one originally 
+  containing 0 is altered">
+  <figcaption>Figure 10. - List N modified in place.</figcaption>
+</figure>
+<p>
+	Notice in Figure 10 that list N has it's 0 value replace by a 6 due to the previous modification. If you go 
+	back and examine this same change in the functional programming section, you will find that the value is 
+	still 0 since that change was non-destructive.
+</p>
 <h4>Appending a Value to a List</h4>
-
+<p>
+	It is no suprise that appending the value 75 to N is also destructive<kbd>N:75&#10230;N</kbd>.
+</p>
+<figure>
+  <img src="images/non-functional_append_list.png" alt="No nodes are duplicated only the one originally 
+  containing 0 is altered">
+  <figcaption>Figure 11. - List N modified in place.</figcaption>
+</figure>
+<p>
+	Notice yet again that, in Figure 11, the list N starts off with all of the modifications due to the 
+	previous actions that are part of this tutorial.
+</p>
 
 <h4>Removing Values</h4>
+<p>
+	Once again, let's use <kbd>h</kbd> to represent the head value. Being destructive, this behaviour 
+	does not produce a tail,<kbd>f::N &#10230;h|N</kbd>.
+</p>
+<p>
+	In this case, the N variable is changed to refer to what was the second node in the list and the 
+	memory for the first node is freed up for reuse after the value it contains is stored in a variable.
+</p>
+<figure>
+  <img src="images/non-functional_head_remove_list.png" alt="t pointing at the second value in list N">
+  <figcaption>Figure 12. - The list N after removing the head value.</figcaption>
+</figure>
+<p>
+	Lastly let's see how to destructively remove a value from the end of a list, <kbd>f::N&#10230;N</kbd>.
+</p>
+<figure>
+  <img src="images/non-functional_tail_remove_list.png" alt="the second to the last node is modified to 
+  refer to nothing">
+  <figcaption>Figure 13. - N is the result of removing its last node and freeing the memory for that 
+  node.</figcaption>
+</figure>
+<p>
+	Here, once again, the memory for the removed node is freed for reuse. Also, what was previously the 
+	next-to-last node in N is modified to refer to nothing. That way the end of the list is known. Not 
+	doing this is a common bug that can lead to crashes and security exploits.
+</p>
+<h3>Wrap Up</h3>
+<p>
+	So there you have it. These are some of the most common behaviors with lists. There are others, for 
+	example sorting and inserting or removing something from the middle of a list, but those behaviours 
+	follow the same sort of things you've seen here in this reading. There is a lot that you've been 
+	shown here. It will probably take a good amount of time with you playing around with sketches of lists 
+	to more completely understand what is going on with lists.
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
