@@ -12,7 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
 
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 </head>
 
@@ -20,13 +49,15 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 04</h1>
-    <p>Functors Part 2: reduce/fold and unfold</p>
+    <p>The Functor Pattern Part 2: reduce/fold and unfold</p>
   </div>
 </div>
 
-..every sufficiently good analogy is yearning to become a functor.
-- John Baez
-    <dfn>Functor</dfn> a function that applies a function(effect) to one or more parameters.
+  <blockquote class="style1">
+    <span>...the notions category and functor were not formulated or put in print until the idea of a natural transformation was also at hand.</span>
+    <p class="style1">- Saunders Mac Lane</p>
+  </blockquote>
+
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

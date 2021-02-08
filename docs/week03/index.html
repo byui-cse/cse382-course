@@ -103,6 +103,13 @@ In problem solving space, this approach is called <span style="font-style: itali
   function that is a mapping of one category to another. An example would be the Power Set functor that maps 
   a set to its power set and maps each available function on the original set to a function on the power set.
 </p>
+<p>
+  There are two laws that must be true in order for something to be a functor. The first is called the identity 
+  law. Essentially it means that the functor does not use or produce any side effects. The second is the 
+  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, the functor applied to the composition of 
+  one or more functions must be the same as composing the results of applying the functor to each function 
+  separately.
+</p>
 
 <h3>Functor (Functional Programming)</h3>
 <p>
