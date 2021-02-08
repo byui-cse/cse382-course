@@ -30,7 +30,7 @@ The class is designed to be computer language agnostic. Because of this, it is n
 \item $\bigoplus$ - a symbol representing an operator to be specified elsewhere.
 \item $\lceil \rceil$ - an operator representing the ceiling behavior.
 \item $\lfloor \rfloor$ - an operator representing the floor behavior.
-\item $+,-,\cdot,/$ - addition, subtraction, multiplication, and division as per standard mathematics.
+\item $+,-,\cdot,\div$ - addition, subtraction, multiplication, and division as per standard mathematics.
 \end{itemize}
 \section{Lists}
 \subsection{Declaring Lists}
@@ -73,9 +73,32 @@ Examples:
 
 \section{Key Words}
 \begin{itemize}
-\item $when$ - a guard for execution of a code sub-statement or set of sub-statements.
+\item $when$ - a guard for execution of a code clause consisting of one or more sub-statements.
 \item $or, and, xor$ - as traditionally defined in logic.
 \end{itemize}
+
+\section{Examples}
+
+\subsection{A function declaration without a defintion.}
+This function determines the length of a list. 
+\begin{align*}
+len&::[]\rightarrow \text{ }Integer
+\end{align*}
+
+\subsection{A function declaration followed by its two lines of definition.}
+This function adds all the elements of a list.
+\begin{align*}
+sum&::[h\mid t]\rightarrow \text{ }Real\\
+sum&= 0 \text{ }when\text{ }[a]\text{ is empty,}\\
+sum&= (h+sum\text{ }t)
+\end{align*}
+
+\subsection{A function declaration and definition that uses previously declared functions.}
+This function calculates the average of a set of numbers in a list.
+\begin{align*}
+average&::[a]\rightarrow \text{ }Real\\
+average&= sum\text{ }[a]\div len\text{ }[a]
+\end{align*}
 
 
 

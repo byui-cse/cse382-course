@@ -12,6 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 
 </head>
@@ -19,56 +49,135 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 03</h1>
-    <p>Algorithms for Ordered Searching</p>
+    <h1>CSE 382: Week 03</h1>
+    <p>The Functor Pattern Part 1: map and filter</p>
   </div>
 </div>
+  <blockquote class="style1">
+    <span>...every sufficiently good analogy is yearning to become a functor.</span>
+    <p class="style1">- John Baez</p>
+  </blockquote>
+  <h2>The Functor Pattern</h2>
+  <p>
+    Functor is probably a word you haven't run into before. In the functional programming world it is used a lot 
+    so it would be a good idea to start understanding and using it. Now, you could go out and do a lot of googling 
+    to try and come up with some definitions of what a functor is with relation to computer science in general and 
+    functional programming specifically. Instead of doing so, how about we provided a few definitions used in this 
+    course along with the bodies of knowledge the definitions come from. When you feel you're ready to tackle these, go ahead 
+    and read them. &#128578
+  </p>
+<ul>
+    <li><dfn>Homomorphism</dfn>: a transformation of one set, group, category, etc. into another that preserves in the second the relations between elements of the first. (Mathematics)</li>
+
+    <li><dfn>Functor</dfn>: the transformation from set to set, group to group, category to category, etc. that 
+    preserves the relations between the elements of the first set \(F::A\rightarrow B\) (Mathematics)</li>
+    
+    <li><dfn>Functor</dfn>: a function that applies another function (effect) to one or more parameters, one of which is often a list, preserving all the relationships between the values acted on. 
+    \(f :: [a] (g :: a\rightarrow b)\rightarrow[b]\) (Functional Programming)</li>
+</ul>
 <p>
-    The life lesson this week is on the importance of and need for preparation, or
-    what <a href="https://www.franklincovey.com/the-7-habits.html">Dr. Stephen R. Covey</a>,
-    among others, called saw-sharpening. The analogy is this. If you sharpen your saw
-    before you start using it to cut wood, it is faster and easier to complete your task.
+  Alright. So that was tough and probably left you in a little bit of a brain fog. How about splitting them 
+  up and taking them one at a time to see if more light can be shed on each of them and the relationships between 
+  them? In doing so, let's try to provide you with a high-level understanding of what each of these things are 
+  while staying true to their meaning.
 </p>
+<h3>Homomorphism (Mathematics)</h3>
 
 <p>
-Read Doctrine and Covenants 88:119, and as commanded in the scriptures,
-liken it to yourself. One way of doing this is to substitute &ldquo;life&rdquo; for &ldquo;house&rdquo;
-since our lives need to be holy, not worldly, just as the temple is holy.
+Homomorphism comes from the Greek <span style="font-style: italic">homoios morphe</span> meaning 'similar form.' So if two sets, groups, or some other type of category of things are homomorphic, then when trying to solve a vexing 
+problem in a specific set, you can convert the problem and set into another set where the problem is easier to 
+solve, solve the problem there, and then convert the solution back to the original set. Then the problem is solved. 
+In problem solving space, this approach is called <span style="font-style: italic">transform and conquer</span>. 
+</p>
+<p>
+  Here is an example from the area of the testing of medications. Imagine you have a medication that might cure a 
+  specific, common form of cancer. It also might be deadly. How can the medication be tested? One traditional 
+  approach is to view mice, rats, and other mammals as homomorphs of humans. Give the drug to these in randomized 
+  trials and you can tell if the drug is poisonous to mammals. Unlike Mathematics and Computer Science, this 
+  approach doesn't guarantee the drug isn't poisonous to humans, these animals not being exact homomorphs for 
+  humans, but it does greatly reduce the probability that the drug would kill people.
+</p>
+<h3>Functor (Mathematics)</h3>
+<p>
+  The word functor comes from the word function. It was adopted by mathematicians who study <a href="https://en.wikipedia.org/wiki/Category_theory">Category Theory</a> in the 1930's to express the idea of a 
+  function that is a mapping of one category to another. An example would be the Power Set functor that maps 
+  a set to its power set and maps each available function on the original set to a function on the power set.
 </p>
 
+<h3>Functor (Functional Programming)</h3>
 <p>
-  Imagine that your clothes are piled up in the middle of your bedroom and you need to get dressed to come to class. Also imagine that
-  you just threw your clothes in the pile with absolutely no thought. There is one more thing regarding this scenario. Your roommate, or
-  spouse, is not happy with the situation and has stirred up your pile in a pique.
+  Depending on who you talk to, the definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional Programming</a> can be as strict as the most 
+  strict definition in Mathematics, or more relaxed. In this course we will use the more approachable definition 
+  stated above. Essentially, any function that has a function as a parameter and data to act on as one or more 
+  other parameters we will call a functor. This functor pattern is so prevalent in Functional Programming that 
+  covering the most common examples requires two weeks. This week two examples are examined. 
+</p>
+<h4>Map</h4>
+<p>
+  The most straightforward application of the functor definition is the map BIF (Built In Function). Here, a list 
+  and a function to be used to modify each element of the list are passed as parameters. The value of the map 
+  functor is a new list containing modified versions of each element of the original list as you see in the first 
+  line of Figure 1.
+</p>
+</p>
+  <aside class="left_wide">
+    <figcaption>Fig.1 - The declaration and definition <br>of the map functor.</figcaption>
+  <figure>
+    $$\begin{align*}
+  map &:: [a]\text{ }(\lambda :: a\rightarrow b)\rightarrow[b]\\
+  map &:: [a]\text{ }(\lambda :: a\rightarrow b)\rightarrow [\text{ }]\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  map &:: [h\mid t]\text{ }(\lambda :: a\rightarrow b)\rightarrow\\
+  &[h]:[map\text{ }t\text{ }(\lambda :: a\rightarrow b)]\\&\text{ }when\text{ }[a]\text{ is empty }.
+  \end{align*}
+  $$ 
+  </figure>
+  </aside>
+<p>
+<p>
+  Being applied in a Functional Programming space, the map functor is defined recursively. If the list-type 
+  parameter of map is empty, the value of the map functor is an empty list (the first function clause in Figure 1). If the list-type parameter is 
+  non-empty, the head of the list is passed to the lambda-type parameter. The value of the lambda with the head as 
+  its parameter is then prepended to a recursive call to map itself with the tail of the list-type parameter 
+  passed instead of the complete list (the second function clause of Figure 1).
 </p>
 <p>
-  Now I&rsquo;m sure none of you have ever piled your clothes up like this.&#128516; But if you were in this situation, how efficiently and
-  quickly could you get dressed?
+  Thus, each element of the original list is converted to a new element, possibly even a new type, and then 
+  added to a distinct list that is created as the value of the call to the map functor.
+</p>
+<h4>Filter</h4>
+<p>
+  The filter BIF is significantly different. Instead of a 1-to-1 correspondence between the 
+  list passed as a parameter and the list that is the value of filter, the value list can, but does 
+  not have to, have fewer elements. The value list contains only those elements of the original list that 
+  cause the lambda parameter to return \(true\). 
+</p>
+</p>
+  <aside class="right_wide">
+    <figcaption>Fig.1 - The declaration and definition <br>of the filter functor.</figcaption>
+  <figure>
+    $$\begin{align*}
+  filter &:: [a]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow[b]\\
+  filter &:: [a]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow [\text{ }]\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  filter &:: [h\mid t]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow\\
+  &[h]:filter\text{ }t\text{ }(\lambda :: a\rightarrow Boolean)\\
+  &when\text{ }\lambda\text{ }a = true,\\
+  &filter\text{ }t\text{ }(\lambda :: a\rightarrow Boolean)\\
+  &when\text{ }\lambda\text{ }a = false.
+  \end{align*}
+  $$ 
+  </figure>
+  </aside>
+<p>
+<p>
+  The filter functor is defined recursively. If the list-type 
+  parameter of map is empty, the value of the map functor is an empty list (the first clause of the function in Figure 2).
+  If the list-type parameter is non-empty (the second clause of the function in Figure 2), the head of the list is passed 
+  to the lambda-type parameter, and if the value of the lambda is then true, the head is prepended to a recursive 
+  call to filter itself with the tail of the list-type parameter passed instead of the complete list .
 </p>
 <p>
-  Or maybe, like me, you grew up in a home where there was a junk drawer. A drawer where you put everything that didn&rsquo;t seem to fit into
-  the groups of things in the other drawers. How easy was it to find something in there?
-</p>
-<p>
-  If you are looking for something specific in a group of unordered things, your search is going to be frustrating and slow. There is a
-  better way.
-</p>
-<h2>
-  Ordered Search
-</h2>
-<p>
-  Last week you learned at least one algorithm for sorting things. It is much more efficient to search through an ordered set of things when
-  you are looking for something specific. So, before searching you should sort the things. Then you can find what you need easier.
-</p>
-<p>
-  Binary search is a common algorithm used to search ordered things. In binary search you start by looking in the middle. I know. That&rsquo;s weird.
-  But stop and think about it for a minute. If you start in the middle, then you know if the thing you are looking for is to your right or
-  your left. That means you don&rsquo;t have to check HALF of the things to find what you are looking for. If you now ignore the half of the things
-  that can&rsquo;t be what you want, you can repeat this process for the half where the thing you want might be until you find it.
-  That&rsquo;s going to be a lot faster than starting on the left or right and checking each thing until you find what you want.&#127881;&#127881;
-</p>
-<p>
-  Binary search can be hard to imagine so you might want to watch <a href="https://youtu.be/t0WJeVfV-sM">a visualization of binary search</a>.
+  Thus, each element of the original list that matches the logic specified in the lambda is 
+  added to a distinct list that is created as the value of the call to the filter functor.
 </p>
 
 
