@@ -54,10 +54,214 @@
 </div>
 
   <blockquote class="style1">
-    <span>...the notions category and functor were not formulated or put in print until the idea of a natural transformation was also at hand.</span>
-    <p class="style1">- Saunders Mac Lane</p>
+    <span>Recursive programs have a systematic translation to unfold and fold.</span>
+    <p class="style1">- Conal Elliott</p>
   </blockquote>
 
+<h2>Beyond Map and Filter</h2>
+<p>
+    The functors map and filter are great. Use them whenever you can and they are the best 
+    choice for that situation. They do not cover all situations. Thats why there are other 
+    basic functors that are part of every functional programmer's tool set. These are 
+    reduce, formally known as fold left and fold right, and unfold. It's these two 
+    that really flesh out our tool set. 
+</p>
+<h3>Fold Left and Fold Right</h3>
+<p>
+    The basic concept of folding is that you start with something large and reduce its exposed 
+    surface area. This is true not only for clothes, paper, and and other such things, 
+    but for data as well. If your code snippet, function, or application accepts a bunch of 
+    data and then produces, as output, fewer computed results than the amount of data it 
+    started with, the code was a for of fold. Maybe your app took in a bunch of historical data 
+    about the weather and produced a prediction for the next few days. That's a fold. 
+</p>
+</p>
+  <aside class="left">
+    
+  <figure>
+    <dfn>Fold</dfn> - a function type where the input count is greater than the output count.
+  </figure>
+    <figcaption>Fig. 1</figcaption>
+  </aside>
+<p>
+<p>
+    Maybe your app accessed a database of customers and produced an ordered list of customers 
+    your sales people should contact with specific needs rather than a complete list. That's a 
+    fold.
+</p>
+<p>
+    Or maybe you use an application to help you track and fix bugs in your code. It accesses the 
+    entire database of defects and selects just the ones that match details you provide it. That's 
+    another fold app.
+</p>
+
+<p>
+    When you stop and think about it, the number of applications, functions, and code snippets 
+    that perform a fold-type operation is huge...and thankfully so. Imagine if the data 
+    produced by any of the apps mentioned was as large as the input data. They would be nearly 
+    useless.&#128556;
+</p>
+<p>
+    Fold behavior comes in two flavors, fold left, from left to right, and fold right, from right 
+    to left. There will be times when selecting between right and left types of folds is important. 
+    There will be other times when it is not.
+</p>
+<h4>foldl</h4>
+<p>
+
+  <aside class="left_wide">
+    <figcaption>Fig. 2 - The declaration and anti-pattern definition <br>of the foldl functor.</figcaption>
+  <figure>
+    $$\begin{align*}
+  foldl &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
+  foldl &:: [a]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow accum\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  foldl &:: [h\mid t]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow\\
+  &temp = \lambda\text{ }::\text{ } accum\text{ }h\\
+  &foldl\text{ }::\text{ }t\text{ }\text{ }temp\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c).
+  \end{align*}
+  $$ 
+  </figure>
+  </aside>
+</p>
+<p>
+    Let's start with the foldl function. Take a look at Figure 2. There you will see foldl's declaration states 
+    that the functor's set of parameters is a list, an accumulator, and a lambda function and the value of foldl 
+    is a single value. It is important to understand that the accumulator can be of any type but that  the type 
+    of the lambda's parameter 'a' must match the type of the accumulator for the functor. Also, if the accumulator 
+    is numeric, its initial value could be 0 if you are wanting to do something similar to addition, or its initial 
+    value could be 1 if you are wanting to do something like multiplication.
+</p>
+<p>
+
+  <aside class="right">
+    <figcaption>Definition 1 - <dfn>Anti-pattern</dfn>:</figcaption>
+  <figure>
+     a common response to a common problem that has a high probability of being 
+    ineffective or counterproductive.
+  </figure>
+  </aside>
+</p>
+<p>
+    There are other things your lambda function could be doing with the list. If it is concatenating the list, the 
+    accum parameter could be an empty string. If, however, you are thinking of passing in an empty list as the 
+    accumulator, you should think again. That would be an anti-pattern. You would be better served by using a 
+    combination of map and filter functors in this situation rather than a fold functor. 
+</p>
+<p>
+    Notice in the second clause of foldl a local variable called temp is created and is assigned the value of the 
+    lambda when the lambda is passed the accumulator and the head of the list. In the last phrase of the second 
+    clause this temporary variable is passed as the accumulator value to recursive call in the second phrase of 
+    this same clause of foldl.
+</p>
+<p>
+
+  <aside class="right_wide">
+    <figcaption>Fig. 3 - The declaration and good definition <br>of the foldl functor.</figcaption>
+  <figure>
+    $$\begin{align*}
+  foldl &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
+  foldl &:: [a]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow accum\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  foldl &:: [h\mid t]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow\\
+  &foldl\text{ }::\text{ }t\text{ }\text{ }(\lambda\text{ }::\text{ } accum\text{ }h)\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c).
+  \end{align*}
+  $$ 
+  </figure>
+  </aside>
+</p>
+<p>
+    While organizing your code like it is in Figure 2 may seem to make sense, it should be avoided. Figure 2 is 
+    included in this reading as an example of a common anti-pattern. Anti-patterns are patterns that seem good but have hidden badness. Don't use them. Instead, the temp variable should be discarded and the call to lambda 
+    should be placed in the last phrase of the clause as you see in Figure 3.
+</p>
+
+<h4>foldr</h4>
+</p>
+  <aside class="left_wide">
+    <figcaption>Fig. 4 - The declaration and definition <br>of the foldr functor.</figcaption>
+  <figure>
+   $$\begin{align*}
+  foldr &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
+  foldr &:: [a]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow accum\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  foldr &:: [h\mid t]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow\\
+  &foldr\text{ }::\text{ }h\text{ }\text{ }(\lambda\text{ }::\text{ } accum\text{ }t)\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c).
+  \end{align*}
+  $$ 
+  </figure>
+  </aside>
+<p>
+
+<p>
+    Foldr is much like foldl. That's why the declarations of the two functors is nearly identical. The difference 
+    between the two shows up in the definitions. In the pseudocode found in Figure 4 you'll find that the major 
+    difference is how h and t are dealt with. For this bit of pseudocode t represents the last element of the list 
+    and h represents the rest of the remaining elements of the list. You'll find as you examine Figure 4 that while 
+    foldl moves from the head element to the tail element, foldr moves from the tail element to the head element. 
+    That's why you will see the h and t variables switching places if you compare the last clause of foldl with 
+    the last clause of foldr.
+</p>
+<h3>Unfold</h3>
+<p>
+    While the fold functors accumulate a list of values into a single value, unfold does the opposite. Unfold 
+    produces a potentially infinite set of results from a set of initial values called the seed. That set may 
+    have only one element.
+</p>
+</p>
+  <aside class="left">
+  <figure>
+    <dfn>Unfold</dfn> - a function type where the input count is less than the output count.
+  </figure>
+    <figcaption>Fig.2</figcaption>
+  </aside>
+<p>
+<p>
+    You've used unfold functors before. Think of when you've needed a pseudo-random number. When you used 
+    a function to get that number, you used an unfold functor. Random number generators need a seed to 
+    get started. You may not have had to proved one since there is usually a fa&ccedil;ade function provided 
+    by the library writers that, by default, uses the current time in milliseconds as the seed. 
+</p>
+<p>
+    In many languages, unfold functors that produce random numbers are called Random Number Streams since 
+    after the initial seed is provided, repeated calls to the functor produces a predictable, calculable 
+    result. In other words, if the same seed is used for two different calls of the functor, the same 
+    results are generated in the same order.
+</p>
+
+<p>
+  <aside class="right_wide">
+    <figcaption>Fig.5 - The declaration and definition <br>of a naive unfold functor.</figcaption>
+  <figure>
+    $$\begin{align*}
+  unfold\text{ }&::\text{ }c\text{ }s\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\})\rightarrow [r]\\
+  unfold\text{ }&::\text{ }c\text{ }s\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\})\rightarrow\\
+  &[]\text{ } when\text{ }c = 0;\\
+  unfold\text{ }&::\text{ }c\text{ }s\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\})\rightarrow\\
+  &\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{a,b\}\\
+  &[b]\mid unfold\text{ }::\text{ }a\text{ }b\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\}) otherwise;
+  \end{align*}
+  $$ 
+  </figure>
+  </aside>
+</p>
+<p>
+    This version of unfold is naive. It is not an infinite stream. Later in the course there is a revisit 
+    of unfold when the lazy execution and stream patterns are covered in depth. Those patterns will let you 
+    create a non-naive, infinite unfold functor. For now, this version of unfold will suffice.
+</p>
+<p>
+    Notice that in this case, the second phrase of the second clause of the unfold functor is not and anti-pattern. 
+    It isn't an anti-pattern because the result of the call to the lambda function can not be directly 
+    included in the next call to the functor. One of the elements of the 2-tuple that is the value of the lambda 
+    function needs to be prepended to the list that is the value of the unfold functor.
+</p>
+<p>
+    As an oversimplified example of how the naive unfold could be used, think of generating the first 50 even numbers. 
+    In this case the functor would be executed like this 
+    \(unfold\text{ }::\text{ }50\text{ }1\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{c-1,2\times s\})\) 
+    and a list of the first 50 even numbers would be the value.
+</p>
+<p>
+    
+</p>
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
