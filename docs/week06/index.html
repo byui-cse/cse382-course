@@ -12,7 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
 
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 </head>
 
@@ -20,11 +49,174 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 06</h1>
-    <p>Lazy and Eager Evaluation</p>
+    <p>Applicative Functor and Monad Patterns</p>
   </div>
 </div>
-*****
-*****
+<blockquote class="style1">
+    <span>You cannot today remotely imagine what [a] decision to be unwaveringly obedient to the Lord will allow you to accomplish in life. Your quiet, uncompromising determination to live a righteous life will couple you to inspiration and power beyond your capacity now to understand.</span>
+    <p class="style1">- Richard G. Scott</p>
+  </blockquote>
+<blockquote class="style1">
+    <span>[The prodigal son] "came to himself." He determined to find his way home, hoping to be accepted at least as a servant in his father's household.</span>
+    <p class="style1">- Jeffery R. Holland</p>
+  </blockquote>
+
+
+
+<h2>Doing a Bunch of Things</h2>
+<p>
+  Life consists of a sequence of choices and activities. Code also consists of a sequence of choices and actions. 
+  Both in life and in code we can choose to rotely perform a series of actions, or we can perform an action and then 
+  decide how the result of that action helps determine what should be done next. These two approaches to code and 
+  life, rote actions and informed choice of the next action, are the respective deep meanings of applicative 
+  functor (rote) and monad (choiceful).
+</p>
+<h2>Applicative Functor</h2>
+<p>
+  On the web you will find many complicated definitions of what an applicative functor is. Many are highly detailed 
+  and use words that are difficult for someone new to the topic to understand. That's actually good since these 
+  highly detailed definitions can lead to new insights by those well versed in the topic. 
+</p>
+  <aside class="left">
+  <figure>
+    <dfn>Applicative Functor Pattern</dfn> - a variation on the functor pattern that applies a list of functions, 
+    called effects, rather than one function, to a list. The single parameter of and value of each function must 
+    be lists.
+  </figure>
+    <figcaption>Fig. 1</figcaption>
+  </aside>
+  <p>
+    For those just starting to learn about any topic, it is important to be able to know its purpose before 
+    attempting to understand its strict definition. After all, the creation of a strict definition requires 
+    an understanding of purpose. Otherwise the definition could be in conflict with the purpose, making 
+    the definition incorrect. So let's start with the purpose behind the concept of applicative functor.
+  </p>
+  <p>
+    At this point in your life, you've designed and written a good deal of code. Not a huge amount, but not an 
+    insignificant amount either. Because of this, you understand how to describe a sequence of tasks you want 
+    the computer to do. An example of this is the map, filter, reduce behavior that you learned could be curried  
+    as part of the last week's material. When currying, code is written so that a series of functions can be 
+    applied to an item, be it a list or not. Applicative functors are a variation on currying and the functor 
+    concept.
+  </p>
+  <p>
+     When you apply currying, you can end up with anything you want. The map-filter-reduce currying example took 
+     a list and produced a single value. But that was a special case. It is very common to start with a list 
+     and end with a list, list-to-list. This behavior so common that the <kbd>map</kbd> functor is found in most 
+     modern languages. For a moment, let's enforce a requirement of list-to-list while we expand beyond functors. 
+  </p>
+  <p>
+    In weeks 03 and 04, you saw that a functor applies a single function to an item or a list and has a resultant 
+    value. Imagine a functor that applies a list of functions to a list. That's what an applicative functor does. 
+    It applies a list of functions, called effects, to a list of any type. The value of an applicative function is 
+    also a list. Therefore it follows the list-to-list restriction we set earlier.
+  </p>
+  <p>
+    Below is the declaration and definition of an applicative functor that applies functions to lists. 
+    Notice that it uses the <kbd>map</kbd> functor defined in week 02's reading and that in each recursion an 
+    effect effects the list. Also note that the value of the <kbd>apply</kbd> function is a list 
+    that is the result of application of all the effects. None are left out.
+  </p>
+  <p>
+    \[\begin{align*}
+    apply\text{ }&::\text{ }[a]\text{ }[\lambda\text{ }::\text{ }a\rightarrow b,\lambda\text{ }::\text{ } 
+    b\rightarrow c,\ldots,\lambda\text{ }::\text{ }y\rightarrow z]\rightarrow [z]\\
+    apply\text{ }&::\text{ }[a]\text{ }[f]\rightarrow [a]\text{ }when\text{ the cardinality of }[f]\text{ is }0;\\
+    apply\text{ }&::\text{ }[a]\text{ }[h\mid t]\rightarrow (map\text{ }[a]\text{ } h)\text{ }t\text{ }otherwise. 
+    \end{align*}\]
+  </p>
+  <p>
+    It is also possible to define a semi-generic applicative functor that applies functions to an item. 
+    Unsurprisingly, it isn't very different from the list version.
+  </p>
+
+  <p>
+    \[\begin{align*}
+    apply\text{ }&::\text{ }a\text{ }[\lambda\text{ }::\text{ }a\rightarrow b,\lambda\text{ }::\text{ } 
+    b\rightarrow c,\ldots,\lambda\text{ }::\text{ }y\rightarrow z]\rightarrow z\\
+    apply\text{ }&::\text{ }a\text{ }[f]\rightarrow a\text{ }when\text{ }[f] = [];\\
+    apply\text{ }&::\text{ }a\text{ }[h\mid t]\rightarrow(h\text{ }::\text{ }a)\text{ }t\text{ }otherwise. 
+    \end{align*}\]
+  </p>
+  <p>
+    This is all fine and dandy as long as each effect is to be applied without needing to determine if or 
+    how it should be applied. But what if that isn't the case? 
+  </p>
+
+  <h2>Monads</h2>
+  <p>
+    A monad is an applicative functor with some built-in smarts. It doesn't rotely apply each effect. Instead, 
+    the result of one effect can change how or if the rest of the effects are applied.
+  </p>
+  <aside class="right">
+  <figure>
+    <dfn>Monad Pattern</dfn> - using an applicative functor to conditionally apply effects to a single parameter  dependent on the results of one or more effects.
+  </figure>
+    <figcaption>Fig. 1</figcaption>
+  </aside>
+  <p>
+    Since application of additional effects depends on the results of previous effects, the order in which the 
+    effects are applied is important. The commutative law is not applicable to the effects when using the 
+    monad pattern. It is required, however, that the associative law be applicable to the effects. Another way 
+    of saying this is that it is required that if you combine any subset of the effects into one effect, the 
+    same results are achieved as applying all the effects individually.
+  </p>
+  <p>
+    For the following code samples, let \(a\) and \(b\) be of the same type and lets declare and define the 
+    function <kbd>pipeline</kbd>. The purpose of this function is to ensure that all the effects declared 
+    for the behavior wanted are executed. Since monads are an expansion of applicative functors, it is no 
+    surprise that the declaration and definition are very similar.
+  </p>
+  
+  <p>
+    \[\begin{align*}
+    pipeline\text{ }&::\text{ }a\text{ }[\lambda\text{ }::\text{ }a\rightarrow b,\lambda\text{ }::\text{ } 
+    a\rightarrow b,\ldots,\lambda\text{ }::\text{ }a\rightarrow b]\rightarrow b\\
+    pipeline\text{ }&::\text{ }a\text{ }[f]\rightarrow a\text{ }when\text{ }[f]=[];\\
+    pipeline\text{ }&::\text{ }a\text{ }[h\mid t]\rightarrow(bind\text{ }::\text{ }a\text{ }h)\text{ }otherwise. 
+    \end{align*}\]
+  </p>
+  <p>
+    If you compare this code with that of the applicative functor, you'll see that rather than use a near-generic 
+    <kbd>map</kbd> function, a non-generic <kbd>bind</kbd> function is used instead. This abstraction adds 
+    additional flexibility to code that follows the monad pattern compared to code following the applicative 
+    functor pattern.
+  </p>
+  <p>
+    The purpose of the bind function is to apply an effect to \(a\) and is declared and defined below.
+  </p>
+
+  <p>
+    \[\begin{align*}
+    bind\text{ }&::\text{ }a\text{ }f\rightarrow b\\
+    bind\text{ }&::\text{ }a\text{ }\rightarrow nil\text{ }when\text{ }a=nil;\\
+    bind\text{ }&::\text{ }a\text{ }f\rightarrow f\text{ }::\text{ }a\text{ }otherwise. 
+    \end{align*}\]
+  </p>
+  <p>
+    Notice that if the value of the \(a\) parameter for <kbd>bind</kbd> is nil, it returns nil instead of applying 
+    an effect to \(a\). This is the monad pattern's early exit behavior. Once the value of an effect is nil, 
+    the value of <kbd>bind</kbd> will also be nil and <kbd>pipleline</kbd> will pass nil repeatedly to bind and 
+    no more effects will be applied to \(a\). 
+  </p>
+  <p>
+    What, then, is to be done if the type of the data you need to work on, \(c\), doesn't match the type of the 
+    parameter and value of the effects, \(a\) and \(b\)? Ah...then you need a function that converts \(c\) to 
+    \(a\). In the monad literature this type of a function is referred to as a unit function. Don't let the 
+    name confuse you. You won't create a function called <kbd>unit</kbd>, you will create a function that just 
+    transforms the type. If \(a\) is a list of doubles, then your unit function will convert \(c\) into a 
+    a double, if needed, and put it in a list, if needed. If \(c\) is already a list of doubles, then you don't 
+    need to use a unit function.
+  </p>
+  <p>
+    If \(a\) is a tuple and \(c\) is not, then you will need to create an appropriate unit function that puts 
+    \(c\) into an appropriate tuple. If \(a\) is a \(Real\) and \(c\) is not, you will need to apply a function 
+    to \(c\) that produces a \(Real\). Etc, etc.
+  </p>
+  <p>
+    Notice that with a monad, as apposed to an applicable functor, the value being acted on need not be a list.
+  </p>
+
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

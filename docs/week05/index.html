@@ -11,7 +11,36 @@
     <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-    <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 
 </head>
@@ -20,15 +49,170 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 05</h1>
-    <p>Applicative Functors and Monads</p>
+    <p>The Currying Pattern</p>
   </div>
 </div>
-  <ul>
-    <li><dfn>Applicative Functor</dfn> a functor that applies a list of functions(effects) to one or more parameters.</li>
-    <li><dfn>Monad</dfn> an applicative functor that conditionally applies elements of a list of functions(effects) to 
-    one or more parameters dependent on the results of each function in the list. (Ex. Early Exit, Function 
-    Conditional Ordering, Function Conditional Use)</li>
+
+  <blockquote class="style1">
+    <span>Currying is an incredibly useful technique...It allows you to generate a library of small, easily configured functions that behave consistently, are quick to use, and that can be understood when reading your code..</span>
+    <p class="style1">- M. David Green</p>
+  </blockquote>
+
+<h2>The Anti-Pattern of Ugliness</h2>
+<p>
+  Why is some code ugly? There are a lot reasons...to many to describe. It's easier to describe what 
+  is meant by beautiful code. Anything that doesn't match this definition is, by default, ugly code.
+</p>
+<p>
+  <aside class="left_wide">
+    
+  <figcaption>Fig. 1 - Principles of Beautiful Code</figcaption>
+  <figure>Beautiful code is;
+    <ul>
+      <li>Distilled. There is nothing extraneous or verbose.</li>
+      <li>Balanced. Calculations are distributed between deeply thought out and clearly articulated calculation 
+      units.</li>
+      <li>Harmonious. The calculation units unite in the reader's mind without cognitive conflict to describe how to accomplish the overall task.</li>
+      <li>Audacious and Original. Beautiful code surprises the reader by showing new ways to think about a problem</li>
+      <li>Full of Imagery. Words and names are selected to clearly and with impact tell the reader what they 
+      represent</li>
+      <li>Structured. The location of the code is as important as what the code says.</li>
+      <li>Compassionate. The code is fun and easy to read.</li>
     </ul>
+  </figure>
+  </aside>
+</p>
+  <p>
+    Now consider a situation similar to, but not the same as, the map-filter-reduce situation described in the 
+    CSE 121E course. In this new situation you have been asked to map, then filter, and then reduce some list. 
+    Maybe you've been asked to work with a list of numbers, double them all, keep only those that are greater 
+    than 50, and then add up all that remain. If you use the map, filter, and reduce BIF's in a raw way, the 
+    generic version of the code to do what you were asked to write looks like this.
+  </p>
+  <p>
+    \[ 
+    reduce\text{ }::\text{ }(filter\text{ }::\text{ }(map\text{ }::\text{ }[a]\text{ }f_1\rightarrow [b])
+    \text{ }f_2\rightarrow [c])\text{ }f_3\text{ }\rightarrow d\]
+  </p>
+  <p>
+    This code is not harmonious. To understand it, you eventually have to realize that you need to read it 
+    from the inside to the outside using order of operations as a guide. That time before you have that 
+    realization is cognitive conflict and is, therefore, not harmonious. For this 
+    same inside-to-outside reason is also why it is not structured well, violating another principle of 
+    beautiful code.
+  </p>
+  <p>
+    While those two reasons are enough to make this code ugly, the problems don't end there. The code is also 
+    verbose. Being verbose, it is not distilled. Look at all of those duplicated list notations. Each is just 
+    a variation of the last. Why, then, do they have to be there? There is also the name of each function that 
+    needs to be used. Again, why? 
+  </p>
+  <p>
+    Is the code compassionate? Not even close. If you consider this code snippet some more, you'll find it 
+    violates most, if not all, of the principles of beautiful code.
+  </p>
+  <p>
+    The type of code writing exhibited by the above code is evidence that the programmer doesn't understand the 
+    possibilities offered by functional programming languages and those that are functional-like. Is there, then, another way?
+  </p>
+  <h3>A Partial Step Towards Beauty</h3>
+  <p>
+    When considering how to reduce some of the ugliness of the previous code, a next step might be to create a 
+    fa&ccedil;ade function to hide the ugliness from those who will use the code but not examine how it is made. 
+    Such a step is an improvement as long as no one needs to see how it was done. If the fa&ccedil;ade function 
+    was named <kbd>chain</kbd>, the declaration of the function would be this.
+  </p>
+  <p>
+  \[ 
+    chain\text{ }::\text{ }[a]\text{ }[f_1\text{ }f_2\text{ }f_3]\text{ }\rightarrow d
+    \]
+  </p>
+  <p>
+    This code is getting better but is still ugly. Take a look at that list of functions. It's a temporary list. 
+    Why am I forced to make a temporary list to execute each of the functions? It is a certainty that the list 
+    will have to be cleaned up later. That's not distilled nor audacious. 
+  </p>
+
+  <p>Why not audacious? It's an old saw 
+    used in imperative languages to hide a mess that, seemingly, can't be avoided. This is better, but still 
+    ugly code. 
+  </p>
+  <h2>Achieving Beauty</h2>
+  <p>
+    When working with any language type it is vital to know and understand all the options that the type of 
+    language offers. Functional programming allows you to use the concept of currying. Currying, in Computer 
+    Science and Mathematics, is named after the mathematician Haskell Curry and he based this part of his 
+    work on what was previously accomplished by Moses Sch&ouml;nfinkel and Gottlob Frege.
+  </p>
+  <aside class="left">
+  <figure>
+    <dfn>Currying</dfn> - the process of breaking up a function that has \(n\) parameters into \(n\) 
+    functions that have 1 parameter.
+  </figure>
+    <figcaption>Fig. 2</figcaption>
+  </aside>
+  <p>
+    The basic idea behind currying is to map a function that has multiple parameters to a series of functions 
+    that each have only one. Then, by executing each of the functions, the same result can be achieved. For 
+    example, you could think of this as \(f(a,b)\) being the same as \(f(a)(b)\) if \(f(a)\) returned a 
+    function that was then passed the parameter \(b\).
+  </p>
+  <p>
+    It may seem strange that a function could or should return a function, but that's one of the principles 
+    that allows functional programming languages to deeply leverage lambdas. Functions, in a functional 
+    programming language, are first-class citizens. Or said differently, you can treat a function like 
+    anything other type in the language. It can be stored in a variable. It be passed as a parameter. It can 
+    be returned from another function.
+  </p>
+  <p>
+    If the concept of currying is applied to the ugly code snippets above, beauty emerges. But before we take 
+    that step and try to express the declaration of <kbd>chain</kbd> in pseudocode, let's express it in 
+    mathematical notation. Doing so, it would look like this \(chain([a])(f_1)(f_2)(f_3)\rightarrow d\). But 
+    the list \([a]\) is just a single entity, so let \(b=[a]\). That means a simplification is in order. The mathematical representation then becomes \(chain(b)(f_1)(f_2)(f_3)\rightarrow d\). Let's start at the end 
+    of the chain and move backwards breaking this down, step by step, to help shed some light on what's going 
+    on.
+  </p>
+  
+  <p>
+    The function \(f_3\) is passed as a parameter to some anonymous function and returns a single value, \(d\). 
+    This is the reduction step in the initial, ugly example. Notice that the call is at the END where it 
+    cognitively fits in the initial map-filter-reduce sequence of the example, the <kbd>sum</kbd> function in 
+    Figure 3. 
+  </p>
+  <aside class="right_wide">
+  <figure>
+    \(chain(b)(mult\_by\_2)(greater\_than\_50)(sum)\)
+  </figure>
+    <figcaption>Fig. 3 - An example mathematical notation<br>using chain to map, filter, and reduce.</figcaption>
+  </aside>
+  <p>
+    What then is the anonymous function to which \(f_3\) is passed? It is whatever is returned by the anonymous 
+    function to which \(f_2\) was passed. In the case of the map-filter-reduce example, this would be a lambda 
+    that does the filter step. And where does this lambda come from? It's the value of the anonymous function 
+    to which \(f_1\) was passed, the map step.
+  </p>
+  <p>
+    The trigger to all of this is the <kbd>chain</kbd> function. For \(f_1\) to be passed to an anonymous 
+    function that anonymous function has to come from <kbd>chain</kbd>. 
+    That means the declaration and definition of <kbd>chain</kbd> is very short with the definition consisting 
+    of a single, one-line clause.
+  </p>
+  \[
+    \begin{align*}
+    chain\text{ }&::\text{ }b\rightarrow\lambda\text{ }::\text{ }f\\
+    chain\text{ }&::\text{ }\rightarrow\lambda\text{ }::\text{ }f\rightarrow f(a).
+    \end{align*}
+    \]
+    <p>
+      On of the very beautiful things about the chain function is that the number of functions you can chain 
+      is anywhere from 1 to infinity. Now be careful and be wise. Remember that your code must be beautiful. 
+      If you start applying chain everywhere, your code will quickly digress into ugliness.
+    </p>
+    <p>
+      Another beauty of <kbd>chain</kbd> is that it is generic. The parameter it is passed can be of any type. 
+      It need not be a list.
+    </p>
+
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
