@@ -155,7 +155,7 @@
 </p>
 <p>
 
-  <aside class="right_wide">
+  <aside class="left_wide">
     <figcaption>Fig. 3 - The declaration and good definition <br>of the foldl functor.</figcaption>
   <figure>
     $$\begin{align*}
@@ -176,7 +176,7 @@
 
 <h4>foldr</h4>
 </p>
-  <aside class="left_wide">
+  <aside class="right_wide">
     <figcaption>Fig. 4 - The declaration and definition <br>of the foldr functor.</figcaption>
   <figure>
    $$\begin{align*}
@@ -259,9 +259,33 @@
     \(unfold\text{ }::\text{ }50\text{ }1\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{c-1,2\times s\})\) 
     and a list of the first 50 even numbers would be the value.
 </p>
-<p>
-    
-</p>
+
+  <h2>The Laws</h2>
+  <p>
+    For functors there are laws that must be followed if a something 
+    is to be a functor. While these laws are often expressed in an arcane way, 
+    explanations of the laws are included here to make them easier to apply.
+  </p>
+  <p>
+    Please remember that functors were originally defined in the Category Theory branch of mathematics. A 
+    category can be thought of as a grouping of things. Any category may have 0 or more elements. That's 
+    why functors in functional programming always act on lists. Those lists may have 0, 1, or more elements, 
+    but the functor applies a list of functions to a list of values of some type. The items in the list may  
+    also be of type \(function\) since functions are first-class citizens.&#128526;
+  </p>
+  <h3>Laws that Determine if Something is a Functor</h3>
+  <ol>
+    <li>\(fmap\text{ }::\text{ }[a]\text{ }id = [a]\) <p>
+      This rule states that the functor must be able to map an identity function to each element in the list 
+      and that the resultant list must contain the same values in the same order as the original list.
+    </p></li>
+    <li>
+      \(fmap\text{ }::\text{ }[a]\text{ }(f\circ g) = (fmap\text{ }::\text{ }[a]\text{ }f\circ fmap\text{ }::\text{ }[a] g)\)<p>
+        This rule states that the functor must be able to apply a composed function and achieve the same 
+        results as applying the individual functions individually.
+      </p>
+    </li>
+  </ol>
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

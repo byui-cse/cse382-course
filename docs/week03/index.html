@@ -72,8 +72,8 @@
     <li><dfn>Functor</dfn>: the transformation from set to set, group to group, category to category, etc. that 
     preserves the relations between the elements of the first set \(F::A\rightarrow B\) (Mathematics)</li>
     
-    <li><dfn>Functor</dfn>: a function that applies another function (effect) to one or more parameters, one of which is often a list, preserving all the relationships between the values acted on. 
-    \(f :: [a] (g :: a\rightarrow b)\rightarrow[b]\) (Functional Programming)</li>
+    <li><dfn>Functor</dfn>: a function that applies another function (effect) to each element of a list or other 
+    type of group preserving all the relationships between the values acted on.(Functional Programming)</li>
 </ul>
 <p>
   Alright. So that was tough and probably left you in a little bit of a brain fog. How about splitting them 
@@ -84,10 +84,11 @@
 <h3>Homomorphism (Mathematics)</h3>
 
 <p>
-Homomorphism comes from the Greek <span style="font-style: italic">homoios morphe</span> meaning 'similar form.' So if two sets, groups, or some other type of category of things are homomorphic, then when trying to solve a vexing 
-problem in a specific set, you can convert the problem and set into another set where the problem is easier to 
-solve, solve the problem there, and then convert the solution back to the original set. Then the problem is solved. 
-In problem solving space, this approach is called <span style="font-style: italic">transform and conquer</span>. 
+Homomorphism comes from the Greek <span style="font-style: italic">homoios morphe</span> meaning 'similar form.' So if two sets, groups, trees, or some other type of category of things are homomorphic, then when trying to solve a 
+vexing problem in a specific set, you can convert the problem and set into another set where the problem is easier 
+to solve, solve the problem there, and then convert the solution back to the original set. Then the problem is 
+solved. In problem solving space, this approach is called 
+<span style="font-style: italic">transform and conquer</span>. 
 </p>
 <p>
   Here is an example from the area of the testing of medications. Imagine you have a medication that might cure a 
@@ -99,25 +100,28 @@ In problem solving space, this approach is called <span style="font-style: itali
 </p>
 <h3>Functor (Mathematics)</h3>
 <p>
-  The word functor comes from the word function. It was adopted by mathematicians who study <a href="https://en.wikipedia.org/wiki/Category_theory">Category Theory</a> in the 1930's to express the idea of a 
+  The word functor comes from the word function. It was adopted in the 1930's by mathematicians who study 
+  <a href="https://en.wikipedia.org/wiki/Category_theory">Category Theory</a> to express the idea of a 
   function that is a mapping of one category to another. An example would be the Power Set functor that maps 
   a set to its power set and maps each available function on the original set to a function on the power set.
 </p>
 <p>
   There are two laws that must be true in order for something to be a functor. The first is called the identity 
   law. Essentially it means that the functor does not use or produce any side effects. The second is the 
-  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, the functor applied to the composition of 
-  one or more functions must be the same as composing the results of applying the functor to each function 
-  separately.
+  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, when the functor applies to the composition 
+  of one or more functions the result must be the same as the functor applying each function separately. At this 
+  point in time, just be familiar with these laws. You will see them described more formally at the end of the 
+  reading for week 04.
 </p>
 
 <h3>Functor (Functional Programming)</h3>
 <p>
   Depending on who you talk to, the definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional Programming</a> can be as strict as the most 
-  strict definition in Mathematics, or more relaxed. In this course we will use the more approachable definition 
-  stated above. Essentially, any function that has a function as a parameter and data to act on as one or more 
-  other parameters we will call a functor. This functor pattern is so prevalent in Functional Programming that 
-  covering the most common examples requires two weeks. This week two examples are examined. 
+  strict definition in Mathematics, or more relaxed and can vary by language. In this course we will use the 
+  more approachable definition stated above. Essentially, any function that has a function as a parameter and a 
+  list, set, tree, or other group of data to apply the function to is a functor. This functor pattern is so 
+  prevalent in Functional Programming that covering the most common BIF's that are functors in those languages 
+  requires two weeks. This week two examples are examined. 
 </p>
 <h4>Map</h4>
 <p>

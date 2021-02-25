@@ -49,172 +49,256 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 06</h1>
-    <p>Applicative Functor and Monad Patterns</p>
+    <p>The Monoid and Monad Patterns</p>
   </div>
 </div>
 <blockquote class="style1">
-    <span>You cannot today remotely imagine what [a] decision to be unwaveringly obedient to the Lord will allow you to accomplish in life. Your quiet, uncompromising determination to live a righteous life will couple you to inspiration and power beyond your capacity now to understand.</span>
-    <p class="style1">- Richard G. Scott</p>
+    <span>That's the thing about people who think they hate computers. What they really hate is lousy programmers.</span>
+    <p class="style1">- Larry Niven</p>
   </blockquote>
 <blockquote class="style1">
-    <span>[The prodigal son] "came to himself." He determined to find his way home, hoping to be accepted at least as a servant in his father's household.</span>
-    <p class="style1">- Jeffery R. Holland</p>
+    <span>There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies and the other way is to make it so complicated that there are no obvious deficiencies.</span>
+    <p class="style1">- C.A.R. Hoare</p>
   </blockquote>
 
 
 
-<h2>Doing a Bunch of Things</h2>
+<h2>The Curse of Complicatedness</h2>
 <p>
-  Life consists of a sequence of choices and activities. Code also consists of a sequence of choices and actions. 
-  Both in life and in code we can choose to rotely perform a series of actions, or we can perform an action and then 
-  decide how the result of that action helps determine what should be done next. These two approaches to code and 
-  life, rote actions and informed choice of the next action, are the respective deep meanings of applicative 
-  functor (rote) and monad (choiceful).
+  One of the biggest problems that exists in software engineering today is uncontrolled complicatedness. The 
+  size and complicatedness of libraries has and continues to grow exponentially while at the same time, the 
+  number of libraries grows. The patterns for this week exist to help reduce this complicatedness on both 
+  levels, that of size and that of number.
 </p>
-<h2>Applicative Functor</h2>
-<p>
-  On the web you will find many complicated definitions of what an applicative functor is. Many are highly detailed 
-  and use words that are difficult for someone new to the topic to understand. That's actually good since these 
-  highly detailed definitions can lead to new insights by those well versed in the topic. 
-</p>
+
+  <h2>Monoids</h2>
+  <p>
+    Monoids are an organized bunch of functions with only one parameter that follow 3 simple rules. All the 
+    functions in the bunch must be composable, there must be a unit function, and when any two functions are 
+    composed the result must be in the same bunch. 
+  </p>
+  <p>
+    The word bunch was chosen specifically. It implies some sort of association that isn't used in common 
+    programming <a href="https://www.merriam-webster.com/dictionary/parlance">parlance</a> like list, set, or 
+    collection are. You can have any type of bunch, and as long as the functions in the bunch follow the rules for 
+    being a monoid, the bunch of functions is a monoid.
+  </p>
+  <p>
+    You've composed functions A LOT up to this point in your life in the code you've written. Week 05's 
+    map-filter-reduce example is just one time out of many when you've done so. Any time you have called a function 
+    and then passed the result of that function call to another function or operator, you have done composition.
+  </p>
+  </p>
   <aside class="left">
   <figure>
-    <dfn>Applicative Functor Pattern</dfn> - a variation on the functor pattern that applies a list of functions, 
-    called effects, rather than one function, to a list. The single parameter of and value of each function must 
-    be lists.
+    <dfn>Monoid Pattern</dfn> - a group of unary functions that are closed under composition, one of 
+    which is an identity function, to reduce the amount of unique, un-reused code in an application or library.
   </figure>
     <figcaption>Fig. 1</figcaption>
   </aside>
   <p>
-    For those just starting to learn about any topic, it is important to be able to know its purpose before 
-    attempting to understand its strict definition. After all, the creation of a strict definition requires 
-    an understanding of purpose. Otherwise the definition could be in conflict with the purpose, making 
-    the definition incorrect. So let's start with the purpose behind the concept of applicative functor.
+  <p>
+    Say you had two functions, \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). 
+    If you call \(g\) and then pass the result to \(f\). You've done composition. You may have used an intermediate 
+    variable, or maybe you didn't. It makes no difference. You did functional composition.
   </p>
   <p>
-    At this point in your life, you've designed and written a good deal of code. Not a huge amount, but not an 
-    insignificant amount either. Because of this, you understand how to describe a sequence of tasks you want 
-    the computer to do. An example of this is the map, filter, reduce behavior that you learned could be curried  
-    as part of the last week's material. When currying, code is written so that a series of functions can be 
-    applied to an item, be it a list or not. Applicative functors are a variation on currying and the functor 
-    concept.
-  </p>
-  <p>
-     When you apply currying, you can end up with anything you want. The map-filter-reduce currying example took 
-     a list and produced a single value. But that was a special case. It is very common to start with a list 
-     and end with a list, list-to-list. This behavior so common that the <kbd>map</kbd> functor is found in most 
-     modern languages. For a moment, let's enforce a requirement of list-to-list while we expand beyond functors. 
-  </p>
-  <p>
-    In weeks 03 and 04, you saw that a functor applies a single function to an item or a list and has a resultant 
-    value. Imagine a functor that applies a list of functions to a list. That's what an applicative functor does. 
-    It applies a list of functions, called effects, to a list of any type. The value of an applicative function is 
-    also a list. Therefore it follows the list-to-list restriction we set earlier.
-  </p>
-  <p>
-    Below is the declaration and definition of an applicative functor that applies functions to lists. 
-    Notice that it uses the <kbd>map</kbd> functor defined in week 02's reading and that in each recursion an 
-    effect effects the list. Also note that the value of the <kbd>apply</kbd> function is a list 
-    that is the result of application of all the effects. None are left out.
-  </p>
-  <p>
-    \[\begin{align*}
-    apply\text{ }&::\text{ }[a]\text{ }[\lambda\text{ }::\text{ }a\rightarrow b,\lambda\text{ }::\text{ } 
-    b\rightarrow c,\ldots,\lambda\text{ }::\text{ }y\rightarrow z]\rightarrow [z]\\
-    apply\text{ }&::\text{ }[a]\text{ }[f]\rightarrow [a]\text{ }when\text{ the cardinality of }[f]\text{ is }0;\\
-    apply\text{ }&::\text{ }[a]\text{ }[h\mid t]\rightarrow (map\text{ }[a]\text{ } h)\text{ }t\text{ }otherwise. 
-    \end{align*}\]
-  </p>
-  <p>
-    It is also possible to define a semi-generic applicative functor that applies functions to an item. 
-    Unsurprisingly, it isn't very different from the list version.
-  </p>
+    Here is one common way to express that composition. \(f\circ g\). Now, if you look about it, \(f\circ g\) could 
+    be thought of as just another function. You could have written one function and included the code from \(f\) 
+    and \(g\) in it. It would, more than likely, be bad to do so...but you could have. So you can view \(f\circ g\) 
+    as if it was a function named \(h\) and \(h\) would be equivalent to  \(f\circ g\). Remember that \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). Then \(h\) and therefore \(h\equiv 
+    f\circ g\) has a parameter of type \(a\), a value of type \(c\) and a declaration of \(f\circ g\text{ }::
+    \text{ }a\rightarrow c\). 
 
   <p>
-    \[\begin{align*}
-    apply\text{ }&::\text{ }a\text{ }[\lambda\text{ }::\text{ }a\rightarrow b,\lambda\text{ }::\text{ } 
-    b\rightarrow c,\ldots,\lambda\text{ }::\text{ }y\rightarrow z]\rightarrow z\\
-    apply\text{ }&::\text{ }a\text{ }[f]\rightarrow a\text{ }when\text{ }[f] = [];\\
-    apply\text{ }&::\text{ }a\text{ }[h\mid t]\rightarrow(h\text{ }::\text{ }a)\text{ }t\text{ }otherwise. 
-    \end{align*}\]
-  </p>
-  <p>
-    This is all fine and dandy as long as each effect is to be applied without needing to determine if or 
-    how it should be applied. But what if that isn't the case? 
-  </p>
-
-  <h2>Monads</h2>
-  <p>
-    A monad is an applicative functor with some built-in smarts. It doesn't rotely apply each effect. Instead, 
-    the result of one effect can change how or if the rest of the effects are applied.
-  </p>
-  <aside class="right">
-  <figure>
-    <dfn>Monad Pattern</dfn> - using an applicative functor to conditionally apply effects to a single parameter  dependent on the results of one or more effects.
-  </figure>
-    <figcaption>Fig. 1</figcaption>
-  </aside>
-  <p>
-    Since application of additional effects depends on the results of previous effects, the order in which the 
-    effects are applied is important. The commutative law is not applicable to the effects when using the 
-    monad pattern. It is required, however, that the associative law be applicable to the effects. Another way 
-    of saying this is that it is required that if you combine any subset of the effects into one effect, the 
-    same results are achieved as applying all the effects individually.
-  </p>
-  <p>
-    For the following code samples, let \(a\) and \(b\) be of the same type and lets declare and define the 
-    function <kbd>pipeline</kbd>. The purpose of this function is to ensure that all the effects declared 
-    for the behavior wanted are executed. Since monads are an expansion of applicative functors, it is no 
-    surprise that the declaration and definition are very similar.
+    It is common among programmers to compose functions where the values of the functions are different. You've 
+    done this before. Maybe you started with an \(Integer\) and, after having used two or more functions ended up 
+    with an \(Integer\) or some other sort of change. It's just fine for functions in monoids to have non-matching 
+    types. You just have to make sure when composing the functions that the type of each function's value matches 
+    the type of the next function's parameter. That way your functions can compose without issue. There are other 
+    types of changes though. Maybe you need to add some 
+    <a href="https://www.lifewire.com/metadata-definition-and-examples-1019177">meta-data</a> 
+    to your data. For that, you'll need a different tool.
   </p>
   
+  <h2>Monads</h2>
   <p>
-    \[\begin{align*}
-    pipeline\text{ }&::\text{ }a\text{ }[\lambda\text{ }::\text{ }a\rightarrow b,\lambda\text{ }::\text{ } 
-    a\rightarrow b,\ldots,\lambda\text{ }::\text{ }a\rightarrow b]\rightarrow b\\
-    pipeline\text{ }&::\text{ }a\text{ }[f]\rightarrow a\text{ }when\text{ }[f]=[];\\
-    pipeline\text{ }&::\text{ }a\text{ }[h\mid t]\rightarrow(bind\text{ }::\text{ }a\text{ }h)\text{ }otherwise. 
-    \end{align*}\]
+    Functional programming doesn't allow side effects. Users, databases, web access points and any other type of 
+    input or output are all side effects. Monads allow you to write composable 
+    functions that access these types of behaviors. Monoids just can't pull that off. Another ability of monads is 
+    they can be used to compose functions that add or update meta-data regarding the data.
+  </p>
+  
+  
+  <p>
+    Monads are functions that have a single parameter, just like monoids do. However, their value is different. 
+    A monoid has a description like this. \(f\text{ }::\text{ }a\rightarrow b\). A function that is part of a 
+    monad has a description that looks like this. 
+    \(f\text{ }::\text{ }a\rightarrow Mb\) There is that small but very important change from \(b\) to 
+    \(Mb\). What does that change mean? What is the meaning of \(M\)?
+  </p>
+
+  <aside class="right">
+  <figure>
+    <dfn>Monad Pattern</dfn> - a group of unary functions that are closed under binding, one of 
+    which is an identity function, to reduce the amount of complicatedness caused by side effects in
+    applications.
+  </figure>
+    <figcaption>Fig. 2</figcaption>
+  </aside>
+  <p>
+    Those are two very good questions. Let's start by defining \(Mb\). In the above example, \(Mb\) is a function 
+    that builds a value of type \(b\). The \(Mb\) function is specific to the need and is written by you. It may be 
+    code that accesses a database. It may be code that gets data from the user. 
+    It may be code that writes meta-data associated with the data to disk concurrently. It can be A LOT of 
+    different things. But what it does is build an \(b\). That's why it is referred to as a constructor function.
   </p>
   <p>
-    If you compare this code with that of the applicative functor, you'll see that rather than use a near-generic 
-    <kbd>map</kbd> function, a non-generic <kbd>bind</kbd> function is used instead. This abstraction adds 
-    additional flexibility to code that follows the monad pattern compared to code following the applicative 
-    functor pattern.
+    For functions in a monoid, their value is a direct computation resulting from the value of the parameter. 
+    For functions in a monad, their value is something that is constructed due to the value of the parameter. 
+    Reread the two previous sentences many times until you understand the difference..because they are 
+    significantly different.
   </p>
   <p>
-    The purpose of the bind function is to apply an effect to \(a\) and is declared and defined below.
+    Consider the 3 functions below, \(f, g,\text{ and }h\), that are part of a monad. 
+  </p>
+  <p>
+    \(\begin{align*}
+    f\text{ }&::\text{ }a\rightarrow Mb\\
+    g\text{ }&::\text{ }b\rightarrow Mc\\
+    h\text{ }&::\text{ }c\rightarrow Md\\
+
+    \end{align*}\)
+  </p>
+  <p>
+    Notice that it appears that you might be able to compose these functions together. That appearance is 
+    a lie.&#128561; They can't be composed because composition requires the value of the first function to match the 
+    type of the second. The constructor \(Mb\) is not the same type as \(b\). Therefore, \(Mb\) can not 
+    be passed to \(g\text{ }::\text{ }b\rightarrow Mc\), regardless of what \(Mb\) does under 
+    the hood. Composition is out! What, then, can we do to link these functions together in a way somewhat 
+    similar to composition with monoids?
+  </p>
+  <h3>Binding</h3>
+  <p>
+    For a monad to be a monad, the functions making up the monad must be closed under what is called binding. To 
+    make it easier to understand binding, we'll use the symbol most often used to represent binding, \(\gg =\).
+  </p>
+  <p>
+    \((f\gg =g\gg =h)\text{ }::\text{ }a\rightarrow Md\)
   </p>
 
   <p>
-    \[\begin{align*}
-    bind\text{ }&::\text{ }a\text{ }f\rightarrow b\\
-    bind\text{ }&::\text{ }a\text{ }\rightarrow nil\text{ }when\text{ }a=nil;\\
-    bind\text{ }&::\text{ }a\text{ }f\rightarrow f\text{ }::\text{ }a\text{ }otherwise. 
-    \end{align*}\]
+    Notice the similarities and differences between this and the composition of three similar monoidal functions.
+    \((f\circ g\circ h)\text{ }::\text{ }a\rightarrow d\)
   </p>
   <p>
-    Notice that if the value of the \(a\) parameter for <kbd>bind</kbd> is nil, it returns nil instead of applying 
-    an effect to \(a\). This is the monad pattern's early exit behavior. Once the value of an effect is nil, 
-    the value of <kbd>bind</kbd> will also be nil and <kbd>pipleline</kbd> will pass nil repeatedly to bind and 
-    no more effects will be applied to \(a\). 
+    One major difference is that functions bound together have as their value a constructor, not a computed value. 
+    That constructor, being a function, can then be passed around and the actual computation can be delayed under 
+    one very common condition, the composition is often done inside a lambda function.
   </p>
   <p>
-    What, then, is to be done if the type of the data you need to work on, \(c\), doesn't match the type of the 
-    parameter and value of the effects, \(a\) and \(b\)? Ah...then you need a function that converts \(c\) to 
-    \(a\). In the monad literature this type of a function is referred to as a unit function. Don't let the 
-    name confuse you. You won't create a function called <kbd>unit</kbd>, you will create a function that just 
-    transforms the type. If \(a\) is a list of doubles, then your unit function will convert \(c\) into a 
-    a double, if needed, and put it in a list, if needed. If \(c\) is already a list of doubles, then you don't 
-    need to use a unit function.
+    What then does the function declaration look like for this mysterious bind function? Well...one declaration 
+    that could be used looks like this.
+  </p>
+
+  <p>
+    \(bind\text{ }::\text{ }a\text{ }f\text{ }g\rightarrow (\lambda\text{ }::\text{ }a\rightarrow Mc) \)
   </p>
   <p>
-    If \(a\) is a tuple and \(c\) is not, then you will need to create an appropriate unit function that puts 
-    \(c\) into an appropriate tuple. If \(a\) is a \(Real\) and \(c\) is not, you will need to apply a function 
-    to \(c\) that produces a \(Real\). Etc, etc.
+    This bind function declarations means the bind function needs to have 3 parameters. One of the initial data 
+    type and the others are the two functions to be bound and its value is a lambda that has a single 
+    parameter that is of the initial data type and has a value that is a constructor.
   </p>
   <p>
-    Notice that with a monad, as apposed to an applicable functor, the value being acted on need not be a list.
+    This is fine and dandy, but look what it would look like to use. Imagine that a is a url string. The code 
+    to bind the three functions \(f, g, \text{ and } h\) is this.
+  </p>
+  <p>
+    bind("http://...", h, bind(url,f,g))
+  </p>
+  <p>
+    Ughhh! That's a variation of the example of ugly code from week 05!&#128552; Let's fix it by applying the same solution 
+    we used in week 05. Currying!&#129395; 
+  </p>
+  <p>
+    Now the declaration and definition of <kbd>bind</kbd> looks like this
+  </p>
+  <p>
+    \(
+    \begin{align*}
+    bind\text{ }&::\text{ }a\rightarrow (\lambda\text{ }::\text{ }f)\\
+    bind\text{ }&::\text{ }a\rightarrow (\lambda\text{ }::f\rightarrow \text{ }f(a)).
+    \end{align*}
+    \)
+  </p>
+  <p>
+    where \(f\) is any function in the monad. Using this version of <kbd>bind</kbd> with our three example 
+    functions is much cleaner. 
+  </p>
+  <p>
+    bind(a)(f)(g)(h)
+  </p>
+
+
+
+
+
+  <h2>The Rules</h2>
+  <p>
+    For both monoids and monads, there are rules that can be applied to determine if a something 
+    is one, the other, or neither of these patterns. While these rules are often expressed in an arcane way, 
+    explanations of the rules are included here to make them easier to apply.
+  </p>
+  <h3>Rules that Determine if Something is a Monoid</h3>
+  <p>
+    A group, collection, set, etc. of functions is a monoid if;
+
+      <ol>
+        <li>
+          \(\text{For functions }a,b\in\mathbb{C},\exists\text{ rule } \circ\text{ such that } a\circ b \in\mathbb{C}\)<p>
+            For any two functions in a group, collection, set, etc., there is a composition rule such that 
+            the composition of the two functions is also in the group, collection, set, etc. The group, collection, 
+            set, etc. is closed under composition.
+          </p> 
+        </li>
+        <li>
+          \(a\circ (b\circ c)\equiv(a\circ b)\circ c\)<p>
+            Any set of compositional rules for the group, collection, set, etc. of functions must obey the law of 
+            associativity.
+          </p>
+        </li>
+        <li>\(a\circ id \equiv a\) and \(id\circ a \equiv a\)<p>
+          There must exist some identity function such that composition of any element of the group, collection, set, 
+          etc. with the identity produces the original function.
+        </p></li>
+      </ol>
+  </p>
+  <h3>Rules that Determine if Something is a Monad</h3>
+  <p>
+    A group, collection, set, etc. of functions is a monad if;
+
+    <ol>
+      <li>let \(\mathbb{F}\) be the set of all functions. \(\exists\text{ }bind\text{ }\in\mathbb{F}\)
+        <p>
+          There is a composition-like function called <kbd>bind</kbd>.
+        </p></li>
+      <li>\( bind\text{ }::\text{ }a\rightarrow (\lambda\text{ }::\text{ }f) \)
+        <p>
+          The <kbd>bind</kbd> function's value is a function that has \(a\) as its parameter with a value that 
+          is a constructor for \(a\).
+        </p>
+      </li>
+      <li>
+        \(f\gg = g)\gg =h \equiv f\gg =(g\gg =h)\)<p>
+        The <kbd>bind</kbd> function must obey the law of associativity</p>
+      </li>
+      <li>\(\exists\text{ function } unit:: a\gg =f=f,\text{ }m\>> = unit = m\)<p>
+        There is a unit function that doesn't change a monadal function under binding. It just wraps it.
+      </p></li>
+    </ol>
+  </p>
+  <p>
+    There is a good <a href="https://youtu.be/ZhuHCtR3xq8">video on monoids and monads</a> by Brian Beckman.
   </p>
 
 <footer>

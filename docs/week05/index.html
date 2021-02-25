@@ -108,41 +108,20 @@
     needs to be used. Again, why? 
   </p>
   <p>
-    Is the code compassionate? Not even close. If you consider this code snippet some more, you'll find it 
-    violates most, if not all, of the principles of beautiful code.
+    Is the code compassionate? Not even close. Is it audacious? Nope. It's very pedestrian. If you think about this 
+    code snippet some more, you'll find it violates most, if not all, of the principles of beautiful code.
   </p>
   <p>
     The type of code writing exhibited by the above code is evidence that the programmer doesn't understand the 
     possibilities offered by functional programming languages and those that are functional-like. Is there, then, another way?
   </p>
-  <h3>A Partial Step Towards Beauty</h3>
-  <p>
-    When considering how to reduce some of the ugliness of the previous code, a next step might be to create a 
-    fa&ccedil;ade function to hide the ugliness from those who will use the code but not examine how it is made. 
-    Such a step is an improvement as long as no one needs to see how it was done. If the fa&ccedil;ade function 
-    was named <kbd>chain</kbd>, the declaration of the function would be this.
-  </p>
-  <p>
-  \[ 
-    chain\text{ }::\text{ }[a]\text{ }[f_1\text{ }f_2\text{ }f_3]\text{ }\rightarrow d
-    \]
-  </p>
-  <p>
-    This code is getting better but is still ugly. Take a look at that list of functions. It's a temporary list. 
-    Why am I forced to make a temporary list to execute each of the functions? It is a certainty that the list 
-    will have to be cleaned up later. That's not distilled nor audacious. 
-  </p>
-
-  <p>Why not audacious? It's an old saw 
-    used in imperative languages to hide a mess that, seemingly, can't be avoided. This is better, but still 
-    ugly code. 
-  </p>
   <h2>Achieving Beauty</h2>
   <p>
-    When working with any language type it is vital to know and understand all the options that the type of 
-    language offers. Functional programming allows you to use the concept of currying. Currying, in Computer 
-    Science and Mathematics, is named after the mathematician Haskell Curry and he based this part of his 
-    work on what was previously accomplished by Moses Sch&ouml;nfinkel and Gottlob Frege.
+    When considering how to reduce some of the ugliness in code it is vital, with any language type, to know and 
+    understand all the options that the type of language offers. Functional programming allows you to use the 
+    concept of currying. Currying, in Computer Science and Mathematics, is named after the mathematician Haskell 
+    Curry and he based this part of his work on what was previously accomplished by Moses Sch&ouml;nfinkel and 
+    Gottlob Frege.
   </p>
   <aside class="left">
   <figure>
@@ -181,9 +160,9 @@
   </p>
   <aside class="right_wide">
   <figure>
-    \(chain(b)(mult\_by\_2)(greater\_than\_50)(sum)\)
+    \(chain(b)(\times 2)(keep>50)(sum)\)
   </figure>
-    <figcaption>Fig. 3 - An example mathematical notation<br>using chain to map, filter, and reduce.</figcaption>
+    <figcaption>Fig. 3 - An example mathematical notation<br>using chain to map, filter, and then reduce.</figcaption>
   </aside>
   <p>
     What then is the anonymous function to which \(f_3\) is passed? It is whatever is returned by the anonymous 
@@ -195,22 +174,23 @@
     The trigger to all of this is the <kbd>chain</kbd> function. For \(f_1\) to be passed to an anonymous 
     function that anonymous function has to come from <kbd>chain</kbd>. 
     That means the declaration and definition of <kbd>chain</kbd> is very short with the definition consisting 
-    of a single, one-line clause.
+    of a single, one-line clause  .
   </p>
   \[
     \begin{align*}
     chain\text{ }&::\text{ }b\rightarrow\lambda\text{ }::\text{ }f\\
-    chain\text{ }&::\text{ }\rightarrow\lambda\text{ }::\text{ }f\rightarrow f(a).
+    chain\text{ }&::\text{ }b\rightarrow (\lambda\text{ }::\text{ }b\rightarrow f(b)).
     \end{align*}
     \]
     <p>
-      On of the very beautiful things about the chain function is that the number of functions you can chain 
-      is anywhere from 1 to infinity. Now be careful and be wise. Remember that your code must be beautiful. 
-      If you start applying chain everywhere, your code will quickly digress into ugliness.
+      On of the very beautiful things about the chain function, and currying in general, is that the number of 
+      functions you can chain together is anywhere from 1 to infinity. Another beauty of <kbd>chain</kbd> is 
+      it's generic. The elements in the list can be of any type, including functions.
     </p>
     <p>
-      Another beauty of <kbd>chain</kbd> is that it is generic. The parameter it is passed can be of any type. 
-      It need not be a list.
+      Now be careful and be wise. Remember that your code must be beautiful. If you start using currying 
+      when other choices would be better, your code will quickly digress into ugliness. Use currying to add 
+      beauty.
     </p>
 
 
