@@ -12,6 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 
 </head>
@@ -19,12 +49,56 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 382: Week 06</h1>
-    <p>Lazy and Eager Evaluation</p>
+    <h1>CSE 382: Week 07</h1>
+    <p>The Lazy Evaluation Pattern</p>
   </div>
 </div>
-*****
-*****
+<blockquote class="style1">
+    <span>Progress isn't made by early risers. It's made by lazy men trying to find easier ways to do something.</span>
+    <p class="style1">- Patrick Bennett</p>
+  </blockquote>
+
+<h2>The Lazy Evaluation Pattern</h2>
+<p>
+  Doing computation right now is the way most programmers think and most programming languages work by default. This 
+  eager computation has, for the most part, been a good thing. It is, however, not the only possibility and that 
+  other possibility opens up a world of computation that can allow what otherwise would use too much memory to be 
+  feasible. 
+</p>
+<p>
+  Consider this situation. As part of some calculation, 100,000,000,000 sequential odd numbers are needed one at a 
+  time or in small groups. Calculating all 100,000,000,000 ahead of time is very costly memory-wise, especially if 
+  some of them end up never being used for one reason or another. If each number or group of numbers was calculated 
+  only at the time they were needed, then this memory problem goes away. This contrived, simple example is not the 
+  only time such calculations occur.
+</p>
+
+<aside class="left">
+  <figure>
+    <dfn>Lazy Evaluation</dfn> - delaying calculation until the time the result of the calculation is needed by some 
+    other calculation.
+  </figure>
+    <figcaption>Fig. 1</figcaption>
+</aside>
+<p>
+  It is very common in applications that display a lot of items to wait to retrieve additional items until 
+  it is apparent that the user will be looking at the next item or items soon. That way computational resources 
+  such as memory, CPU, and network bandwidth aren't wasted on items that will never be seen.
+</p>
+<p>
+  It is important to understand that this delayed, or lazy, loading is not the only way lazy evaluation can be of 
+  use. Any time you have returned a lambda that is used as some sort of delayed evaluation, you have applied lazy 
+  evaluation. That lambda was probably stored and, if your computational flow determined it was needed, evaluated 
+  later.
+</p>
+<h2>Lazy Lambdas</h2>
+<p>
+  
+</p>
+<h2>Lazy Streams</h2>
+<p>
+  
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
