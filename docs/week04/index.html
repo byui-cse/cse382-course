@@ -275,12 +275,12 @@
   </p>
   <h3>Laws that Determine if Something is a Functor</h3>
   <ol>
-    <li>\(fmap\text{ }::\text{ }[a]\text{ }id = [a]\) <p>
-      This rule states that the functor must be able to map an identity function to each element in the list 
-      and that the resultant list must contain the same values in the same order as the original list.
+    <li>\(fmap\text{ }::\text{ }a\text{ }id = a\) <p>
+      This rule states that the functor must be able to map an identity function to a value and not change 
+      the value. The value may be a list of values or any other grouping.
     </p></li>
     <li>
-      \(fmap\text{ }::\text{ }[a]\text{ }(f\circ g) = (fmap\text{ }::\text{ }[a]\text{ }f\circ fmap\text{ }::\text{ }[a] g)\)<p>
+      \(fmap\text{ }::\text{ }a\text{ }(f\circ g) = (fmap\text{ }::\text{ }a\text{ }f\circ fmap\text{ }::\text{ }a g)\)<p>
         This rule states that the functor must be able to apply a composed function and achieve the same 
         results as applying the individual functions individually.
       </p>

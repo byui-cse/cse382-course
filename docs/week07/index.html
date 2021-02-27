@@ -93,11 +93,90 @@
 </p>
 <h2>Lazy Lambdas</h2>
 <p>
-  
+  There are two types of lazy lambdas, the first you are already familiar with. They have one or more parameters 
+  and you've used them when doing currying, passing lambdas to be used later, and returning lambdas from functions. 
+  Let's call these impure lazy lambdas.
+</p>
+<p>
+  What, then, would a pure lazy lambda be? One without parameters. To think of a silly, simple example, consider 
+  multiplying two numbers. In most languages this would happen eagerly. Now think of a function called 
+  \(lazy\_add\) that has two parameters.
+</p>
+    \[
+    \begin{align*}
+    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow\lambda\text{ }::\\
+    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow (\lambda\text{ }::\text{ }\rightarrow a+b).
+    \end{align*}
+    \]
+<p>
+  This \(lazy\_add\) function doesn't actually add the numbers. What it does do is create a lambda that will add the numbers at a later time when the lambda is executed. Since the value of the lambda's value is the sum of the 
+  two numbers, it would be as if the 'raw' addition was done later.
+</p>
+<p>
+  This silly and simple example of a pure lazy lambda should not be viewed as an injudicious replacement for all 
+  eager addition. The only time it might be useful would be if the two numbers were very large and the adding of 
+  those numbers would have a negative speed impact on the immediate calculation. Again, this is a silly example 
+  created to reveal the principle.
+</p>
+<p>
+  A more reasonable example of where pure lazy lambdas might be useful is when doing database access, a 
+  computationally expensive behavior. It is highly feasible that one or more variants of a database query or update 
+  should be delayed and executed later. The queries or updates could be wrapped in pure lazy lambdas and then, when 
+  more data is known regarding which should be used, the appropriate lambda could be selected and executed.
+</p>
+<p>
+  As with impure lazy lambda's, the possible applications of pure lazy lambdas is bounded only by imagination 
+  and need.
 </p>
 <h2>Lazy Streams</h2>
 <p>
-  
+  Lazy Streams solve a very different problem. Consider a situation where a large, and potentially infinite, 
+  series of values is needed. Precomputing them all is at least computationally infeasible and is impossible in 
+  the infinite case. Instead, one or more of them can be computed as needed. Thus a stream of the computed values 
+  is available to draw from at the time they are needed. Therefore, this stream of values is lazy.
+</p>
+<p>
+  There are many ways such a stream can be created. A common way is to have the stream exist in its own 
+  computational unit, be that a thread, process, network resource, or some other unit that accomplishes the 
+  processing required to generate the next value or group of values. The choice of what type of computational unit to choose depends on the language selected and the situation 
+  within which the stream exists among other possibilities.
+</p>
+
+<p>
+  Regardless of which of these computational units is selected, the function doing the computation follows the 
+  same basic pattern. 
+  <ol>
+    <li>
+      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s). 
+    </li>
+    <li>
+      Each recursive call updates the value of the seed-type value and passes it to the next recursive call 
+      of itself.
+    </li>
+    <li>
+      Each recursive call blocks (waits) until a request is made for the next value or set of values.
+    </li>
+    <li>
+      Recursion continues until the request made is for termination of the stream.
+    </li>
+  </ol>
+</p>
+\[
+    \begin{align*}
+    stream\text{ }&::\text{ }seed\rightarrow a\\
+    stream\text{ }&::\text{ }seed\rightarrow \\
+        &await\text{ }::\text{ }request\\
+        &f\text{ }::\text{ }seed\rightarrow next\\
+        &respond\text{ }::\text{ }next\\
+        &stream\text{ }::\text{ }next\text{ when }request\text{ is not termination}\\
+        &next\text{ otherwise}.
+    \end{align*}
+    \]
+<p>
+  Following this pattern, a function could be a stream producing prime numbers. It could be producing even numbers. 
+  It could be a stream accessing a database and supplying data. It could be a stream accessing a network or 
+  Internet node and supplying data. For a step in a factory, it could be computing which piece of partially completed product should be worked on next. In the world of Internet software creation, such a stream would be 
+  called a micro-service. The options are limitless. 
 </p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
