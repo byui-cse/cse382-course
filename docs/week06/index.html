@@ -181,10 +181,10 @@
   <h3>Binding</h3>
   <p>
     For a monad to be a monad, the functions making up the monad must be closed under what is called binding. To 
-    make it easier to understand binding, we'll use the symbol most often used to represent binding, \(\gg =\).
+    make it easier to understand binding, we'll use a symbol to represent binding, \(\ggg \).
   </p>
   <p>
-    \((f\gg =g\gg =h)\text{ }::\text{ }a\rightarrow Md\)
+    \((f\ggg g\ggg h)\text{ }::\text{ }a\rightarrow Md\)
   </p>
 
   <p>
@@ -289,10 +289,10 @@
         </p>
       </li>
       <li>
-        \((f\gg = g)\gg =h \equiv f\gg =(g\gg =h)\)<p>
+        \((f\ggg  g)\ggg h \equiv f\ggg (g\ggg h)\)<p>
         The <kbd>bind</kbd> function must obey the law of associativity</p>
       </li>
-      <li>\(\exists\text{ function } unit:: a\gg =f=f,\text{ }m\>> = unit = m\)<p>
+      <li>\(\exists\text{ function } unit:: a\ggg f=f,\text{ }m\>> = unit = m\)<p>
         There is a unit function that doesn't change a monadal function under binding. It just wraps it.
       </p></li>
     </ol>
