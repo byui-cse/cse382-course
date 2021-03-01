@@ -284,7 +284,7 @@
     A group, collection, set, etc. of functions is a monad if;
 
     <ol>
-      <li>let \(\mathbb{F}\) be the set of all functions. \(\exists\text{ }bind\text{ }\in\mathbb{F}\)
+      <li>let \(\mathbb{F}\) be a set of functions. \(\exists\text{ }bind\text{ }\in\mathbb{F}\)
         <p>
           There is a composition-like function called <kbd>bind</kbd>.
         </p></li>
@@ -295,10 +295,10 @@
         </p>
       </li>
       <li>
-        \((f\ggg  g)\ggg h \equiv f\ggg (g\ggg h)\)<p>
+        For \(\ggg \text{ be equivalent to } bind. (f\ggg  g)\ggg h \equiv f\ggg (g\ggg h)\)<p>
         The <kbd>bind</kbd> function must obey the law of associativity</p>
       </li>
-      <li>\(\exists\text{ function } unit:: a\ggg f=f,\text{ }m\>> = unit = m\)<p>
+      <li>\(\exists\text{ function } unit:: a\ggg f=f\)<p>
         There is a unit function that doesn't change a monadal function under binding. It just wraps it.
       </p></li>
     </ol>
