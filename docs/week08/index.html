@@ -59,7 +59,29 @@
 
 <h2>The Tree Data Structure</h2>
 <p>
-  
+  Trees follow the monad pattern. There is a group of data organized in some way, a series of functors that 
+  operate on that group, and each of the rules for monad is met. That's why you'll hear, "A tree is a monad" 
+  used colloquially. The more correct language would be, "Well made trees and the functions that operate on 
+  them follow the monad pattern." That's a little long. Maybe we should stick with "A tree is a monad" for 
+  ease of speech and just remember what we actually mean.
+</p>
+<p>
+    For this course the functors we'll focus on are\(add,contains,\text{ and }replace). A fully fledged set 
+    of functors wuld include other behaviors.
+</p>
+<p>
+    All types of trees consist of nodes. These nodes can have more than one \(next\). The lists you learned 
+    about in week 02 are a subset of trees where there is only one \(next\), a unary tree.
+</p>
+<h3>Binary Tree</h3>
+<p>
+    Binary trees have two \(nexts\). 
+</p>
+<p>For \(n\in\{-1,0,1\}\),
+\[\begin{align*}add\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node,\\
+    contains\text{ }&::\text{ }a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow Boolean\\
+    replace\text{ }&::\text{ }a,b,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node
+\end{align*}\]
 </p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
