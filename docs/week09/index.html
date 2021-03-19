@@ -59,23 +59,57 @@
 
 <h2>The Heap Data Structure</h2>
 <p>
-  Heaps also follow the monad pattern. T
-</p>
-<p>
-    For this course the functors we'll focus on are..... A fully fledged set 
-    of functors wuld include other behaviors.
-</p>
-<p>
-    
+  Binary Search Trees are amazing things, but sometimes they don't fit the problem. There are many ways that a 
+  heap could be implemented. In functional programming it is common to leverage the concept of a tree for the 
+  pattern of a heap. The difference between a BST and the heap data structure described here is how the ordering 
+  rule. In a heap, the least value is the one of interest, therefore it is kept at the root. When adding a value 
+  to a heap, if the new value is less than the root, the new value becomes the root of the tree. If the new value 
+  is greater than the root, another rule is used to place the value in the tree. Regardless of what the rule is 
+  for insertion in the tree, the new value will either be a new leaf in the tree or the least value of a sub-tree. 
 </p>
 <h3>Leftist Heaps</h3>
 <p>
-    
+  The ordering rule of leftists heaps is this. The left child of a node is greater than or equal to the right child.
 </p>
 <p>
-\[\begin{align*}funcs go here&
-\end{align*}\]
+    For this course the functors we'll focus on are \(insert\), \(get_min\), and \(remove_min\). A fully fledged set 
+    of functors would include other behaviors.
 </p>
+
+\[\begin{align*}
+    get\_min\text{ }&::\text{ }node\rightarrow a\\
+    get\_min\text{ }&::\text{ }nil\rightarrow\\
+               &\text{ }nil;\\
+    get\_min\text{ }&::\text{ }node \rightarrow\\
+               &node\rightarrow (value,nextL,nextR)\\
+               &\text{ }value.
+\end{align*}\]
+    
+\[\begin{align*}
+    insert\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
+    insert\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &\text{ }(a,nil,nil);\\
+    insert\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &node\rightarrow (value,nextL,nextR)\\
+               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
+               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
+               &else\\
+               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+\end{align*}\]
+
+
+\[\begin{align*}
+    remove\_min\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
+    remove\_min\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &\text{ }(a,nil,nil);\\
+    remove\_min\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &node\rightarrow (value,nextL,nextR)\\
+               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
+               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
+               &else\\
+               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+\end{align*}\]
+
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

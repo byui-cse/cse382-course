@@ -48,12 +48,12 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 08</h1>
+    <h1>CSE 382: Week 08</h1>
     <p>Trees</p>
   </div>
 </div>
 <blockquote class="style1">
-    <span>The programmer's primary weapon in the never-ending battle against slow system is to change the intramodular structure. Our first response should be to reorganize the modules' data structures.</span>
+    <span>The programmer's primary weapon in the never-ending battle against slow systems is to change the intra-modular structure. Our first response should be to reorganize the modules' data structures.</span>
     <p class="style1">- Fred Brooks</p>
   </blockquote>
 
@@ -66,23 +66,180 @@
   ease of speech and just remember what we actually mean.
 </p>
 <p>
-    For this course the functors we'll focus on are\(add,contains,\text{ and }replace). A fully fledged set 
-    of functors wuld include other behaviors.
+    For this course the functors we'll focus on are \(add\) and \(contains\). A fully fledged set 
+    of functors would include other behaviors.
+</p>
+<h3>The Data Organization of Binary Trees</h3>
+<aside class="right">
+    <figure>
+        <img src="images/binary_tree_node.png" alt="the value, left-next and right-next portions of a binary tree node"> 
+        <figcaption>Fig.1 - The three parts of a binary tree node, the value storage and two next indicators, left and right.</figcaption>
+    </figure>
+    </aside>
+<p>
+    All types of trees consist of nodes. These nodes have a value and one or more \(next\) indicators. The lists 
+    you learned about in week 02 are a subset of trees where there is only one \(next\) and are called a unary 
+    tree. Binary trees have two \(next\)s, these are usually referred to as next-left and next-right as you see in 
+    Figure 1. 
+</p>
+
+<P>
+    The order with which you code the left and right indicators is irrelevant. The indicators just need 
+    to be used consistently since there is no actual \(leftness\) or \(rightness\) to the indicators. 
+    That is a relic of the visualizations of trees like you see below and that you may have seen in your previous 
+    coursework. In Figure 2, you see arrows representing the relationships between nodes. They go from from what is often called the parent node to the 
+    child node. The parent-child relationship is actually 
+    a form of 'contains' .  
+</P>
+<aside class="left_wide">
+<figure>
+    <img src="images/binary_tree_full_node.png" alt="the value, left-next and right-next portions of a binary tree node"> 
+    <figcaption>Fig.2 - A visualization of a tree whose root-node has the value 10 and the additional values 2, 6, 
+    7, 12, and 15.</figcaption>
+</figure>
+</aside>
+<p>
+    To say this in another way, all child nodes are sub components of their parent node. Using tuples, the diagram 
+    above would describe this parent-child contains relationship more explicitly with \(nil\) meaning there is 
+    no child node.
+</p>
+<aside class="right">
+<figure>
+    <img src="images/binary_tree_reduced_node.png" alt="the value, left-next and right-next portions of a binary tree node"> 
+    <figcaption>Fig.3 - A visualization of a tree whose root-node has the value 10 and the additional values 2, 6, 
+    7, 12, and 15.</figcaption>
+</figure>
+</aside>
+\(
+(10,(6,(2,nil,nil),(7,nil,nil)),(15,(12,nil,nil),nil))
+\)
+<p>
+    Rather than draw out all the left and right next boxes, it is customary to use a circle to represent the node, 
+    put the value in or beside the circle, and then use arrows to indicate the child nodes.
+</p>
+<h4>Ordering Rule For BSTs</h4>
+<p>
+    Binary Search Trees (BST), a special type of binary tree, have a simple ordering rule used for adding and 
+    checking to see if values are in the tree. The rule is that lesser values go 'left' and greater or equal values 
+    go 'right.' This rule must be followed every time you add a value so when you need to search the tree, you can 
+    easily do so.
 </p>
 <p>
-    All types of trees consist of nodes. These nodes can have more than one \(next\). The lists you learned 
-    about in week 02 are a subset of trees where there is only one \(next\), a unary tree.
+    An interesting result of this rule is that a tree can, but not always, have a different structure depending on 
+    the order in which the values are added. For example, if the values 10, 6, 15, 12, 7, and 2 were added to a 
+    binary tree in that order, the tree in Figure 3 would be generated. If, however, the same values were added 
+    in the order 12, 15, 10, 6, 2, and 7 the tree in figure 4 would be generated.
 </p>
-<h3>Binary Tree</h3>
+<aside class="left">
+<figure>
+    <img src="images/unbalanced_tree_reduced.png" alt="the value, left-next and right-next portions of a binary tree node"> 
+    <figcaption>Fig.4 - A visualization of a tree whose root-node has the value 12 and the additional values 2, 6, 
+    7, 10, and 15.</figcaption>
+</figure>
+</aside>
 <p>
-    Binary trees have two \(nexts\). 
+    In mathematics there is, for example, only one number \(2\). That's why in Mathematics \(8\div 4 =2\) means 
+    that \(8\div 4\) is \(2\), not 'is the same as \(2\).' Two sets are not one set even if they contain the 
+    same elements. That's why two sets containing the same elements are considered equivalent rather than equal 
+    in mathematics.
 </p>
-<p>For \(n\in\{-1,0,1\}\),
-\[\begin{align*}add\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node,\\
-    contains\text{ }&::\text{ }a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow Boolean\\
-    replace\text{ }&::\text{ }a,b,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node
+<p>
+    Following this same logic, two trees can not be equal. They can, however, be equivalent. Consider the trees in 
+    Figures 3 and 4. They contain the same values even though their structures are different. If you were to think  
+    of them as mathematical sets, the two trees would be equivalent.
+</p>
+<p>
+    Because BSTs can so easily be thought of as sets, BST's can be used to represent mathematical sets. All that 
+    is needed for a BST to act as a set is to check if a value is already in the tree before adding it to the 
+    tree. If it is found that the value is already there, then don't add it. Now the BST is acting as a set.
+</p>
+<p>
+     For \(n\in\{-1,0,1\}\), \(0\) meaning equality, \(-1\) less than, 
+    and \(1\) greater than and \(comp\) being a comparator function comparing two elements of the tree, 
+    the add algorithms for BSTs is:  
+\[\begin{align*}
+    add\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
+    add\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &\text{ }(a,nil,nil);\\
+    add\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &node\rightarrow (value,nextL,nextR)\\
+               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
+               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
+               &else\\
+               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+\end{align*}\]
+<p>
+    The contains algorithm for BSTs is:
+</p>
+\[\begin{align*}
+    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow Boolean\\
+    contains\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+                    &\text{ }false;\\
+    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &node\rightarrow (value,nextL,nextR)\\
+               &comp\text{ }::\text{ }a,value\rightarrow comparison\\
+               &if\text{ }comparison = 0\\
+               &\text{ }true\\
+               &elif\text{ }comparison = -1\\
+               &\text{ }contains\text{ }::\text{ }nextL,a,comp\\
+               &else\\
+               &\text{ }contains\text{ }::\text{ }nextR,a,comp
 \end{align*}\]
 </p>
+<h4>Ordering Rule For Red Black Trees</h4>
+<p>
+    There is a problem that can arise when using BSTs. They can get into a situation where they get some 
+    long branches and other short branches as in Figure 4. This type of situation means that searches can 
+    end up taking a lot longer for some values as compared to others. For example, if you were to search for 
+    \(7\) in Figure 4 it would require four comparisons to find it, but it would only take two comparisons 
+    to find \(15\). In this small tree, the speed difference would be negligible but imagine if the left branch 
+    of the tree contained 100,000 numbers and most of those were essentially in a list. Now the search for any 
+    element is essentially \(\mathcal{O}(n)\) instead of \(\mathcal{O}(log n)\) as it is for a better balanced 
+    tree.  
+</p>
+<p>
+    To help overcome this problem, the BST's node is augmented with an additional piece of data, a color. The two 
+    possible colors are red an black. The contains function for a red black tree is nearly identical to that for 
+    a BST. The only difference is that when the elements of the node are accessed, the node's color is ignored.
+</p>
+\[\begin{align*}
+    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow Boolean\\
+    contains\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+                    &\text{ }false;\\
+    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &node\rightarrow (color,value,nextL,nextR)\\
+               &comp\text{ }::\text{ }a,value\rightarrow comparison\\
+               &if\text{ }comparison = 0\\
+               &\text{ }true\\
+               &elif\text{ }comparison = -1\\
+               &\text{ }contains\text{ }::\text{ }nextL,a,comp\\
+               &else\\
+               &\text{ }contains\text{ }::\text{ }nextR,a,comp
+\end{align*}\]
+<p>
+    The color is also ignored for the first part of the (\add\) function. That means that up until the node 
+    is added to the tree, the \(add\) function for red black trees has the same behavior and rules as the BST. 
+</p>
+
+
+<h4>A Balancing Act</h4>
+<p>
+    Just because the node is added to the tree doesn't mean we're done. The tree may be out of balance. Red black 
+    trees have two additional rules that are applied after the addition. The first says, "No red child node can 
+    have a red parent node." The second says, "Every path from the root to an empty node must have the same 
+    number of black nodes." If either of these rules is violated, a re-balance is needed.
+</p>
+\[\begin{align*}
+    add\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
+    add\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &\text{ }(a,nil,nil);\\
+    add\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+               &node\rightarrow (value,nextL,nextR)\\
+               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
+               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
+               &else\\
+               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+\end{align*}\]
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

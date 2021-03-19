@@ -182,7 +182,7 @@
    $$\begin{align*}
   foldr &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
   foldr &:: [a]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow accum\\&\text{ }when\text{ }[a]\text{ is empty };\\
-  foldr &:: [h\mid t]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow\\
+  foldr &:: [h:t]\text{ } accum \text{ }\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c)\rightarrow\\
   &foldr\text{ }::\text{ }h\text{ }\text{ }(\lambda\text{ }::\text{ } accum\text{ }t)\text{ }(\lambda ::\text{ }a\text{ }b\rightarrow c).
   \end{align*}
   $$ 
@@ -243,12 +243,13 @@
   </aside>
 </p>
 <p>
-    This version of unfold is naive. It is not an infinite stream. Later in the course there is a revisit 
-    of unfold when the lazy execution and stream patterns are covered in depth. Those patterns will let you 
-    create a non-naive, infinite unfold functor. For now, this version of unfold will suffice.
+    The version of unfold in Figure 5 is naive. It is not an infinite stream. Later in the course unfold is 
+    revisited when the lazy execution and stream patterns are covered in depth. Those patterns will let you 
+    create a non-naive, infinite unfold functor. For now, this version of unfold will suffice with <kbd>c</kbd> 
+    being the current count and <kbd>s</kbd> being the current state.
 </p>
 <p>
-    Notice that in this case, the second phrase of the second clause of the unfold functor is not and anti-pattern. 
+    Notice that in this case, the second phrase of the second clause of the unfold functor is not an anti-pattern. 
     It isn't an anti-pattern because the result of the call to the lambda function can not be directly 
     included in the next call to the functor. One of the elements of the 2-tuple that is the value of the lambda 
     function needs to be prepended to the list that is the value of the unfold functor.
@@ -256,7 +257,7 @@
 <p>
     As an oversimplified example of how the naive unfold could be used, think of generating the first 50 even numbers. 
     In this case the functor would be executed like this 
-    \(unfold\text{ }::\text{ }50\text{ }1\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{c-1,2\times s\})\) 
+    \(unfold\text{ }::\text{ }50\text{ }0\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{c-1,2+s\})\) 
     and a list of the first 50 even numbers would be the value.
 </p>
 
