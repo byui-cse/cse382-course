@@ -67,13 +67,10 @@
     and read them. &#128578
   </p>
 <ul>
-    <li><dfn>Homomorphism</dfn>: a transformation of one set, group, category, etc. into another that preserves in the second the relations between elements of the first. (Mathematics)</li>
+    <li><dfn>Homomorphism</dfn>: a transformation of one set, group, category, etc. into another that preserves in the second the relations between elements of the first.</li>
 
     <li><dfn>Functor</dfn>: the transformation from set to set, group to group, category to category, etc. that 
-    preserves the relations between the elements of the first set \(F::A\rightarrow B\) (Mathematics)</li>
-    
-    <li><dfn>Functor</dfn>: a function that applies another function (effect) to each element of a list or other 
-    type of group preserving all the relationships between the values acted on.(Functional Programming)</li>
+    preserves the relations between the elements of the first set \(F::A\rightarrow B\)</li>
 </ul>
 <p>
   Alright. So that was tough and probably left you in a little bit of a brain fog. How about splitting them 
@@ -102,30 +99,48 @@ solved. In problem solving space, this approach is called
 <p>
   The word functor comes from the word function. It was adopted in the 1930's by mathematicians who study 
   <a href="https://en.wikipedia.org/wiki/Category_theory">Category Theory</a> to express the idea of a 
-  function that is a mapping of one category to another. An example would be the Power Set functor that maps 
-  a set to its power set and maps each available function on the original set to a function on the power set.
+  function that is a mapping of one category to another.
 </p>
 <p>
-  There are two laws that must be true in order for something to be a functor. The first is called the identity 
-  law. Essentially it means that the functor does not use or produce any side effects. The second is the 
-  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, when the functor applies to the composition 
-  of one or more functions the result must be the same as the functor applying each function separately. At this 
-  point in time, just be familiar with these laws. You will see them described more formally at the end of the 
-  reading for week 04.
+  Consider this situation. Alice is a Chemistry major. Or another way to say this is she is in the Chemistry 
+  major category. Alice goes to a party designed to help people from different colleges interact and get to know 
+  each other. If she meets another Chemistry major, her interactions with that person will probably be 
+  the same as they have always been with other Chemistry majors.
+</p>
+<p>
+  However, at the party Alice meets an Art major named Stan. Even though Alice has not changed, she is after all 
+  still herself, she will have to interact with Stan in a different way. She will attempt to modify the ways she 
+  interacts with other Chemistry majors in order to interact with Stan. When she does this, she is applying 
+  an AtParty functor. 
 </p>
 
 <h3>Functor (Functional Programming)</h3>
 <p>
-  Depending on who you talk to, the definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional Programming</a> can be as strict as the most 
-  strict definition in Mathematics, or more relaxed and can vary by language. In this course we will use the 
-  more approachable definition stated above. Essentially, any function that has a function as a parameter and a 
-  list, set, tree, or other group of data to apply the function to is a functor. This functor pattern is so 
-  prevalent in Functional Programming that covering the most common BIF's that are functors in those languages 
-  requires two weeks. This week two examples are examined. 
+  If you talk with or listen to the wrong people, they will tell you that the definition of 
+  <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional Programming</a> 
+  and other types of computer languages comes directly from Category Theory. It does not. 
+  Instead, the idea behind Category Theory and its functors were re-imagined. Any person or group that tries to 
+  tell you the definitions are the same is being un-truthful. If you are interested in a mathematical take on 
+  functional programming functors, there is a short succinct statement on <a href="https://cs.stackexchange.com/questions/127510/functional-programming-and-category-theory">stackExchange</a> along with another 
+  <a href="http://math.andrej.com/2016/08/06/hask-is-not-a-category/">math heavy, detailed explanation</a>.
+</p>
+<p>
+  Here is the takeaway from this controversy. Just because you understand what a functor is in functional 
+  programming, don't go thinking you know what a functor in Category Theory is. You don't. If you want to know 
+  that, go study Category Theory. It will open your mind to a very different way of thinking.
+</p>
+<p>
+  In this course we will use the re-imagined definition of Functor. For this definition, 
+  there are two laws that must be true in order for something to be a functor. The first is called the identity 
+  law. Essentially it means that the functor does not use or produce any side effects. The second is the 
+  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, when the functor applies to the composition 
+  of one or more functions the result must be the same as the functor being applied to each function separately. At 
+  this point in time, just be aware of these laws. You will see them described more formally at the end of the 
+  reading for week 04.
 </p>
 <h4>Map</h4>
 <p>
-  The most straightforward application of the functor definition is the map BIF (Built In Function). Here, a list 
+  The most straightforward application of our functor definition is the map BIF (Built In Function). Here, a list 
   and a function to be used to modify each element of the list are passed as parameters. The value of the map 
   functor is a new list containing modified versions of each element of the original list as you see in the first 
   line of Figure 1.
