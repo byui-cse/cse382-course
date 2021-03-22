@@ -116,13 +116,13 @@ solved. In problem solving space, this approach is called
 
 <h3>Functor (Functional Programming)</h3>
 <p>
-  If you talk with or listen to the wrong people, they will tell you that the definition of 
-  <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional Programming</a> 
-  and other types of computer languages comes directly from Category Theory. It does not. 
-  Instead, the idea behind Category Theory and its functors were re-imagined. Any person or group that tries to 
-  tell you the definitions are the same is being un-truthful. If you are interested in a mathematical take on 
-  functional programming functors, there is a short succinct statement on <a href="https://cs.stackexchange.com/questions/127510/functional-programming-and-category-theory">stackExchange</a> along with another 
-  <a href="http://math.andrej.com/2016/08/06/hask-is-not-a-category/">math heavy, detailed explanation</a>.
+  The definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional 
+  Programming</a> and other types of computer languages is inspired by Category Theory. There are subtle 
+  differences between the two, but that is beyond the scope of this class. If you are interested in a mathematical 
+  take on functional programming functors, there is a short succinct statement on 
+  <a href="https://cs.stackexchange.com/questions/127510/functional-programming-and-category-theory">stackExchange</a> 
+  along with another <a href="http://math.andrej.com/2016/08/06/hask-is-not-a-category/">math heavy, detailed 
+  explanation</a>.
 </p>
 <p>
   Here is the takeaway from this controversy. Just because you understand what a functor is in functional 
@@ -140,7 +140,7 @@ solved. In problem solving space, this approach is called
 </p>
 <h4>Map</h4>
 <p>
-  The most straightforward application of our functor definition is the map BIF (Built In Function). Here, a list 
+  An application of our functor definition you are familiar with is the map BIF (Built In Function). Here, a list 
   and a function to be used to modify each element of the list are passed as parameters. The value of the map 
   functor is a new list containing modified versions of each element of the original list as you see in the first 
   line of Figure 1.
@@ -159,6 +159,11 @@ solved. In problem solving space, this approach is called
   </figure>
   </aside>
 <p>
+  When you used the map BIF before you probably used it to add, subtract, multiply, or divide some list of numbers 
+  or something similar to that. You saw above that functors are applied to functions. There seems to be a 
+  conflict between the way you've used map and the definition but there isn't. All you need to remember is 
+  variables can be viewed as being functions that always return the same result. After all, for $f(x)=1$, $1=f(n)$.
+</p>
 <p>
   Being applied in a Functional Programming space, the map functor is defined recursively. If the list-type 
   parameter of map is empty, the value of the map functor is an empty list (the first function clause in Figure 1). If the list-type parameter is 
