@@ -102,6 +102,61 @@ solved. In problem solving space, this approach is called
   function that is a mapping of one category to another.
 </p>
 <p>
+  Here is an example of how functors work in Category Theory.
+  Consider this situation. The Computer Science Department has reworked the CS degree. In doing so, a bunch of 
+  new classes have been created, most old ones have been killed, and a few carry over from the old 2020-2021 
+  catalog to the new 2021-2022 one.
+</p>
+<p>
+  When making this kind of a change, it is very important for continued student and program success that the 
+  prerequisite structure of the courses of the old catalog be reflected in the courses in the new catalog. If 
+  not, student progress will be stymied and graduations delayed. Let's call the process of mapping the old 
+  courses to the new and the relationships between the old courses to the relationships between the new 
+  courses OldCatalogToNewCatalog.
+</p>
+<p>
+  From a mathematician's perspective OldCatalogToNewCatalog is a functor.
+</p>
+<p>
+  Here is another more 'mathy' example. Consider the sets in Figure 1.
+</p>
+<figure>
+  <img src="images/sets.png" alt="the sets individually containing the number 1, 3, 8, 7, and 10 along with 
+  the sets that are the unions of those sets into pairs and a final union of the pairs into the set {1,3,7,8,10}." 
+   style="width:100%">
+  <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption>
+</figure>
+<p>
+  Notice the relationships between the sets and the relationships between the cardinalities. The cardinality 
+  functor has preserved the relationships in both cases and mapped the sets to the appropriate numeric value.
+</p>
+
+<h3>Functor (Functional Programming)</h3>
+<p>
+  The definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional 
+  Programming</a> and other types of computer languages is inspired by Category Theory. There are subtle 
+  differences between the two, but that is beyond the scope of this class. If you are interested in a mathematical 
+  perspective on functional programming functors, there is a short succinct statement on 
+  <a href="https://cs.stackexchange.com/questions/127510/functional-programming-and-category-theory">stackExchange</a> 
+  and another <a href="http://math.andrej.com/2016/08/06/hask-is-not-a-category/">math heavy, detailed 
+  explanation</a>.
+</p>
+<p>
+  Here is the takeaway from this controversy. Just because you understand what a functor is in functional 
+  programming, don't go thinking you know what a functor in Category Theory is. You probably don't. If you want 
+  to know that, go study Category Theory. It will open your mind to a very different way of thinking.
+</p>
+<p>
+  In this course we will use the re-imagined functional programming definition of Functor. For this definition, 
+  there are two laws that must be true in order for something to be a functor. The first is called the identity 
+  law. Essentially it means that the functor does not use or produce any side effects. The second is the 
+  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, when the functor applies to the composition 
+  of one or more functions the result must be the same as the functor being applied to each function separately. At 
+  this point in time, just be aware of these laws. You will see them described more formally at the end of the 
+  reading for week 04.
+</p>
+<p>
+  Here is a non-computing example of how functional programming functors work.
   Consider this situation. Alice is a Chemistry major. Or another way to say this is she is in the Chemistry 
   major category. Alice goes to a party designed to help people from different colleges interact and get to know 
   each other. If she meets another Chemistry major, her interactions with that person will probably be 
@@ -113,31 +168,6 @@ solved. In problem solving space, this approach is called
   interacts with other Chemistry majors in order to interact with Stan. When she does this, she is applying 
   an AtParty functor. 
 </p>
-
-<h3>Functor (Functional Programming)</h3>
-<p>
-  The definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional 
-  Programming</a> and other types of computer languages is inspired by Category Theory. There are subtle 
-  differences between the two, but that is beyond the scope of this class. If you are interested in a mathematical 
-  take on functional programming functors, there is a short succinct statement on 
-  <a href="https://cs.stackexchange.com/questions/127510/functional-programming-and-category-theory">stackExchange</a> 
-  along with another <a href="http://math.andrej.com/2016/08/06/hask-is-not-a-category/">math heavy, detailed 
-  explanation</a>.
-</p>
-<p>
-  Here is the takeaway from this controversy. Just because you understand what a functor is in functional 
-  programming, don't go thinking you know what a functor in Category Theory is. You don't. If you want to know 
-  that, go study Category Theory. It will open your mind to a very different way of thinking.
-</p>
-<p>
-  In this course we will use the re-imagined definition of Functor. For this definition, 
-  there are two laws that must be true in order for something to be a functor. The first is called the identity 
-  law. Essentially it means that the functor does not use or produce any side effects. The second is the 
-  composition law, \(f(g\circ h) = f(g)\circ f(h)\). To be a functor, when the functor applies to the composition 
-  of one or more functions the result must be the same as the functor being applied to each function separately. At 
-  this point in time, just be aware of these laws. You will see them described more formally at the end of the 
-  reading for week 04.
-</p>
 <h4>Map</h4>
 <p>
   An application of our functor definition you are familiar with is the map BIF (Built In Function). Here, a list 
@@ -147,7 +177,7 @@ solved. In problem solving space, this approach is called
 </p>
 </p>
   <aside class="left_wide">
-    <figcaption>Fig.1 - The declaration and definition <br>of the map functor.</figcaption>
+    <figcaption>Fig.2 - The declaration and definition <br>of the map functor.</figcaption>
   <figure>
     $$\begin{align*}
   map &:: [a]\text{ }(\lambda :: a\rightarrow b)\rightarrow[b]\\
@@ -184,7 +214,7 @@ solved. In problem solving space, this approach is called
 </p>
 </p>
   <aside class="right_wide">
-    <figcaption>Fig.1 - The declaration and definition <br>of the filter functor.</figcaption>
+    <figcaption>Fig.3 - The declaration and definition <br>of the filter functor.</figcaption>
   <figure>
     $$\begin{align*}
   filter &:: [a]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow[b]\\
