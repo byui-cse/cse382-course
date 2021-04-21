@@ -181,9 +181,9 @@ solved. In problem solving space, this approach is called
   <figure>
     $$\begin{align*}
   map &:: [a]\text{ }(\lambda :: a\rightarrow b)\rightarrow[b]\\
-  map &:: [a]\text{ }(\lambda :: a\rightarrow b)\rightarrow [\text{ }]\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  map &:: [a]\text{ }(\lambda :: a\rightarrow b)\rightarrow [\text{ }]\text{, when }[a]\text{ is empty };\\
   map &:: [h\mid t]\text{ }(\lambda :: a\rightarrow b)\rightarrow\\
-  &[h]:[map\text{ }t\text{ }(\lambda :: a\rightarrow b)]\\&\text{ }when\text{ }[a]\text{ is empty }.
+  &[\lambda\text{ } h]:[map\text{ }t\text{ }(\lambda :: a\rightarrow b)]\text{ otherwise}.
   \end{align*}
   $$ 
   </figure>
@@ -192,7 +192,7 @@ solved. In problem solving space, this approach is called
   When you used the map BIF before you probably used it to add, subtract, multiply, or divide some list of numbers 
   or something similar to that. You saw above that functors are applied to functions. There seems to be a 
   conflict between the way you've used map and the definition but there isn't. All you need to remember is 
-  variables can be viewed as being functions that always return the same result. After all, for $f(x)=1$, $1=f(n)$.
+  variables can be viewed as being functions that always return the same result. After all, for \(f(x)=1\), \(1=f(n)\).
 </p>
 <p>
   Being applied in a Functional Programming space, the map functor is defined recursively. If the list-type 
