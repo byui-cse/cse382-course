@@ -44,6 +44,10 @@
     <p>CSE 382</p>
   </div>
 </div>
+\(
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
 <p>
 	<blockquote class="style1">
 		<span>Pseudocode is a good way to talk about code in a generic way that does not tie you to a specific language. Therefore it is a very good way to describe algorithms.</span>
@@ -98,10 +102,10 @@ This document is intended to aid you as a student in learning, understanding, an
 </p>
 <p>
   <ul>
-    <li> \(x:[a]\) - creates a new list that is the result of prepending \(x\) to the non-empty list \([a]).</li>
-    <li> \([a]:x\) - creates a new list that is the result of appending \(x\) to the non-empty list \([a]\).</li>
-    <li> \([a]:[b]\) - creates a new list by appending lists containing different elements.</li>
-    <li> \([a]:[a]\) - creates a new list by appending lists containing the same elements.</li>
+    <li> \(x\doubleplus [a]\) - creates a new list that is the result of prepending \(x\) to the non-empty list \([a]).</li>
+    <li> \([a]\doubleplus x\) - creates a new list that is the result of appending \(x\) to the non-empty list \([a]\).</li>
+    <li> \([a]\doubleplus [b]\) - creates a new list by appending lists containing different elements.</li>
+    <li> \([a]\doubleplus [a]\) - creates a new list by appending lists containing the same elements.</li>
   </ul>
 </p>
 <h4>Reducing Lists</h4>
