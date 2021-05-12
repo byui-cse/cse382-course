@@ -48,10 +48,14 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 09</h1>
+    <h1>CSE 382: Week 09</h1>
     <p>Heaps</p>
   </div>
 </div>
+\(
+\newcommand\when{\text{ } when\text{ }}
+\newcommand\otherwise{\text{ } otherwise\text{ }}
+\)
 <blockquote class="style1">
     <span>Generally, the craft of programming is the factoring of a set of requirements into a a set of functions and data structures.</span>
     <p class="style1">- Douglas Crockford</p>
@@ -61,7 +65,7 @@
 <p>
   Binary Search Trees are amazing things, but sometimes they don't fit the problem. There are many ways that a 
   heap could be implemented. In functional programming it is common to leverage the concept of a tree for the 
-  pattern of a heap. The difference between a BST and the heap data structure described here is how the ordering 
+  pattern of a heap. The difference between a tree and the heap data structure described here is how the ordering 
   rule. In a heap, the least value is the one of interest, therefore it is kept at the root. When adding a value 
   to a heap, if the new value is less than the root, the new value becomes the root of the tree. If the new value 
   is greater than the root, another rule is used to place the value in the tree. Regardless of what the rule is 
@@ -69,45 +73,56 @@
 </p>
 <h3>Leftist Heaps</h3>
 <p>
-  The ordering rule of leftists heaps is this. The left child of a node is greater than or equal to the right child.
-</p>
-<p>
-    For this course the functors we'll focus on are \(insert\), \(get_min\), and \(remove_min\). A fully fledged set 
-    of functors would include other behaviors.
+  The ordering rule of leftists heaps is this. The left child of a node is greater than or equal to the right child. Being a heap, the value of the root node is always the value of interest. Therefore the \(get\_min\) function has a complexity of \(\mathcal{O}(1)\). You can deduce this from the code below.
 </p>
 
 \[\begin{align*}
     get\_min\text{ }&::\text{ }node\rightarrow a\\
+    \\
     get\_min\text{ }&::\text{ }nil\rightarrow\\
                &\text{ }nil;\\
-    get\_min\text{ }&::\text{ }node \rightarrow\\
-               &node\rightarrow (value,nextL,nextR)\\
+    get\_min\text{ }&::\text{ }\{weight,value,next_l,next_r\} \rightarrow\\
                &\text{ }value.
 \end{align*}\]
-    
+<p>
+  To insert a value into a heap, a fa&ccedil;ade function is used called \(insert\). In the code snippet below this function calls the \(merge\) function passing the heap to insert the value into and creating a single node heap for the value being inserted.
+</p>  
 \[\begin{align*}
-    insert\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
-    insert\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &\text{ }(a,nil,nil);\\
-    insert\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &node\rightarrow (value,nextL,nextR)\\
-               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
-               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
-               &else\\
-               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+
+    insert\text{ }&::\text{ }value,node\rightarrow root\_node\\
+    \\
+    insert\text{ }&::\text{ }value,node\rightarrow\\
+    &merge:: \{1,value,nil,nil\}\text{ }node.\\
+\end{align*}\]
+<p>
+  This means that \(merge\) does all the work for inserting a value and for merging two heaps, \(h\) and \(i\) in the snippet below.
+</p>
+\[\begin{align*}
+    merge\text{ }&::\text{ }h,i\rightarrow root\_node\\
+    \\
+    merge\text{ }&::\text{ }nil,i\rightarrow\\
+               &i;\\
+    merge\text{ }&::\text{ }h,nil\rightarrow\\
+               &h;\\
+    merge\text{ }&::\text{ }h\text{ }i \rightarrow\\
+        &i\looparrowright \{i\_weight,i\_value,i\_next\_l,i\_next\_r\}\\
+        &h\looparrowright \{h\_weight,h\_value,h\_next\_l,h\_next\_r\}\\
+        &case\\
+               &\quad \{h\_value,h\_next\_l,(merge\text{ }::\text{ } h\_next\_r\text{ }i)\}\when h\_value\le i\_value \\
+               &\quad \{i\_value,i\_next\_l,(merge\text{ }::\text{ } h\text{ }i\_next\_r)\}\otherwise.
+
 \end{align*}\]
 
+<p>
+Being a heap, the only element that can be removed is the least element. When this element is removed its child nodes must be stitched back together via merging.
+</p>
 
 \[\begin{align*}
-    remove\_min\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
-    remove\_min\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &\text{ }(a,nil,nil);\\
-    remove\_min\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &node\rightarrow (value,nextL,nextR)\\
-               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
-               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
-               &else\\
-               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+    remove\_min\text{ }&::\text{ }node\rightarrow root\_node\\
+    remove\_min\text{ }&::\text{ }nil\rightarrow\\
+               &nil;\\
+    remove\_min\text{ }&::\text{ }\{weight,value,next\_l,next\_r\}\rightarrow\\
+               &merge\text{ }::\text{ }next\_r\text{ }next\_l.
 \end{align*}\]
 
 <footer>

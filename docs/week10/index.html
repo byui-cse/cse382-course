@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-i        con">
+  <link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-i        con">
     <script type="text/javascript">
                  var codeType = "Clojure"
     </script>
@@ -12,19 +12,265 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
 
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 </head>
 
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 10</h1>
-    <p>Placeholder</p>
+    <h1>CSE 382: Week 10</h1>
+    <p>Random Access Lists</p>
   </div>
 </div>
-*****
-*****
+\(
+\newcommand\when{\text{ } when\text{ }}
+\newcommand\otherwise{\text{ } otherwise\text{ }}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
+<blockquote class="style1">
+    <span>Generally, the craft of programming is the factoring of a set of requirements into a a set of functions and data structures.</span>
+    <p class="style1">- Douglas Crockford</p>
+  </blockquote>
+
+<h2>The Random Access List Data Structure</h2>
+<p>
+  There are situations you will encounter when the only way your code can be complete and beautiful is by having a data collection that allows you to access an mutate elements in the collection regardless of where they are. Regular lists are great when all you need is the data to be ordered and access to the ends. Allowing full access to anywhere in the list using an index at any time is the meaning of the phrase random access in the category named Random Access Lists (RALists).
+</p>
+<p>
+  RALists come in many flavors. One of these allows adding and removing elements at the front and the back. Another only allows adding at the back. There are also differing internal representations that can decrease the computational cost depending on the shape of the anticipated data. The RAList presented here only allows addition and removal of the first item at the \([0]\), initial, index. Understanding this RAList's behavior and internals will allow you to create other variations when you need them.
+</p>
+<h3>A List of Complete Trees</h3>
+<p>
+  Internally, this RAList holds all of the data in complete trees. This is done to reduce the computational cost of prepending an element to the list and to reduce the cost of getting and changing values at an index. The worst-case for getting and mutating values is \(\mathcal{O}(\log n)\) with a best case of \(\mathcal{O}(1)\). The average case for getting and mutating is also \(\mathcal{O}(\log n)\). Prepending values to the list also have a worst-case of \(\mathcal{O}(\log n)\) and a best case of \(\mathcal{O}(1)\). There is no average case as these best and worst cases alternate and are evenly distributed. If the last insert was \(\mathcal{O}(1)\) the next will be \(\mathcal{O}(\log n)\) and visa versa.
+</p>
+<p>
+  Each piece of data added to the list is contained in a leaf of a tree. No data added to the list is found at any other of the nodes in the trees. If you think back to the trees used to do Huffman encoding, these trees are similar to those. The trees used here are complete while those used for Huffman encoding do not have to be.
+</p>
+<aside class="right">
+<h3>Note:</h3>
+<h4>Little-Endian? What's That?</h4>
+<p>
+  A binary number is little-endian if the least significant bit, the 1's place, is on the left
+  and the most significant bit is on the right. Here are some examples
+</p>
+\(4 = 001\\5=101\\6=011\)
+</aside>
+<p>
+  There is also a purposeful relationship built in to RALists between little-endian binary numbers and the list of trees that is the internal representation of the list. Consider Figure 1 below. Each of the trees in each of the lists are related to a little-endian binary number in a specific way.
+</p>
+
+<p>
+  Each tree in the list represents a \(1\) in the binary representation of the number of values in the list. If there are \(6\) items in the list, there are two trees. The one on the left has two leaves and the one on the right has four leaves. Remember, each leaf contains a value that was previously added to the list.  
+</p>
+<p>
+  Also, the trees keep the values in order. When a value is added to the list, no reordering of the previous values is done. Consider this and Figure 1. You have an empty list. \(3\) is then prepended. You now have a list with a tree consisting of only a leaf and that leaf contains the value \(3\). Next a \(7\) is prepended. Now, following Figure 1, you have a binary tree with two leaves. The left leaf contains the value \(7\) and the right leaf contains \(3\). Next prepend \(2\) to the list. The list now has a first element that is leaf containing \(2\) and the binary tree with the left leaf containing \(7\) and the right containing \(3\). This pattern continues as more and more values are added to the list. 
+</p>
+<aside class="left_wide">
+  <h4>The Pattern of Random Access List Growth</h4>
+    <figure>
+        <img src="images/r_a_list_growing.png" alt="an empty list, a list with one leaf, a list with a binary tree with a root node and two leaves, a list with a leaf on the left and a binary tree with a root node and two leaves on the right, a binary tree with four leaves, a list with a leaf on the left and a binary tree with a root node and four leaves on the right, a list with a binary tree with two leaves on the left and a binary tree with four leaves on the right, a list with a leaf on the left, a binary tree with two leaves in the center, and a binary tree with four leaves on the right, a list with a binary tree with eight leaves as the only element."> 
+        <figcaption>Fig.1 - How a Random Access List grows.</figcaption>
+    </figure>
+</aside>
+<p>
+It is true that traversing shallower binary trees is less computationally expensive than deeper trees. The design presented here reduces tree height in most cases. The only case where the design does not do this is when the number of elements in the collection is of the form \(2^n\). You can see this in the lists in Figure 1 holding \(2,4\), and \(8\) values. As the size of the list increases, these worst-case depths decrease in frequency since there are more numbers between \(2^n\) and \(2^{n+1}\) as \(n\) increases. This means in the average case, shallower trees will be traversed when getting and mutating stored values. 
+</p>
+
+<h3>Getting Values by Index</h3>
+<p>
+  Because of how the internals of this RAList are designed, getting a value associated with an index number consists of two steps. First the list element containing the appropriate tree must be found. While we normally think of searching of a list as being \(\mathcal{O}(n)\), this is not the case for this list. Consider this. For any RAList having containing more than one value, the number of elements of the list is significantly less than the number of values stored in the list. Using a rule of thumb approach, the complexity of this search must be \(\mathcal{O}(\log n)\).
+</p>
+<p>
+  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a little-endian binary representation and stripping away any trailing zeros. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
+</p>
+<p>
+  The pseudocode below breaks the task of getting a value at an index into three functions. The \(get\) function is the top-level function that is used. The others are helper functions. The \(get\) function has as parameters \(r\_a\_list\) and \(index\), the list containing the value and the index of the item in the list. The value of the \(get\) function is the item stored at the index or \(nil\) if there is no item at the stated index.
+</p>
+
+\[\begin{align*}
+    get\text{ }&::\text{ }r\_a\_list\text{ }index\rightarrow value\\
+    \\
+    get\text{ }&::\text{ }[]\text{ }index\rightarrow nil;\\
+    get\text{ }&::\text{ }r\_a\_list\text{ }index\rightarrow\\
+               &find\text{ }::\text{ }(search\text{ }::\text{ }r\_a\_list\text{ }index\text{ }0)\text{ }(int\_to\_binary\_list\text{ }::\text{ }index).\\
+
+\end{align*}\]
+<p>
+  The code above uses two helper functions. The first executed is the \(search\) function. This function has as its value the correct tree for the given \(index\) or \(nil\) if there is no such tree.
+</p>
+
+\[\begin{align*}
+    search\text{ }&::\text{ }r\_a\_list\text{ }index\rightarrow value\\
+    \\
+    search\text{ }&::\text{ }[]\text{ }index\rightarrow\\
+                  &nil;\\
+    search\text{ }&::\text{ }[\{weight,left,right\}\mid t]\text{ }index\when weight < index \rightarrow\\
+                &search\text{ }::\text{ }t\text{ }index;\\
+    search\text{ }&::\text{ }[h\mid t]\text{ }index\rightarrow\\
+               &h.\\
+\end{align*}\]
+<p>
+  The value of \(search\) is used as the first parameter of the other helper function, \(find\)  and its value is the item associated with the \(index\) or \(nil\) if there is no such value. The \(find\) function's second parameter is the \(index\) converted into a little-endian representation as described above. t is referred to as the \(direction\_list\) in the snippet below. The \(find\) function is called recursively examining each element of the \(direction\_list\) one at a time. If the element is \(0\), the tree is traversed to the left. If the element is \(1\), the tree is traversed to the right. 
+</p>
+\[\begin{align*}
+    find\text{ }&::\text{ }tree\text{ }direction\_list\rightarrow value\\
+    \\
+    find\text{ }&::\text{ }nil\text{ }direction\_list\rightarrow\\
+                &nil;\\
+    find\text{ }&::\text{ }(value,nil,nil)\text{ }[]\rightarrow\\
+                &value;\\
+    find\text{ }&::\text{ }\{value,next\_left,next\_right\}\text{ }[0\mid t]\rightarrow\\
+                &find\text{ }::\text{ }next\_left\text{ }t;\\
+    find\text{ }&::\text{ }\{value,next\_left,next\_right\}\text{ }[1\mid t]\rightarrow\\
+                &find\text{ }::\text{ }next\_right\text{ }t;\\
+\end{align*}\]
+<p>
+  The pseudocode snippet above describes the \(find\) function.
+</p> 
+<h3>Changing a Value</h3>
+<p>
+  Unsurprisingly, the algorithm for changing a value is similar to that for getting a value. Being a functional algorithm, when changing an item the \(update\) function requires that a new list and tree be built. To be efficient that new list and tree must avoid unnecessary duplication by reusing list elements and tree nodes that have not changed. 
+</p>
+<p>
+  Also, if there is no item for a given index, all duplication must be abandoned and the memory freed. This is done by indicating an error. Error indication is language dependent. Choose an action that is appropriate for your language.
+</p>
+<p>
+  In the pseudocode below, the \(update) function uses a single helper function, \(replace\). Like the \(search\) function above, \(update\) finds the tree containing the item indicated by the \(index\). When it finds the correct tree, it recursively calls \(replace\) which traverses the tree and then replaces the item with the item in the \(value\) parameter.
+</p>
+\[\begin{align*}
+    update\text{ }&::\text{ }r\_a\_list\text{ }index\text{ }value\rightarrow r\_a\_list\\
+    \\
+    update\text{ }&::\text{ }[]\text{ }index\text{ }value\rightarrow\\
+                  &error\_indicator;\\
+    update\text{ }&::\text{ }[\{weight,next\_left,next\_right\}\mid t]\text{ }index\text{ }value \when weight < index\rightarrow\\
+                  &\{weight,next\_left,next\_right\}\doubleplus update\text{ }::\text{ }t\text{ }index\text{ }value;\\
+
+    update\text{ }&::\text{ }[h\mid t]\text{ }index\text{ }value\rightarrow\\
+               &replace\text{ }::\text{ }h\text{ }(int\_to\_binary\_list\text{ }::\text{ }index)\doubleplus t.\\
+
+\end{align*}\]
+<p>
+  The biggest, but not only, difference between \(update\) and \(replace\) when compared to \(get\),\(search\), and \(find\) is the duplication of the required list elements and tree nodes. Notice in the snippet above that only those list elements that are before and including the element containing the tree that will be updated are duplicated, but not the trees they contain. This is in line with the behavior of regular functional programming lists as described in week 2. The \(replace\) function also only duplicates the portion of the tree that are traversed in order to replace an item in the leaf of the tree. Since no other nodes are modified, they don't need to be duplicated.
+</p>
+\[\begin{align*}
+    replace\text{ }&::\text{ }tree\text{ }direction\_list\text{ }value\rightarrow node\\
+    \\
+    replace\text{ }&::\text{ }nil\text{ }direction\_list\text{ }value\rightarrow\\
+                &error\_indicator;\\
+    replace\text{ }&::\text{ }\{old\_value,nil,nil\}\text{ }[]\text{ }value\rightarrow\\
+                &\{value,nil,nil\};\\
+    replace\text{ }&::\text{ }\{weight,next\_left,next\_right\}\text{ }[0\mid t]\text{ }value\rightarrow\\
+                &\{weight,replace\text{ }::\text{ }next\_left\text{ }t,next\_right\};\\
+    replace\text{ }&::\text{ }\{weight,next\_left,next\_right\}\text{ }[1\mid t]\text{ }value\rightarrow\\
+                &\{weight,next\_left,replace\text{ }::\text{ }next\_right\text{ }t\};\\
+\end{align*}\]
+<p>
+  Having seen how to get and mutate items in the RAList, an algorithm for building a list that can be used in those ways is needed.
+</p>
+<h3>Adding Values</h3>
+<p>
+  The algorithm for adding a value to the RAList being described here must follow the pattern from Figure 1. It has to produce a list of trees where each tree has \(2^n\) leaves. Also, as described above, adding an element to the list always 'pushes' an element on the left-hand side.
+</p>
+<aside class="right">
+<h3>Note:</h3>
+<h4>Cons - a Computer Science Term</h4>
+<p>
+  Cons is a term that can be used as a verb or a noun. The verb meaning implies a function called \(cons\) is being applied. Such a function is used to add prepend items to data structure. Cons can also be used in its noun form. In this case, it usually represents the a two element tuple or other language supported structure containing data created so the data can be added to a data structure. You saw such a tuple being described in week 2 when functional lists were discussed. 
+</p>
+
+<figure>
+    <img src="../week02/images/node.png" alt="the value and next portions of a node"> 
+    <figcaption>Fig.2 - The two parts of a cons node.The value portion and the value portion.</figcaption>
+  </figure>
+</aside>
+<p>
+  <p>
+  To accomplish this, the algorithm can be created in such a way that it composed of two parts. The purpose of the first part is to control how the value-containing leaf is added to the list. It will either be prepened to the list when the first element is a tree not a leaf, or the leaf will be added to the leaf that is the leftmost element of the list, creating a tree with two nodes. 
+</p>
+<p>
+  The adding of the new leaf to a tree with this leftmost-element-leaf triggers the second portion of the algorithm. In this portion of the algorithm adjacent trees of the same number of nodes are recursively merged together since no two trees in an RAList are allowed to have the same number of nodes. If trees were allowed to have the same number of leaves it would mess up the get and mutate algorithms/functions.
+</p>
+<p>
+  The pseudocode below describes the first portion of the algorithm. In this pseudocode the name of the function that is the first part of the algorithm is \(cons\).
+</p>
+\[\begin{align*}
+    cons\text{ }&::\text{ }tree\text{ }direction\_list\text{ }value\rightarrow r\_a\_list\\
+    \\
+    cons\text{ }&::\text{ }nil\text{ }r\_a\_list\rightarrow\\
+                &error\_indicator;\\
+    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }nil\rightarrow\\
+                &error\_indicator;\\
+    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }r\_a\_list\when is\_lea\mspace{-2mu}f\text{ }::\text{ } lea\mspace{-2mu}f = false\rightarrow\\
+                &error\_indicator;\\
+    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }[]\rightarrow\\
+                &[lea\mspace{-2mu}f];\\
+    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }r\_a\_list\rightarrow\\
+                &r\_a\_list\rightarrow[h\mid t]\\
+                &case\\
+                &\quad\when is\_lea\mspace{-2mu}f\text{ }::\text{ }h=true\rightarrow\\
+                &\qquad link::\{2,lea\mspace{-2mu}f,h\} t\\
+                &\quad otherwise\rightarrow\\
+                &\qquad lea\mspace{-2mu}f\doubleplus r\_a\_list.
+    
+\end{align*}\]
+<p>
+  As usual, the first clauses of the function are the error handling conditions. You will once again need to deal with these errors in a language specific way. The last three clauses describe the two possible behaviors of the algorithm. Of these two clauses, the first describes what to do when applying \(cons\) to an empty list. The second where the interesting stuff happens.
+</p>
+<p>
+  This second is clause uses pseudocode for a \(link\) function to describe a linking algorithm. The algorithm works as described above. It recursively merges trees together following a set of rules ensuring that when the algorithm completes each tree has \(2^n\) leaves and no two trees have the same number of leaves.
+</p>
+
+\[\begin{align*}
+    link\text{ }&::\text{ }tree\text{ }r\_a\_list\rightarrow r\_a\_list\\
+    \\
+    link\text{ }&::\text{ }tree\text{ }[]\rightarrow\\
+                &[tree];\\
+    link\text{ }&::\text{ }tree\text{ }[h\mid t]\when is\_lea\mspace{-2mu}f\text{ }::\text{ }h=true\rightarrow\\
+                &link\text{ }::\text{ }\{2,tree,h\}\text{ }t;\\        
+    link\text{ }&::\text{ }tree\text{ }[h\mid t]\rightarrow\\
+                &tree\rightarrow \{weight,\_,\_\}\\
+                &h\rightarrow \{h\_weight,\_,\_\}\\
+                &link\text{ }::\text{ }\{weight+h\_weight,tree,h\}\text{ }t\otherwise.
+\end{align*}\]
+<p>
+  The gist of the algorithms is that a new tree is created that has a left and right subtree that are the two trees being linked. The \(weight\) of the generated tree is the sum of the weights of the two subtrees.
+</p>
+<h3>Wrap Up</h3>
+<p>
+  Sometimes you just need to be able to access or modify an element in a list by index. The algorithms described here are one way to do that. There are others as this is an ongoing area of <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.20.4164">computer science research</a>. This algorithm or maybe one found since may meet you needs as each has pluses and minuses.
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

@@ -52,6 +52,10 @@
     <p>Trees</p>
   </div>
 </div>
+\(
+\newcommand\when{\text{ } when\text{ }}
+\newcommand\otherwise{\text{ } otherwise\text{ }}
+\)
 <blockquote class="style1">
     <span>The programmer's primary weapon in the never-ending battle against slow systems is to change the intra-modular structure. Our first response should be to reorganize the modules' data structures.</span>
     <p class="style1">- Fred Brooks</p>
@@ -156,37 +160,34 @@
 <p>
      For \(n\in\{-1,0,1\}\), \(0\) meaning equality, \(-1\) less than, 
     and \(1\) greater than and \(comp\) being a comparator function comparing two elements of the tree, 
-    the add algorithms for BSTs is:  
+    the \(add\) algorithm for BSTs is:  
 \[\begin{align*}
-    add\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
-    add\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+    add\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow root\_node\\
+    \\
+    add\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
                &\text{ }(a,nil,nil);\\
-    add\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &node\rightarrow (value,nextL,nextR)\\
-               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
-               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
-               &else\\
-               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+    add\text{ }&::\text{ }(value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
+               &(value,(add\text{ }::\text{ }nextL\text{ }a\text{ }comp),nextR);\\
+    add\text{ }&::\text{ }(value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\rightarrow\\
+               &(value,nextL,(add\text{ }::\text{ }nextR\text{ }a\text{ }comp)).
 \end{align*}\]
 <p>
-    The contains algorithm for BSTs is:
+    The \(contains\) algorithm for BSTs is:
 </p>
 \[\begin{align*}
-    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow Boolean\\
-    contains\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+    contains\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow Boolean\\
+    \\
+    contains\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
                     &\text{ }false;\\
-    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &node\rightarrow (value,nextL,nextR)\\
-               &comp\text{ }::\text{ }a,value\rightarrow comparison\\
-               &if\text{ }comparison = 0\\
-               &\text{ }true\\
-               &elif\text{ }comparison = -1\\
-               &\text{ }contains\text{ }::\text{ }nextL,a,comp\\
-               &else\\
-               &\text{ }contains\text{ }::\text{ }nextR,a,comp
+    contains\text{ }&::\text{ }(value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = 0\rightarrow\\
+               &true;\\
+    contains\text{ }&::\text{ }(value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
+               &contains\text{ }::\text{ }nextL\text{ }a\text{ }comp;\\
+    contains\text{ }&::\text{ }(value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\rightarrow\\
+               &contains\text{ }::\text{ }nextR\text{ }a\text{ }comp.
 \end{align*}\]
 </p>
-<h4>Ordering Rule For Red Black Trees</h4>
+<h4>Ordering Rule For Red-Black Trees</h4>
 <p>
     There is a problem that can arise when using BSTs. They can get into a situation where they get some 
     long branches and other short branches as in Figure 4. This type of situation means that searches can 
@@ -208,47 +209,92 @@
 <p>
 <p>
     To help overcome this problem, the BST's node is augmented with an additional piece of data, a color. The two 
-    possible colors are red an black. The contains function for a red black tree is nearly identical to that for 
+    possible colors are red an black. The \(contains\) function for a red-black tree is nearly identical to that for 
     a BST. The only difference is that when the elements of the node are accessed, the node's color is ignored.
 </p>
 \[\begin{align*}
-    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow Boolean\\
-    contains\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
+    contains\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow Boolean\\
+    \\
+    contains\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
                     &\text{ }false;\\
-    contains\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &node\rightarrow (color,value,nextL,nextR)\\
-               &comp\text{ }::\text{ }a,value\rightarrow comparison\\
-               &if\text{ }comparison = 0\\
-               &\text{ }true\\
-               &elif\text{ }comparison = -1\\
-               &\text{ }contains\text{ }::\text{ }nextL,a,comp\\
-               &else\\
-               &\text{ }contains\text{ }::\text{ }nextR,a,comp
+    contains\text{ }&::\text{ }(color,value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = 0\rightarrow\\
+               &true;\\
+    contains\text{ }&::\text{ }(color,value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
+               &contains\text{ }::\text{ }nextL\text{ }a\text{ }comp;\\
+    contains\text{ }&::\text{ }(color,value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\rightarrow\\
+               &contains\text{ }::\text{ }nextR\text{ }a\text{ }comp.
 \end{align*}\]
 <p>
-    The color is also ignored for the first part of the (\add\) function. That means that up until the node 
-    is added to the tree, the \(add\) function for red black trees has the same behavior and rules as the BST. 
+    The color is also ignored for the first part of the red-black tree \(add\) function. That means that until after the node 
+    is added to the tree, the \(add\) function for red-black trees has the same behavior and rules as the BST. Then the tree may need to be balanced. That's why a balancing function is applied after \(add\). 
+
+    The \(add\) algorithm for red-black trees is:  
+\[\begin{align*}
+    add\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow root\_node\\
+    \\
+    add\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
+               &\text{ }(red,a,nil,nil);\\
+    add\text{ }&::\text{ }(color,value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
+               &balanceL\text{ }::(color,value,(add\text{ }::\text{ }nextL\text{ }a\text{ }comp),nextR);\\
+
+    add\text{ }&::\text{ }(color,value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\\
+               &balanceR\text{ }::\text{ }(color,value,nextL,(add\text{ }::\text{ }nextR\text{ }a\text{ }comp)).
+\end{align*}\]
 </p>
 
 
 <h4>A Balancing Act</h4>
 <p>
-    Just because the node is added to the tree doesn't mean we're done. The tree may be out of balance. Red black 
+    Just because the node is added to the tree doesn't mean we're done. The tree may be out of balance so red-black 
     trees have two additional rules that are applied after the addition. The first says, "No red child node can 
     have a red parent node." The second says, "Every path from the root to an empty node must have the same 
-    number of black nodes." If either of these rules is violated, a re-balance is needed.
+    number of black nodes." If either of these rules is violated, a re-balance is needed. First the left and then the right balance functions are below written in function matching style as described by <a href="https://www.mew.org/~kazu/proj/red-black-tree/">Yamamoto</a>. Yamamoto follows <a href="https://www.amazon.com/Purely-Functional-Data-Structures-Okasaki/dp/0521663504">Okasaki</a> in his node element order, \((color, nextLeft,value,nextRight)\) as opposed to the order used here which is \((color,value,nextLeft,nextRight)\). 
 </p>
+<h3>balanceL</h3>
+<p>
 \[\begin{align*}
-    add\text{ }&::\text{ }node,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow root\_node\\
-    add\text{ }&::\text{ }nil,a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &\text{ }(a,nil,nil);\\
-    add\text{ }&::\text{ }node, a,(comp\text{ }::\text{ }a,b\rightarrow n)\rightarrow\\
-               &node\rightarrow (value,nextL,nextR)\\
-               &if\text{ }comp\text{ }::\text{ }a,value = -1\\
-               &\text{ }(value,(add\text{ }::\text{ }nextL,a, comp),nextR\\
-               &else\\
-               &\text{ }(value,nextL,(add\text{ }::\text{ }nextR,a,comp)).
+    balanceL\text{ }&::\text{ }(color,value,nextL,nextR)\rightarrow root\_node\\
+    \\
+    &\textbf{%%black node has left red child with left red grandchild}\\
+    balanceL\text{ }&::\text{ }(black,value,(red,aValue,(red,bValue,bLeft,bRight),aRight),nextR)\rightarrow\\
+               &(red,aValue,(black,bValue,bLeft,bRight),(black,value,aRight,nextR));\\
+
+
+    &\textbf{%%black node has left red child with right red grandchild}\\
+    balanceL\text{ }&::\text{ }(black,value,(red,aValue,aLeft,(red,bValue,bLeft,bRight)),nextR)\rightarrow\\
+               &(red,bValue,(black,aValue,aLeft,bLeft),(black,value,bRight,nextR));\\
+
+    &\textbf{%%otherwise}\\
+    balanceL\text{ }&::\text{ }(color,nextL,nextR)\rightarrow\\
+               &(color, nextL,nextR);\\
 \end{align*}\]
+</p>
+<h3>balanceR</h3>
+<p>
+	\[\begin{align*}
+    balanceR\text{ }&::\text{ }(color,value,nextL,nextR)\rightarrow root\_node\\
+    \\
+
+    &\textbf{%%black node has right red child with right red grandchild}\\
+    balanceR\text{ }&::\text{ }(black,value,nextL,(red,aValue,aLeft,(red,bValue,bLeft,bRight)))\rightarrow\\
+               &(red,aValue,(black,value,nextLeft,aLeft),(black,bValue,bLeft,bRight));\\
+
+    &\textbf{%%black node has right red child with left red grandchild}\\
+    balanceR\text{ }&::\text{ }(black,value,nextL,(red,aValue,(red,bValue,bLeft,bRight),aRight))\rightarrow\\
+               &(red,bValue,(black,value,nextL,bLeft),(black,aValue,bRight,aRight));\\
+
+    &\textbf{%%otherwise}\\
+    balanceR\text{ }&::\text{ }(color,nextL,nextR)\rightarrow\\
+               &(color, nextL,nextR);\\
+\end{align*}\]
+</p>
+<p>
+	When looking at <a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html">visualizations</a> of red-black trees, it is common for the visualization to separately apply needed color changes and then adjust the node structures. The balance functions above do both of these steps at the same time. 
+</p>
+<h2>Wrap Up</h2>
+<p>
+	BST's are fairly simple to create in functional programming languages, but balancing trees is somewhat more difficult to grasp, not code,and can cause greater duplication of nodes when compared to BST's. Which tree to choose is situationally dependent.
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
