@@ -19,12 +19,90 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 13</h1>
-    <p>Placeholder</p>
+    <h1>CSE 180: Weeks 13 & 14</h1>
+    <p>Other Patterns</p>
   </div>
 </div>
-*****
-*****
+<h2>But What About....</h2>
+<p>
+  There is a famous book written by a group referred to as The Gang of Four (GoF). They are Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides and the book the wrote is called <a href="https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?dchild=1&keywords=design+patterns&qid=1620918990&sr=8-1">Design Patterns:Elements of Reusable Object Oriented Code</a>. This book is the result of the four authors finding common, good ways of creating object oriented code and describing those good designs and how to accomplish them in any OO language. 
+</p>
+<p>
+  Each of the patterns described in the book has a particular problem to solve and is the result of multiple engineers solving the problem using some object oriented language. The way this book was created leads some to think that all of the patterns in the book are specific to object oriented design.
+</p>
+<p>
+  Also, because OO is such a common design choice, some people worry that these patterns 'aren't doable' in functional programming and so functional design and programming isn't a good choice for complicated, large systems. After all, these patterns are used and advocated by a highly respected set of engineers from around the world. Another reason some think they are OO specific is that the patterns are described in the OO terms of classes and instances. Don't worry. The patterns in the Gof book were created to help with the solving of common computational problems. These problems are not specific to OO design or languages.
+</p>
+<p>
+   We'll take a look at some of the most commonly used patterns from the GoF book and state the computational problem each pattern is designed to resolve. Then see how to solve the computational problem using any functional programming language.
+</p>
+<h3>The Fa&ccedil;ade Pattern</h3>
+<h4>The Problem</h4>
+<p>
+Complicated functionality needs to be hidden for some or all cases to simplify its use.
+</p>
+
+<h3>The Composite Pattern</h3>
+<h4>The Problem</h4>
+<p>
+Functionality needs to include other existing functionality to reduce duplication. The existing functionality can be either simple, or composite in and of itself.
+</p>
+
+<h3>The Adapter Pattern</h3>
+<h4>The Problem</h4>
+<p>
+A piece of functionality needs appear to be the same as another piece of functionality.
+</p>
+<h4>In Functional Design/Programming</h4>
+<p>
+  Clauses of functions apply this pattern. Each clause is designed to look to the programmer using it like all the other clauses, yet each clause has different behavior.
+</p>
+
+<h3>The Decorator Pattern</h3>
+<h4>The Problem</h4>
+<p>
+A piece of functionality needs to have specific behavior added to it to accomplish a specific task.
+</p>
+<h4>In Functional Design/Programming</h4>
+
+<h3>The Strategy Pattern</h3>
+<h4>The Problem</h4>
+<p>
+Behavior of a piece of functionality needs to be determined at runtime, not design time.
+</p>
+<h4>In Functional Design/Programming</h4>
+
+<h3>The Observer Pattern</h3>
+<h4>The Problem</h4>
+<p>
+A piece of functionality needs to react to a change caused by another piece of functionality.
+</p>
+<h4>In Functional Design/Programming</h4>
+
+<h3>The Factory Pattern</h3>
+<h4>The Problem</h4>
+<p>
+A piece of functionality needs to be created at runtime.
+</p>
+<h4>In Functional Design/Programming</h4>
+
+<h3>The Singleton Pattern</h3>
+<h4>The Problem</h4>
+<p>
+One and only one piece of data or functionality can exist and is shared for the entire application.
+</p>
+<h4>In Functional Design/Programming</h4>
+<p>
+  So the Singleton Pattern is problematic. It encourages global variables. This is why it has a bad reputation amongst OO Engineers. It is considered by many OO engineers to be an anti-pattern; a pattern that should be avoided.
+</p>
+<p>
+  Functional design and programming languages don't allow or strongly discourage side-effects. Globals are side-effects so there is no issue with not applying this anti-pattern in functional design.
+</p>
+
+<h2>Wrap Up</h2>
+<p>
+  There are a lot of already identified patterns and anti-patterns in the software engineering world. Each of them is designed to solve a computation problem, not a problem specific to a language type. In functional design and programming some of them are so natural that they don't even seem to be required. This is usually because they are already built into the languages we are using and/or are fundamental to functional design. Other patterns may seem to not be possible because of the way they are described. However if the common computational problem the pattern is designed to solve is examined, there is a matching pattern description that can be created using functional design.
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
