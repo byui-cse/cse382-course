@@ -89,7 +89,7 @@
 </p>
 <p>
 \[\begin{align*}
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow (Int,(func\text{ }::\text{ }Int))\\
+pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow \{Int,(func\text{ }::\text{ }Int)\}\\
 \\
 pos\_evens\_stream\text{ }&::\text{ }seed \when seed < 0\rightarrow\\
                           &pos\_evens\_stream\text{ }::\text{ }0;\\
@@ -97,7 +97,7 @@ pos\_evens\_stream\text{ }&::\text{ }seed \when 1=(seed\mod 2)\rightarrow\\
                           &pos\_evens\_stream\text{ }::\text{ }seed-1;\\
 
 pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
-                          &(seed+2,(func\text{ }::\text{ }\rightarrow pos\_evens\_stream\text{ }::\text{ }seed+2))
+                          &\{seed+2,(func\text{ }::\text{ }\rightarrow pos\_evens\_stream\text{ }::\text{ }seed+2)\}
 
 \end{align*}
 \]
@@ -107,8 +107,8 @@ pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
 </p>
 <p>
 \[\begin{align*}
-&pos\_evens\_stream\text{ }::\text{ }seed\looparrowright (even\_num,get\_next)\\
-&get\_next\text{ }::\text{ }\looparrowright (another\_even, get\_another)
+&pos\_evens\_stream\text{ }::\text{ }seed\looparrowright \{even\_num,get\_next\}\\
+&get\_next\text{ }::\text{ }\looparrowright \{another\_even, get\_another\}
 \end{align*}
 \]
 </p>
