@@ -12,7 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
 
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 </head>
 
@@ -23,8 +52,188 @@
     <p>Queues and Dequeus</p>
   </div>
 </div>
-*****
-*****
+
+\(
+\newcommand\when{\text{ } when\text{ }}
+\newcommand\otherwise{\text{ } otherwise\text{ }}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
+
+<blockquote class="style1">
+    <span>The programmer's primary weapon in the never-ending battle against slow systems is to change the intra-modular structure. Our first response should be to reorganize the modules' data structures.</span>
+    <p class="style1">- Fred Brooks</p>
+  </blockquote>
+
+<h2>The Queue and Deque Data Structure</h2>
+<p>
+  Lists in functional programming are great. They keep things in order for us and are efficient to use. There are times, however, when prepending to a list is just not what you need.
+</p>
+<p>
+  Imagine if you were trying to model something like the line to enter a sporting or entertainment event. At such events new people join the end of the line and leave the front of the line. The official term for this kind of line is a queue. Queue's exhibit the First-In-First-Out (FIFO) property. The first people to get in the queue are the first people to get out of the queue.
+</p>
+<p>
+  When modeling FIFO behavior in a functional data structure it is important to leverage the efficient tools available to you when designing the queue pattern. Prepending to functional lists is fast. The queue data structure pattern below leverages this speed. That means that when an element is added to the end of the queue, it has to actually be added to the beginning of a list. 
+</p>
+<p>
+  Removing the first element of a functional list is also fast. That means when an element is removed from the queue it needs to be the list's head that's removed. But how can a single list have the element being added prepended and the element being removed be the head and be a queue? It can't.
+</p>
+<h3>Solving the Conundrum</h3>
+<p>
+  It follows from a single list not being able to efficiently exhibit the behavior needed for a queue that the design uses two lists to represent a queue. Call the first list the front,\(f\), and the other the rear,\(r\) and put them both in a tuple. The tuple will represent the queue.
+</p>
+<p>
+  Set two rules for use. 
+  <ol>
+    <li>Each time an element is added to the queue, prepend it to \(r\).</li> 
+    <li>Each time an element is removed from the queue, remove it from \(f\).</li>
+  </ol>
+  From these two rules comes another.
+  <ol start="3">
+    <li>Each time \(f\) is emptied, replace it with a reversed version of \(r\).</li>
+  </ol>
+</p>
+<p>
+  If these rules are followed in the design of the data structure. An efficient pattern for a function queue emerges.
+</p>
+<p>Starting with the most straightforward functions first. Consider the description of the \(empty\) function below. It has a single parameter, a queue that is a tuple consisting of \(f\) and \(r\).</p>
+<p>
+\[\begin{align*}
+empty\text{ }&::\text{ }\{[a],[a]\}\text{ }\rightarrow Boolean\\
+\\
+empty\text{ }&::\text{ }\{[],[]]\}\text{ }\rightarrow\\
+            &true;\\
+empty\text{ }&::\text{ }queue\text{ }\rightarrow\\
+            &false.
+
+\end{align*}
+\]
+</p>
+<p>If both \(f\) and \(r\) are empty then the queue is empty. If either is not empty, the queue is not empty.</p>
+<h4>The First and the Last</h4>
+<p>
+  When working with a queue, it is traditional and important to be able to find out what elements are at the head and tail of the queue. In the description of the \(head\) function below, if the queue is empty, the value of the function is \(nil\). Remember that when elements are added to the queue they are prepended to \(r\). If follows from this that if \(f\) is empty and \(r\)is not, the head of the queue is the tail of \(r\).
+</p>
+<p>
+  Stop and think about that for a bit. Make a queue using pencil and paper or create it on a white board. Add elements to the end of the queue by prepending to the list \(r\). You'll find that when \(f\) is empty, the head of the queue is the tail of \(r\).
+</p>
+<p>
+  If \(f\) is not empty, the value of the \(head\) function is the head of \(f\). The description of the \(head\) function below covers all these situations. 
+</p>
+<p>
+\[\begin{align*}
+head\text{ }&::\text{ }\{[a],[a]\}\text{ }\rightarrow a\\
+\\
+head\text{ }&::\text{ }\{[],[]\}\text{ }\rightarrow\\
+            &nil;\\
+head\text{ }&::\text{ }\{[],[h:t]\}\text{ }\rightarrow\\
+            &t;\\
+head\text{ }&::\text{ }\{[h\mid t],\_\}\text{ }\rightarrow\\
+            &h.
+\end{align*}
+\]
+</p>
+<p>
+  The \(tail\) function is very similar to the \(head\)function. If both \(f\) and \(r\) are empty, tail is \(nil\). If \(f\) is empty and \(r\) is not, the value of \(tail\) is the head of \(r\). Otherwise the function's value is the tail of \(f\).
+</p>
+<p>
+\[\begin{align*}
+tail\text{ }&::\text{ }\{[a],[a]\}\text{ }\rightarrow a\\
+\\
+tail\text{ }&::\text{ }\{[],[]\}\text{ }\rightarrow\\
+            &nil;\\
+
+tail\text{ }&::\text{ }\{[h:t],[]\}\text{ }\rightarrow\\
+            &t;\\
+
+tail\text{ }&::\text{ }\{\_,[h\mid t]\}\text{ }\rightarrow\\
+            &h.
+\end{align*}
+\]
+</p>
+<p>
+  <h4>Adding and Removing</h4>
+</p>
+<p>
+  It is traditional when creating queues to call the adding of an element enqueuing and an element is dequeued when it is removed. The \(enqueue\) function has two clauses. The first deals with an empty queue and the second is used when the queue is not empty.
+</p>
+<p>
+\[\begin{align*}
+enqueue\text{ }&::\text{ }\{[a],[a]\}\text{ }a\rightarrow \{[a],[a]\}\\
+\\
+enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\when f=[]\rightarrow\\
+            &\{a\doubleplus f,r\};\\
+
+enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\otherwise\rightarrow\\
+            &\{f,a\doubleplus r\}.
+\end{align*}
+\]
+</p>
+<p>
+  The only time queue can be empty is when \(f\) is empty. This is enforced by the \(dequeue\) function. This implies that if \(f\) is empty all that needs to be done is to prepend the new element to \(f\). 
+</p>
+<p>
+  The second clause is the one that is most commonly used. As described in the pseudocode and the introduction above, the new element is prepended to \(r\).
+</p>
+<p>
+  It is when elements are removed that specific care must be taken to ensure the queue pattern is followed. If the tail of \(f\) is an empty list, \(r\) is reversed and becomes \(f\). It, along with an empty \(r\) are used to produce the updated version of the queue as described below and in the introduction above.
+</p>
+<p>
+\[\begin{align*}
+dequeue\text{ }&::\text{ }\{[a],[a]\}\text{ }\rightarrow\\
+\\
+dequeue\text{ }&::\text{ }\{[],[]\}\text{ }\rightarrow\\
+            &\{[],[]\};\\
+
+dequeue\text{ }&::\text{ }\{[h\mid t],r\}\text{ }\rightarrow\\
+            &case\\
+            &\quad\when t=[]\rightarrow\\
+            &\qquad\{(reverse\text{ }::\text{ }r),[]\}\\
+            &\quad\otherwise\rightarrow\\
+            &\qquad\{t,r\}.
+\end{align*}
+\]
+</p>
+<p>
+  If the tail of \(f\) is not empty, the tail and \(r\) are the components of the queue that is the value of the \(dequeue\) function.
+</p>
+<h4>The Deque Data Structure</h4>
+<p>
+  First off, Deque is pronounced the same ask the English word \(deck\) to distinguish it from \(dequeue\) and stands for double-ended queue. Being double ended, a deque can have elements added and removed from both ends. While this may sound like a completely different from queue, the functional pattern for a deque is the pattern for queue with two additional functions, \(dequeue_back\) and \(enqueue_front\). By including these two new functions, the tuple used to represent a queue can also be used as a deque.
+</p>
+<p>
+  The \(enqueue_front\) function is strait forward. All that is needed to be done is prepend the a new element to \(f\). The value of the \(enqueue_front\) function is then a tuple composed of this modified version of \(f\) and an unmodified version of \(r\) as described below.
+</p>
+<p>
+\[\begin{align*}
+enqueue_front\text{ }&::\text{ }\{[a],[a]\}\text{ }a\rightarrow \{[a],[a]\}\\
+\\
+enqueue_front\text{ }&::\text{ }\{f,r\}\text{ }a\rightarrow\\
+            &\{a\doubleplus f,r\}.
+\end{align*}
+\]
+</p>
+<p>
+  The \(dequeue_back\) function is not quite as strait forward. Remember that \(r\) is in an order such that the head of \(r\) is the last element of the deque. That implies that all that needs to be done is to remove the head element of \(r\) if it is not empty, or remove the tail element of \(f\) if \(r\) is empty as described below.
+</p>
+<p>
+\[\begin{align*}
+dequeue_back\text{ }&::\text{ }\{[a],[a]\}\text{ }\rightarrow\\
+\\
+dequeue_back\text{ }&::\text{ }\{[],[]\}\text{ }\rightarrow\\
+            &\{[],[]\};\\
+dequeue_back\text{ }&::\text{ }\{[h:t],[]\}\text{ }\rightarrow\\
+            &\{t,[]\};
+dequeue_back\text{ }&::\text{ }\{f,[h\mid t]\}\text{ }\rightarrow\\
+            &\{f,t\}.
+\end{align*}
+\]
+</p>
+<h3>Wrap Up</h3>
+<p>
+  Both of the queue and deque data structures are represented by a tuple of two lists, the front and the rear. It just depends on what functions you apply to them that makes them act as a queue or a deque.
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
