@@ -1,181 +1,75 @@
-<!-- uses https://highlightjs.org/
--->
-
 <html>
-
-<head>
-        <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+  <head>
+    <title>CSE 121b: Javascript Language</title>
+    <link
+      rel="shortcut icon"
+      href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico"
+      type="image/x-icon"
+    />
+    <script type="text/javascript">
+      var codeType = "JavaScript";
     </script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['\\(', '\\)']]
-        }
-    });
-    MathJax.Hub.Config({
-        TeX: {
-            equationNumbers: {
-                autoNumber: "AMS"
-            }
-        }
-    });
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            availableFonts: [],
-            preferredFont: null,
-            // force Web fonts
-            webFont: "Latin-Modern"
-        }
-    });
-    MathJax.Hub.Config({
-        TeX: {
-            extensions: ["color.js"]
-        }
-    });
-    </script>
-</head>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
 
-<body>
-<div class="hero-image">
-  <div class="hero-text">
-    <h1>Pseudocode Primer</h1>
-    <p>CSE 382</p>
-  </div>
-</div>
-\(
-\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
-\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
-\)
-<p>
-	<blockquote class="style1">
-		<span>Pseudocode is a good way to talk about code in a generic way that does not tie you to a specific language. Therefore it is a very good way to describe algorithms.</span>
-		<p class="style1">- Joseph Hopper</p>
-	</blockquote>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/main.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-<h2>A Small Pseudocode Notation Primer</h2>
-<p>
-This document is intended to aid you as a student in learning, understanding, and using the pseudocode notation used in the readings and assignments for the  CSE 382 class. 
-</p>
+  <body>
+    <header class="headerBanner">
+      <!-- <div class="hero-image">
+        <div class="hero-text">
+          <h1>CSE 382: Functional Data Structures and Patterns</h1>
+        </div>
+      </div> -->
+      <div>
+        <h1>Functional Data Structures and Patterns</h1>
+        <h2>CSE 382</h2>
+      </div>
+    </header>
+    <main>
+      <h1>Course Materials</h1>
+      <p>
+        This is an unofficial listing of the course content. Please consult
+        I-Learn for the official list of materials, including activities and due
+        dates.
+      </p>
+      <ul>
+        <li><a href="syllabus.html">Syllabus</a></li>
+        <li><a href="week01/index.html">Week 1</a></li>
+        <li><a href="week02/index.html">Week 2</a></li>
 
-<h3>Types</h3>
-<h4>Value Types</h4>
-<p>
-  <ul>
-    <li>\(Integer\)</li>
-    <li>\(Real\)</li>
-    <li>\(Boolean\)</li>
-    <li>\(acc\) - an accumulator of any type, including a list.</li>
-    <li>\(\{a,b\}\) - a 2-tuple</li>
-  </ul>
-</p>
-
-<h4>Operators</h4>
-<p>
-  <ul>
-    <li>\(\bigoplus\)- a symbol representing an operator to be specified elsewhere.</li>
-    <li>\(\lceil \rceil\) - an operator representing the ceiling behavior.</li>
-    <li>\(\lfloor \rfloor\) - an operator representing the floor behavior.</li>
-    <li>\(+,-,\cdot,\div\) - addition, subtraction, multiplication, and division as per standard mathematics.</li>
-    <li>\(<,>,=,<=,>=\) - comparison operators as usually defined in mathematics.</li>
-    <li>\(;\) - the end of a function clause.</li>
-    <li>\(.\) - the end of a function.</li>
-    <li>\(:::\) - an operator read as 'of type'.</li>
-    <li>\(\circ\) - an operator representing composition.</li>
-    <li>\(\looparrowright\) - an operator representing tuple decomposition</li>
-    <li>\(\gg =\) - an operator representing binding.</li>
-    <li>\(\text{%%} \) - an operator indicating a single line comment.</li>
-    <li>\(\_\) - an operator indicating a parameter or element is ignored.</li>
-  </ul>
-</p>
-<h3>Lists</h3>
-<h4>Declaring Lists</h4>
-<p>
-  <ul>
-    <li> \([]\) - an empty list containing elements of any type.</li>
-    <li> \([]:::Type\) - an empty list containing element of the specified type.</li>
-    <li> \([a]\) - a list that may or may not be empty containing elements of any type.</li>
-    <li> \([a]:::Type\) - a list that may or may not be empty containing elements of the specified type.</li>
-  </ul>
-</p>
-<h4>Building Lists</h4>
-<p>
-  Any example listed here can be used with lists of a specified type or lists of any type. The examples listed here use lists of any type to reduce verbosity.
-</p>
-<p>
-  <ul>
-    <li> \(x\doubleplus [a]\) - creates a new list that is the result of prepending \(x\) to the non-empty list \([a]).</li>
-    <li> \([a]\doubleplus x\) - creates a new list that is the result of appending \(x\) to the non-empty list \([a]\).</li>
-    <li> \([a]\doubleplus [b]\) - creates a new list by appending lists containing different elements.</li>
-    <li> \([a]\doubleplus [a]\) - creates a new list by appending lists containing the same elements.</li>
-  </ul>
-</p>
-<h4>Reducing Lists</h4>
-<p>
-  <ul>
-    <li>\(h\mid t\) - popping the first element of a list. \(h\) is the first element or head of the original list and \(t\) is a list consisting of the elements in the first list without the head in their original order.</li>
-    <li>\(h:t\) - popping the last element of a list. \(t\) is the last element or tail of the original list  and \(h\) is the first list without the tail with all elements in their original order.</li>
-  </ul>
-</p>
-<h3>Function Declarations</h3>
-<p>
-  All function declarations follow the same pattern. They begin with the name of the function. This is separated from the set of parameters by two colons, \(::\). The parameter set is space separated. This is then followed by a right arrow representing an assertion of truth. The arrow points at the value of the function (in programmer terms, the return value).
-</p>
-
-$$\begin{align*}
-function\_name&:: list\rightarrow value
-\end{align*}$$
-<h4>Examples</h4>
-<p>
-  <ul>
-    <li>\(start::\text{ }\rightarrow Real \) - a function named \(start\) with no parameters. The value of the 
-    function is a \(Real\).</li>
-    <li>\(length::[a]\rightarrow Integer\) - a function named \(length\) with a single parameter that is a list that may or may not be empty. The value of the function is an \(Integer\).</li>
-    <li>\(comparator::x\text{ }y\rightarrow r\) - a function called \(comparator\) that has two parameters and has a value of undetermined type.</li>
-    <li>\(in::x\text{ }[a]\rightarrow Boolean\) - a function called \(in\) that has two parameters, a value and a list that may or may not be empty and has a defined value type. In this case, \(Boolean\).</li>
-    <li>\(b\_search:: a\text{ }[b]\text{ }(f::x\text{ }y\rightarrow Integer)\rightarrow c\) -  a function called \(b\_search\) that has three parameters, a value, a list that may or may not be empty, and a function named \(f\) that itself has two parameters and a value of \(Integer\). The \(b\_search\) function's value is of undeclared type.</li>
-  </ul>
-</p>
-<h3>Keywords</h3>
-<p>
-  <ul>
-    <li> \(when\) - a guard for execution of a code clause consisting of one or more sub-statements.</li>
-    <li>\(otherwise\) - used in conjunction with the when keyword to indicate all other possibilities.</li>
-    <li>\(nil\) - indicating the lack of existence. Nothing.</li>
-    <li> \(or, and, xor\) - as traditionally defined in logic.</li>
-    <li>\(true, false\) - as traditionally defined in logic.</li>
-  </ul>
-</p>
-<h3>Usage Examples</h3>
-<h4>A function declaration without a defintion</h4>
-<p>
-This function determines the length of a list.
-$$\begin{align*}
-len&::[a]\rightarrow \text{ }Integer
-\end{align*}$$
-</p>
-<h4>A function declaration followed by its two clauses that are the function's definition.</h4>
-<p>
-  This function adds all the elements of a list.
-$$\begin{align*}
-sum &::[h\mid t]\rightarrow \text{ }Real\\
-sum &:: [a]\rightarrow 0 \text{ }when\text{ }[a]\text{ is empty;}\\
-sum &:: [h\mid t]\rightarrow h+sum\text{ }t \text{ } otherwise.
-\end{align*}$$
-</p>
-
-<h4> A function declaration and definition that uses previously declared functions.</h4>
-<p>
-  This function calculates the average of a set of numbers in a list.
-$$\begin{align*}
-average&::[a]\rightarrow \text{ }Real\\
-average&= sum\text{ }[a]\div len\text{ }[a].
-\end{align*}$$
-</p>
-
-<footer>
-	<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-</footer>
-</body>
+        <li><a href="week03/index.html">Week 3</a></li>
+        <li><a href="week04/index.html">Week 4</a></li>
+        <li><a href="week05/index.html">Week 5</a></li>
+        <li><a href="week06/index.html">Week 6</a></li>
+        <li><a href="week07/index.html">Week 8</a></li>
+        <li><a href="week07/index.html">Week 9</a></li>
+        <li><a href="week07/index.html">Week 10</a></li>
+        <li><a href="week07/index.html">Week 11</a></li>
+        <li><a href="week07/index.html">Week 12</a></li>
+        <li><a href="week07/index.html">Week 13</a></li>
+        <li><a href="week07/index.html">Week 14</a></li>
+        <li><a href="week07/index.html">Week 15</a></li>
+      </ul>
+    </main>
+    <footer>
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
+        ><img
+          alt="Creative Commons License"
+          style="border-width: 0"
+          src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
+      ><br />This work is licensed under a
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
+        >Creative Commons Attribution 4.0 International License</a
+      >.
+    </footer>
+  </body>
 </html>
