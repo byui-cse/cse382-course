@@ -98,9 +98,8 @@
   Let's call these impure lazy lambdas.
 </p>
 <p>
-  What, then, would a pure lazy lambda be? One without parameters. To think of a silly, simple example, consider 
-  multiplying two numbers. In most languages this would happen eagerly. Now think of a function called 
-  \(lazy\_add\) that has two parameters.
+  What, then, would a pure lazy lambda be? One without parameters. To think of a silly, simple example, a function called 
+  \(lazy\_add\) that has two parameters and a pure lambda for a value.
 </p>
     \[
     \begin{align*}
@@ -109,13 +108,13 @@
     \end{align*}
     \]
 <p>
-  This \(lazy\_add\) function doesn't actually add the numbers. What it does do is create a lambda that will add the numbers at a later time when the lambda is executed. Since the value of the lambda's value is the sum of the 
+   In most languages addition is done eagerly but this \(lazy\_add\) function doesn't actually add the numbers. What it does do is create a lambda that will add the numbers at a later time when the lambda is executed. Since the value of the lambda's value is the sum of the 
   two numbers, it would be as if the 'raw' addition was done later.
 </p>
 <p>
-  This silly and simple example of a pure lazy lambda should not be viewed as an injudicious replacement for all 
+  This silly and simple example of a pure lazy lambda should not be viewed as an judicious replacement for all 
   eager addition. The only time it might be useful would be if the two numbers were very large and the adding of 
-  those numbers would have a negative speed impact on the immediate calculation. Again, this is a silly example 
+  those numbers would have a negative speed or memory impact on the immediate calculation. Again, this is a silly example 
   created to reveal the principle.
 </p>
 <p>
@@ -132,7 +131,7 @@
 <p>
   Lazy Streams solve a very different problem. Consider a situation where a large, and potentially infinite, 
   series of values is needed. Precomputing them all is at least computationally infeasible and is impossible in 
-  the infinite case. Instead, one or more of them can be computed as needed. Thus a stream of the computed values 
+  the infinite case. Instead, one or more elements of the series can be computed as needed. Thus a stream of the computed values 
   is available to draw from at the time they are needed. Therefore, this stream of values is lazy.
 </p>
 <p>
@@ -147,10 +146,10 @@
   same basic pattern. 
   <ol>
     <li>
-      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s). 
+      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s) called a seed. 
     </li>
     <li>
-      Each recursive call updates the value of the seed-type value and passes it to the next recursive call 
+      Each recursive call updates the value of a seed-type value and passes it to the next recursive call 
       of itself.
     </li>
     <li>
