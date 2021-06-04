@@ -12,7 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
 
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 </head>
 
 <body onload="fetchSource()">
@@ -22,29 +51,23 @@
     <p>Ponder and Prove</p>
   </div>
 </div>
-<h1>Your Tasks</h1>
-<div>
-    <p>
-        Greedy algorithms, and especially greedy task scheduling, are the learning
-        focus for this week. Your task is to figure out where you and your acquaintances have been using
-        greedy algorithms, for good or ill, to govern your lives.
-    </p>
-    <p>
-        The life lesson is to learn to better prioritize and execute tasks to minimize
-        waste and staleness.
-    </p>
-</div>
+<h2>Task 1</h2>
+<p>
+   Following the pseudocode functional design in the reading, write a version of the \(chain\) function.
+</p>
 
-<div>
-    <h3>How to Fulfill Return-and-Report Requirements</h3>
-    <div>
-        <ul>
-            <li>Make sure you take notes on the conversations you have outside of class.</li>
-            <li>Prepare to share with your classroom team your discussion notes and
-                discoveries about the algorithms you investigated.</li>
-        </ul>
-    </div>
-</div>
+<h2>Task 2</h2>
+<p>
+    Given a list of tuples where each tuple,\(\{month,year,sales\_region,gross\_sales\}\), describes sales for a company in a given region, month, and year, write code to generate a significant list of simulated sales-tracking-tuples. Use your \(chain\) function implementation to find the total sales by year and region.
+</p>
+<h2>Task 3</h2>
+<p>
+    Find a sophisticated example of code in your language that is part of an opensource library. Examine it with regard to the definition of beautiful code in the reading. In what ways is the code beautiful and in what ways is it not? Describe in writing how would you change the code to enhance its beauty.
+</p>
+<h2>Task 4</h2>
+<p>
+    Find some code you've written in the past that could be improved by applying currying. Consider why it would be an improvement. Write rules you come up with regarding when currying is appropriate and when it is not.
+</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

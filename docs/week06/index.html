@@ -99,26 +99,25 @@
   <p>
   <p>
     Say you had two functions, \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). 
-    If you call \(g\) and then pass the result to \(f\). You've done composition. You may have used an intermediate 
-    variable, or maybe you didn't. It makes no difference. You did functional composition.
+    If you call \(g\) and then pass the result to \(f\) you've composed the two functions. You may have used an intermediate 
+    variable when you've dont this, or maybe you didn't. It makes no difference. You did function composition.
   </p>
   <p>
     Here is one common way to express that composition. \(f\circ g\). Now, if you look about it, \(f\circ g\) could 
     be thought of as just another function. You could have written one function and included the code from \(f\) 
     and \(g\) in it. It would, more than likely, be bad to do so...but you could have. So you can view \(f\circ g\) 
-    as if it was a function named \(h\) and \(h\) would be equivalent to  \(f\circ g\). Remember that \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). Then \(h\) and therefore \(h\equiv 
-    f\circ g\) has a parameter of type \(a\), a value of type \(c\) and a declaration of \(f\circ g\text{ }::
-    \text{ }a\rightarrow c\). 
+    as if it was a function named \(h\) and \(h\) would be equivalent to  \(f\circ g\), or stated more succinctly, \(h\equiv 
+    f\circ g\). Remember that \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). It then follows that \(h\) has a parameter of type \(a\), a value of type \(c\) and a declaration of \(h text{ }::
+    \text{ }a\rightarrow c\). As \(h\equiv 
+    f\circ g\), it follows that \(f\circ g\text{ }::\text{ }a\rightarrow c\).
 
   <p>
     It is common among programmers to compose functions where the values of the functions are different. You've 
     done this before. Maybe you started with an \(Integer\) and, after having used two or more functions ended up 
-    with an \(Integer\) or some other sort of change. It's just fine for functions in monoids to have non-matching 
+    with an \(Float\) or some other sort of change. It's just fine for functions in monoids to have non-matching 
     types. You just have to make sure when composing the functions that the type of each function's value matches 
     the type of the next function's parameter. That way your functions can compose without issue. There are other 
-    types of changes though. Maybe you need to add some 
-    <a href="https://www.lifewire.com/metadata-definition-and-examples-1019177">meta-data</a> 
-    to your data. For that, you'll need a different tool.
+    types of changes though.
   </p>
   
   <h2>Monads</h2>
@@ -126,9 +125,8 @@
     Functional programming doesn't allow side effects. Users, databases, web access points and any other type of 
     input or output are all side effects. Monads allow you to write composable 
     functions that access these types of behaviors. Monoids just can't pull that off. Another ability of monads is 
-    they can be used to compose functions that add or update meta-data regarding the data.
+    they can be used to compose functions that add or update <a href="https://www.lifewire.com/metadata-definition-and-examples-1019177">meta-data</a>  regarding the data.
   </p>
-  
   
   <p>
     Monads are functions that have a single parameter, just like monoids do. However, their value is different. 
@@ -147,15 +145,15 @@
     <figcaption>Fig. 2</figcaption>
   </aside>
   <p>
-    Those are two very good questions. Let's start by defining \(Mb\). In the above example, \(Mb\) is a function 
-    that builds a value of type \(b\). The \(Mb\) function is specific to the need and is written by you. It may be 
-    code that accesses a database. It may be code that gets data from the user. 
-    It may be code that writes meta-data associated with the data to disk concurrently. It can be A LOT of 
-    different things. But what it does is build an \(b\). That's why it is referred to as a constructor function.
+    Those are two very good questions. Let's start by defining \(Mb\). In the above example, \(Mb\) is a \(function\). 
+    It is a function that builds a value of type \(b\). The \(Mb\) function is specific to the need and is written by you. It may be 
+    code that accesses a database to build the \(b\). It may be code that gets data from the user to build the \(b\). 
+    It may be code that writes meta-data associated with the data to disk concurrently and builds a \(b\). It can be A LOT of 
+    different things. But what it does is build an \(b\). That's why \(Mb\) is referred to as a constructor function.
   </p>
   <p>
     For functions in a monoid, their value is a direct computation resulting from the value of the parameter. 
-    For functions in a monad, their value is something that is constructed due to the value of the parameter. 
+    For functions in a monad, their value is a function that is builds and has as its value a \(b\). How the \(Mb\) does this varies depending on the value of the parameter of the function in the monad. 
     Reread the two previous sentences many times until you understand the difference..because they are 
     significantly different.
   </p>
@@ -198,15 +196,14 @@
   </p>
   <p>
     What then does the function declaration look like for this mysterious bind function? Well...one declaration 
-    that could be used looks like this.
+    that could be used looks like this. It binds two functions \(f\) and \(g\) and has an initial parameter, \(a\).
   </p>
 
   <p>
     \(bind\text{ }::\text{ }a\text{ }f\text{ }g\rightarrow (\lambda\text{ }::\text{ }a\rightarrow Mc) \)
   </p>
   <p>
-    This bind function declarations means the bind function needs to have 3 parameters. One of the initial data 
-    type and the others are the two functions to be bound and its value is a lambda that has a single 
+    The value of the \(bind\) function is a lambda that has a single 
     parameter that is of the initial data type and has a value that is a constructor.
   </p>
   <p>
@@ -214,10 +211,10 @@
     to bind the three functions \(f, g, \text{ and } h\) is this.
   </p>
   <p>
-    bind("http://...", h, bind(url,f,g))
+    bind("http://www.somename.com", h, bind(url,f,g))
   </p>
   <p>
-    Ughhh! That's a variation of the example of ugly code from week 05!&#128552; Let's fix it by applying the same solution 
+    Ughhh! That's a variation of the example of ugly code from week 05!&#128552; Also, since the monad could consist of any number of functions, not just the three in this example, this version of \(bind\) gets even uglier to use as more functions are bound. Let's fix it by applying the same solution 
     we used in week 05. Currying!&#129395; 
   </p>
   <p>
@@ -227,6 +224,7 @@
     \(
     \begin{align*}
     bind\text{ }&::\text{ }a\rightarrow (\lambda\text{ }::\text{ }f)\\
+    \\
     bind\text{ }&::\text{ }a\rightarrow (\lambda\text{ }::f\rightarrow \text{ }f(a)).
     \end{align*}
     \)
@@ -236,7 +234,7 @@
     functions is much cleaner. 
   </p>
   <p>
-    bind(a)(f)(g)(h)
+    bind("http://www.somename.com")(f)(g)(h)
   </p>
   <h2>Lists?</h2>
   <p>
@@ -251,7 +249,7 @@
 
   <h2>The Rules</h2>
   <p>
-    For both monoids and monads, there are rules that can be applied to determine if a something 
+    For the Computer Science version of both monoids and monads, there are rules that can be applied to determine if a something 
     is one, the other, or neither of these patterns. While these rules are often expressed in an arcane way, 
     explanations of the rules are included here to make them easier to apply.
   </p>
