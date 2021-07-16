@@ -75,10 +75,10 @@
       units.</li>
       <li>Harmonious. The calculation units unite in the reader's mind without cognitive conflict to describe how to accomplish the overall task.</li>
       <li>Audacious and Original. Beautiful code surprises the reader by showing new ways to think about a problem.</li>
-      <li>Full of Imagery. Words and names are selected to clearly and with impact tell the reader what they 
+      <li>Full of Imagery. Words and names are selected to clearly, and with impact, inform the reader what they 
       represent.</li>
-      <li>Structured. The location of the code is as important as what the code says.</li>
-      <li>Compassionate. The code is fun and easy to read.</li>
+      <li>Structured. The location of the code and its design is as important as what the code says.</li>
+      <li>Compassionate. Reading the code is a fun and easy undertaking.</li>
     </ul>
   </figure>
   </aside>
@@ -90,7 +90,7 @@
 </p>
   <p>
     Now consider a situation similar to, but not the same as, the map-filter-reduce situation described in the 
-    CSE 121E course. In this new situation you have been asked to map, then filter, and then reduce some list. 
+    <a href="https://byui-cse.github.io/cse121e-course/week03/index.html" target="_blank">CSE 121E</a> or <a href="https://byui-cse.github.io/cse121a-course/week04/" target="_blank">CSE 121A</a> course reading</a>. Now think about a new situation. You have been asked to map, then filter, and then reduce some list. 
     Maybe you've been asked to work with a list of numbers, double them all, keep only those that are greater 
     than 50, and then add up all that remain. If you use the map, filter, and reduce BIF's in a raw way, the 
     generic version of the code to do what you were asked to write looks like this.
@@ -122,10 +122,62 @@
     possibilities offered by functional programming languages and those that are functional-like. Is there, then, another way?
   </p>
   <h2>Achieving Beauty</h2>
+  
+  <h4>Chaining</h4>
   <p>
-    When considering how to reduce some of the ugliness in code it is vital, with any language type, to know and 
-    understand all the options that the type of language offers. Functional programming allows you to use the 
-    concept of currying. Currying, in Computer Science and Mathematics, is named after the mathematician Haskell 
+    When considering how to reduce some of the ugliness found in code around the world, it is vital, with any language type, to know and understand all the options that the type of language offers. It is true that functional programming languages, higher-order functions can have a parameter that is a lambda. It is also true that higher-order functions can have a lambda as their value. This may seem strange. Why would such a thing as having a lambda as the value of a function be useful?
+  </p>
+  <p>
+    Take a look at the ugly <kbd>map</kbd>, <kbd>filter</kbd>
+    , <kbd>reduce</kbd> code snippet above. It would be much improved if the order of the calls to <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> were listed from left to right. You can do this if you put the calls to the functions into a chain, a series of calls functions to be done.
+  </p>
+  <aside class="right">
+  <figure>
+    <dfn>Chaining</dfn> - the process of executing a series of functions where the output of one is used as the input for the next.
+  </figure>
+    <figcaption>Fig. 2</figcaption>
+  </aside>
+  <p>
+    If we take another look at how the <kbd>map-filter-reduce</kbd> example above could be written using chaining, beauty emerges. To make this happen, we need to create a list that we choose to call <kbd>links</kbd> where each lambda to be applied to is a link and each link is in the desired order of execution. But before we take express <kbd>chain</kbd> using pseudocode let's express it in mathematical notation. Doing so, it would look like this \([f_1,f_2,f_3]\).
+  </p>
+  <p>
+   Consider a situation where you have a series of numbers and need to double them, keep only those results which are greater than 200, and then sum them. You can put together a list of functions or lambdas that apply a mapping that does the doubling, a filtering that keeps only those greater than 200, and then a reduction that sums those that are left. Then what is needed is a function to execute each of those functions. Let's call that function <kbd>chain</kbd> and pass it the links and the data to act on. The code below shows <kbd>chain</kbd> as a facade function with <kbd>chain_worker</kbd> being the function that does the actual computation.
+  </p>
+  \[
+    \begin{align*}
+    chain\text{ }&::\text{ }links\text{ }a\rightarrow b\\
+    \\
+    chain\text{ }&::\text{ }links\text{ }a\rightarrow \\
+    &chain\_worker\text{ }::\text{ }rev(links) a.\\
+    \\
+    chain\_worker\text{ }&::\text{ }reversed\_links\text{ }a\rightarrow b\\
+    \\
+    chain\_worker\text{ }&::\text{ }[h\mid t]\text{ }a\rightarrow\\
+    &h\text{ }::\text{ }(chain\_worker\text{ }::\text{ }t\text{ }a).
+    \end{align*}
+    \]
+  <p>
+  Notice that <kbd>chain</kbd> reverses the list of links. This ensures that the functions are executed in the intended order as <kbd>chain_worker</kbd> gets called recursively. Also not that \(a\) and \(b\) in the pseudocode can be of the same type or their types can differ. Additionally, \(a\) can be any type. It is not limited to being a list.
+  </p>
+  <p>
+    While the use of this pattern does lend to the code being more beautiful than the original inside-to-outside <kbd>map-filter-reduce</kbd> example, it is still not as beautiful as it could be. It still uses more lines of code than necessary, is not very audacious, and requires the list to be reversed. Therefore, it could be viewed as an anti-pattern in functional programming. There is a much better option, your language's <kbd>foldl</kbd> BIF if it has one. Using this BIF, all of the code for the <kbd>chain</kbd> function goes away. It isn't needed. The single line of code below replaces it.
+  </p>
+  \[
+    \begin{align*}
+    foldl\text{ }&::\text{ }(\lambda\text{ }::\text{ }link\_to\_apply\text{ }value \rightarrow (link\_to\_apply\text{ }::\text{ }value))\text{ }values\text{ }links
+    \end{align*}
+  \]
+
+  <p>
+    If your language doesn't have <kbd>foldl</kbd>, you can still reverse the <kbd>links</kbd> list and apply the <kbd>foldr</kbd> BIF.
+  </p>
+  <p>
+    Chaining can be a very useful pattern when a series of functions or lambdas can be considered as a single computational unit. Sometimes the opposite of combining is needed. Then you use currying.
+  </p>
+
+    <h3>Currying</h3>
+  <p>
+    Currying, in Computer Science and Mathematics, is named after the mathematician Haskell 
     Curry and he based this part of his work on what was previously accomplished by Moses Sch&ouml;nfinkel and 
     Gottlob Frege.
   </p>
@@ -134,7 +186,7 @@
     <dfn>Currying</dfn> - the process of breaking up a function that has \(n\) parameters into \(n\) 
     functions that have 1 parameter.
   </figure>
-    <figcaption>Fig. 2</figcaption>
+    <figcaption>Fig. 3</figcaption>
   </aside>
   <p>
     The basic idea behind currying is to map a function that has multiple parameters to a series of functions 
@@ -149,49 +201,15 @@
     anything other type in the language. It can be stored in a variable. It be passed as a parameter. It can 
     be returned from another function.
   </p>
-  <p>
-    If the concept of currying is applied to the ugly code snippets above, beauty emerges. But before we take 
-    that step and try to express the declaration of <kbd>chain</kbd> in pseudocode, let's express it in 
-    mathematical notation. Doing so, it would look like this \(chain([a])(f_1)(f_2)(f_3)\rightarrow d\). But 
-    the list \([a]\) is just a single entity, so let \(b=[a]\). That means a simplification is in order. The mathematical representation then becomes \(chain(b)(f_1)(f_2)(f_3)\rightarrow d\). Let's start at the end 
-    of the chain and move backwards breaking this down, step by step, to help shed some light on what's going 
-    on.
-  </p>
-  
-  <p>
-    The function \(f_3\) is passed as a parameter to some anonymous function and returns a single value, \(d\). 
-    This is the reduction step in the initial, ugly example. Notice that the call is at the END where it 
-    cognitively fits in the initial map-filter-reduce sequence of the example, the <kbd>sum</kbd> function in 
-    Figure 3. 
-  </p>
-  <aside class="right_wide">
-  <figure>
-    \(chain(b)(\times 2)(keep>50)(sum)\)
-  </figure>
-    <figcaption>Fig. 3 - An example mathematical notation<br>using chain to map, filter, and then reduce.</figcaption>
-  </aside>
-  <p>
-    What then is the anonymous function to which \(f_3\) is passed? It is whatever is returned by the anonymous 
-    function to which \(f_2\) was passed. In the case of the map-filter-reduce example, this would be a lambda 
-    that does the filter step. And where does this lambda come from? It's the value of the anonymous function 
-    to which \(f_1\) was passed, the map step.
-  </p>
-  <p>
-    The trigger to all of this is the <kbd>chain</kbd> function. For \(f_1\) to be passed to an anonymous 
-    function that anonymous function has to come from <kbd>chain</kbd>. 
-    That means the declaration and definition of <kbd>chain</kbd> is very short with the definition consisting 
-    of a single, one-line clause  .
-  </p>
-  \[
-    \begin{align*}
-    chain\text{ }&::\text{ }b\rightarrow\lambda\text{ }::\text{ }f\\
-    chain\text{ }&::\text{ }b\rightarrow (\lambda\text{ }::\text{ }f\rightarrow f(b)).
-    \end{align*}
-    \]
     <p>
-      On of the very beautiful things about the chain function, and currying in general, is that the number of 
-      functions you can chain together is anywhere from 1 to infinity. Another beauty of <kbd>chain</kbd> is 
-      it's generic. The elements in the list can be of any type, including functions.
+      On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\text{ }::\text{ }card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
+    </p>
+    <p>
+      If, however, this behavior was curried, the code would be called like this.</kbd>
+    </p>
+    \[curried\_perform\text{ }::\text{ }card\_number\text{ }::\text{ }pin\text{ }::\text{ }transaction\_id\rightarrow success\]
+    <p>
+      Notice that each function except for the last returns a lambda that is passed an additional, single piece of data. The currying process is accumulating the parameters. When all of the parameters have been passed, the execution of the code can proceed. For this to happen, there needs to be 'partial application' of each parameter as it is received. 
     </p>
     <p>
       Now be careful and be wise. Remember that your code must be beautiful. If you start using currying 

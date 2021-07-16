@@ -61,10 +61,10 @@
 <h2>Beyond Map and Filter</h2>
 <p>
     The functors map and filter are great. Use them whenever you can and they are the best 
-    choice for that situation. They do not cover all situations. Thats why there are other 
+    choice for that situation. They do not cover all situations. That's why there are other 
     basic functors that are part of every functional programmer's tool set. These are 
-    reduce, formally known as fold left and fold right, and unfold. It's these two 
-    that really flesh out our tool set. 
+    reduce, formally known as fold left, fold right, and unfold. It's these functors 
+    that really flesh out your tool set. 
 </p>
 <h3>Fold Left and Fold Right</h3>
 <p>
@@ -72,22 +72,22 @@
     surface area. This is true not only for clothes, paper, and and other such things, 
     but for data as well. If your code snippet, function, or application accepts a bunch of 
     data and then produces, as output, fewer computed results than the amount of data it 
-    started with, the code was a for of fold. Maybe your app took in a bunch of historical data 
-    about the weather and produced a prediction for the next few days. That's a fold. 
+    started with, the application was a data fold. Maybe your app took in a bunch of historical data 
+    about the weather and produced a prediction for the next few days. That app is a fold. 
 </p>
 </p>
   <aside class="left">
-    
+    <figcaption>Definition 1 - <dfn>Fold</dfn>:</figcaption>
   <figure>
-    <dfn>Fold</dfn> - a function type where the input count is greater than the output count.
+    a function type where the input count is greater than the output count.
   </figure>
-    <figcaption>Fig. 1</figcaption>
+    <figcaption>Definition 1</figcaption>
   </aside>
 <p>
 <p>
-    Maybe your app accessed a database of customers and produced an ordered list of customers 
-    your sales people should contact with specific needs rather than a complete list. That's a 
-    fold.
+    Maybe your app accessed a database of customers and produced a filtered, ordered list of customers that 
+    your sales people should contact due to the customer's specific needs. This is a partial rather than a complete list. 
+    That behavior is a fold.
 </p>
 <p>
     Or maybe you use an application to help you track and fix bugs in your code. It accesses the 
@@ -102,7 +102,8 @@
     useless.&#128556;
 </p>
 <p>
-    Fold behavior comes in two flavors, fold left, from left to right, and fold right, from right 
+    Fold behavior comes in two flavors, fold left, moving in the list from left to right, and fold right, moving 
+    in the list from right 
     to left. There will be times when selecting between right and left types of folds is important. 
     There will be other times when it is not.
 </p>
@@ -111,7 +112,7 @@
 <p>
 
   <aside class="left_wide">
-    <figcaption>Fig. 2 - The declaration and anti-pattern definition <br>of the foldl functor.</figcaption>
+    <figcaption>Fig. 1 - The declaration and anti-pattern definition <br>of the foldl functor.</figcaption>
   <figure>
     $$\begin{align*}
   foldl &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
@@ -126,7 +127,7 @@
 </p>
 <p>
     Let's start with the foldl function. Take a look at Figure 2. There you will see foldl's declaration states 
-    that the functor's set of parameters is a list, an accumulator, and a lambda function and the value of foldl 
+    that the functor's set of parameters is a list, an accumulator, and a lambda function. It also states the value of foldl 
     is a single value. It is important to understand that the accumulator can be of any type but that  the type 
     of the lambda's parameter 'a' must match the type of the accumulator for the functor. Also, if the accumulator 
     is numeric, its initial value could be 0 if you are wanting to do something similar to addition, or its initial 
@@ -135,7 +136,7 @@
 <p>
 
   <aside class="right">
-    <figcaption>Definition 1 - <dfn>Anti-pattern</dfn>:</figcaption>
+    <figcaption>Definition 2 - <dfn>Anti-pattern</dfn>:</figcaption>
   <figure>
      a common response to a common problem that has a high probability of being 
     ineffective or counterproductive.
@@ -157,7 +158,7 @@
 <p>
 
   <aside class="left_wide">
-    <figcaption>Fig. 3 - The declaration and good definition <br>of the foldl functor.</figcaption>
+    <figcaption>Fig. 2 - The declaration and good definition <br>of the foldl functor.</figcaption>
   <figure>
     $$\begin{align*}
   foldl &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
@@ -178,7 +179,7 @@
 <h4>foldr</h4>
 </p>
   <aside class="right_wide">
-    <figcaption>Fig. 4 - The declaration and definition <br>of the foldr functor.</figcaption>
+    <figcaption>Fig. 3 - The declaration and definition <br>of the foldr functor.</figcaption>
   <figure>
    $$\begin{align*}
   foldr &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
@@ -208,16 +209,16 @@
 </p>
 </p>
   <aside class="left">
+    <figcaption>Definition 3 - <dfn>Unfold</dfn>:</figcaption>
   <figure>
-    <dfn>Unfold</dfn> - a function type where the input count is less than the output count.
+    a function type where the input count is less than the output count.
   </figure>
-    <figcaption>Fig.2</figcaption>
   </aside>
 <p>
 <p>
     You've used unfold functors before. Think of when you've needed a pseudo-random number. When you used 
     a function to get that number, you used an unfold functor. Random number generators need a seed to 
-    get started. You may not have had to proved one since there is usually a fa&ccedil;ade function provided 
+    get started. You may not have needed to provide a seed value since there is usually a fa&ccedil;ade function provided 
     by the library writers that, by default, uses the current time in milliseconds as the seed. 
 </p>
 <p>
@@ -229,7 +230,7 @@
 
 <p>
   <aside class="right_wide">
-    <figcaption>Fig.5 - The declaration and definition <br>of a naive unfold functor.</figcaption>
+    <figcaption>Fig.4 - The declaration and definition <br>of a naive unfold functor.</figcaption>
   <figure>
     $$\begin{align*}
   unfold\text{ }&::\text{ }c\text{ }s\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\})\rightarrow [r]\\
@@ -271,7 +272,7 @@
   <p>
     Please remember that functors were originally defined in the Category Theory branch of mathematics. A 
     category can be thought of as a grouping of things. Any category may have 0 or more elements. That's 
-    why functors in functional programming always act on lists. Those lists may have 0, 1, or more elements, 
+    why functors in functional programming often act on lists. Those lists may have 0, 1, or more elements, 
     but the functor applies a list of functions to a list of values of some type. The items in the list may  
     also be of type \(function\) since functions are first-class citizens.&#128526;
   </p>

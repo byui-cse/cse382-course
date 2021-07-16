@@ -47,18 +47,18 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 05</h1>
+    <h1>CSE 481: Week 05</h1>
     <p>Ponder and Prove</p>
   </div>
 </div>
 <h2>Task 1</h2>
 <p>
-   Following the pseudocode functional design in the reading, write a version of the \(chain\) function.
+   Following the pseudocode functional design in the reading, write a version of the \(chain\) function. Use your <kbd>chain</kbd> implementation to chain a function called multiple times. Compare the speed of your <kbd>chain</kbd> function with using the fold pattern to do chaining of the same set of links. When doing speed tests, the work done by the function should be minimal so you don't mask the differences in speed by what your function is doing.
 </p>
 
 <h2>Task 2</h2>
 <p>
-    Given a list of tuples where each tuple,\(\{month,year,sales\_region,gross\_sales\}\), describes sales for a company in a given region, month, and year, write code to generate a significant list of simulated sales-tracking-tuples. Use your \(chain\) function implementation to find the total sales by year and region.
+    Given a list of tuples where each tuple,\(\{month,year,sales\_region,gross\_sales\}\), describes sales for a company in a given region, month, and year, write code to generate a significant list of simulated sales-tracking-tuples. Use either your \(chain\) function implementation or the <kbd>fold</kbd> BIF from your language to find the region with the highest total sales by year from the data in your simulated list.
 </p>
 <h2>Task 3</h2>
 <p>
@@ -66,7 +66,7 @@
 </p>
 <h2>Task 4</h2>
 <p>
-    Find some code you've written in the past that could be improved by applying currying. Consider why it would be an improvement. Write rules you come up with regarding when currying is appropriate and when it is not.
+    Find some code you've written in the past that could be improved by applying chaining. Consider why it would be an improvement. Write rules you come up with regarding when chaining is appropriate and when it is not.
 </p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

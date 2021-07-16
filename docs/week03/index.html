@@ -60,7 +60,7 @@
   <h2>The Functor Pattern</h2>
   <p>
     Functor is probably a word you haven't run into before. In the functional programming world it is used a lot 
-    so it would be a good idea to start understanding and using it. Now, you could go out and do a lot of googling 
+    so it would be a good idea for you to start understanding and using it. Now, you could go out and do a lot of googling 
     to try and come up with some definitions of what a functor is with relation to computer science in general and 
     functional programming specifically. Instead of doing so, how about we provided a few definitions used in this 
     course along with the bodies of knowledge the definitions come from. When you feel you're ready to tackle these, go ahead 
@@ -134,7 +134,7 @@ solved. In problem solving space, this approach is called
 <h3>Functor (Functional Programming)</h3>
 <p>
   The definition of <a href="https://en.wikipedia.org/wiki/Functor_(functional_programming)">Functor in Functional 
-  Programming</a> and other types of computer languages is inspired by Category Theory. There are subtle 
+  Programming</a> and other types of computer languages is inspired by, but not the same as, that used in Category Theory. There are subtle 
   differences between the two, but that is beyond the scope of this class. If you are interested in a mathematical 
   perspective on functional programming functors, there is a short succinct statement on 
   <a href="https://cs.stackexchange.com/questions/127510/functional-programming-and-category-theory">stackExchange</a> 
@@ -170,8 +170,8 @@ solved. In problem solving space, this approach is called
 </p>
 <h4>Map</h4>
 <p>
-  An application of our functor definition you are familiar with is the map BIF (Built In Function). Here, a list 
-  and a function to be used to modify each element of the list are passed as parameters. The value of the map 
+  An application of our functor definition you are familiar with is the <kbd>map</kbd> BIF (Built In Function). In <kbd>map</kbd>, a list 
+  and a lambda function used to modify each element of the list are passed as <kbd>map's</kbd> two parameters. The value of the map 
   functor is a new list containing modified versions of each element of the original list as you see in the first 
   line of Figure 1.
 </p>
@@ -207,8 +207,8 @@ solved. In problem solving space, this approach is called
 </p>
 <h4>Filter</h4>
 <p>
-  The filter BIF is significantly different. Instead of a 1-to-1 correspondence between the 
-  list passed as a parameter and the list that is the value of filter, the value list can, but does 
+  The <kbd>filter</kbd> BIF is significantly different. Instead of a 1-to-1 correspondence between the 
+  list passed as a parameter and the list that is the value of <kbd>filter</kbd>, the value list can, but does 
   not have to, have fewer elements. The value list contains only those elements of the original list that 
   cause the lambda parameter to return \(true\). 
 </p>
