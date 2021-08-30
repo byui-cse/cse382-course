@@ -48,10 +48,14 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 180: Week 07</h1>
+    <h1>CSE 382: Week 07</h1>
     <p>Ponder and Prove</p>
   </div>
 </div>
+\(
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
 <h1>Tasks</h1>
 <h2>Task 1</h2>
 <p>
@@ -60,9 +64,59 @@
 <h2>Task 2</h2>
 <p>
     <ol>
-        <li>Write pseudocode for a stream that can be access by multiple, concurrently running functions. The stream should be a simple, alpha-numeric, not numeric, counter. Such a stream could be used to provide unique id's for rows in massive databases.</li>
-        <li>Write the code for this counter in your language.</li>
-        <li>Test your counter using multiple concurrently running functions.</li>
+        <li>
+            <p>
+                Write pseudocode for a stream that can be access by multiple, concurrently running functions. The stream should be a simple, alpha-numeric, not numeric, counter. Such a stream could be used to provide unique id's for rows in massive data  permutations. A good way to do this could be using <a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm#cite_note-2">Heap's Algorithm</a> , not a heap data structure, to generate permutations.
+            </p>
+            <p>
+                To aid you in this, here is functional style pseudocode for Heap's Algorithm. It has two sub-algorithms used to make it easier to read. The third is an algorithm for swapping elements in a functional list. The complexity of the swapping sub-algorithm is \(\mathcal{O}(n)\) assuming the <kbd>split</kbd> BIF for your language is also \(\mathcal{O}(n)\).
+            </p>
+            \[
+    \begin{align*}
+    &\text{%%Heap's algorithm for generating a list of permutations}\\
+    heaps\_algo\text{ }&::\text{ }Int\text{ }[a]\text{ }[a]\rightarrow [a]\\
+    \\
+    heaps\_algo\text{ }&::\text{ }1\text{ }permutation\text{ }accum\rightarrow\\
+        &[permutation]\doubleplus accum;\\
+    heaps\_algo\text{ }&::\text{ }k\text{ }permutation\text{ }accum\rightarrow\\
+        &perms\_for\text{ }::\text{ }k\text{ }1\text{ }(heaps\_algo\text{ }::\text{ }k-1\text{ }permutation\text{ }accum).
+    \\
+    \\
+    &\text{%%the perms_for sub-algorithm}\\
+    perms\_for\text{ }&::\text{ }Int\text{ }Int\text{ }[a]\rightarrow [a]\\
+    \\
+    perms\_for\text{ }&::\text{ }k\text{ }i\text{ }accum\text{ }when\text{ }k = i\rightarrow\\
+        &accum;\\
+
+    perms\_for\text{ }&::\text{ }k\text{ }i\text{ }accum\text{ }when\text{ }k\pmod 2 = 0\rightarrow\\
+    &[h\mid \_] = accum\\
+    &perms\_for\text{ }::\text{ }k\text{ }(i+1)\text{ }(heaps\_algo\text{ }::\text{ }k-1\text{ }(swap\text{ }::\text{ }i,k,h)\text{ }accum)\\
+
+    perms\_for\text{ }&::\text{ }k\text{ }i\text{ }accum\rightarrow\\
+    &[h\mid \_] = accum\\
+    &perms\_for\text{ }::\text{ }k\text{ }(i+1)\text{ }(heaps\_algo\text{ }::\text{ }k-1\text{ }(swap\text{ }::\text{ }1,k,h)\text{ }accum)\\
+    \\
+    \\
+    &\text{%%the swap sub-algorithm}\\
+    swap\text{ }&::\text{ }a\text{ }a\text{ }[a]\rightarrow [a]\\
+    \\
+    swap\text{ }&::\text{ }a\text{ }b\text{ }list\rightarrow\\
+    &lesser = min\text{ }::\text{ }a\text{ }b\\
+    &greater = max\text{ }::\text{ }a\text{ }b\\
+    &(head,[elem1\mid t1]) = split\text{ }::\text{ }(lesser - 1)\text{ }list\\
+    &(mid,[elem2\mid end]) = split\text{ }::\text{ }(greater-lesser-1)\text{ }t1\\
+    &head\doubleplus elem2\doubleplus mid\doubleplus elem1\doubleplus end.
+
+    \end{align*}
+    \]
+    <h4>Hint</h4>
+    <p>
+        You can listen for a request in any function called by your process. 
+    </p>
+        </li>
+        <li>Use a modified version of Heap's Algorithm to write code in you language that streams single permutations using lazy, one-at-a-time generation per request.</li>
+        <li>Test your counter serially.</li>
+        <li>Test your counter concurrently.</li>
     </ol>
 </p>
 <h2>Task 3</h2>

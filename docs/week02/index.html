@@ -30,7 +30,7 @@
 		<p class="style1">- Kernighan & Pike</p>
 	</blockquote>
 <p>
-  Lists are a fundimental data structure in all strongly functional programming languages. Because of this it is 
+  Lists are a fundamental data structure in all strongly functional programming languages. Because of this, it is 
   very important to understand the patterns functional languages use to deal with the many ways lists need to be 
   used when writing code. There are many postings on the internet by people who don't understand that 
   functional programming languages work with lists differently than other languages. Because of this lack of 
@@ -58,9 +58,9 @@
 </p>
 <h2>Internal Pieces</h2>
 <p>
-  All languages, functional or <a href="https://stackoverflow.com/questions/17826380/what-is-difference-between-functional-and-imperative-programming-languages">imperative</a>, implement lists in similar ways using nodes and edges. You may recognize these terms from  lists, trees, and graphs 
-  in your study of Discrete Mathematics or Algorithms. There is a difference between those definitions and the ones 
-  used in computing.
+  All languages, functional or <a href="https://stackoverflow.com/questions/17826380/what-is-difference-between-functional-and-imperative-programming-languages">imperative</a>, implement lists in similar ways by simulating mathematical nodes and edges. You may recognize these terms from working with lists, trees, and graphs 
+  in your study of Discrete Mathematics, algorithms, or other mathematical reading you have done. Yet, there is a difference between those mathematical definitions and the ones 
+  implemented in computing.
 </p>
 	<aside class="right">
 	<figure>
@@ -73,10 +73,10 @@
   that indicates the location of the next node in the list. Anything can be a value in a list element. It could be 
   data as simple as a single character or as complicated as you can imagine. Many languages allow you to store 
   different types of elements in the same list. Others require all elements of the list to be of the same 
-  type. Regardless of if your language's list contents are restrictive or expansive, the list nodes behave the same.
+  type. Regardless of if your language's list content rules are restrictive or expansive, the list nodes have a common, basic structure.
 </p>
 <p>
-	 As with all things in computing, nodes and their associated lists need to be used with discression. If you 
+	 As with all things in computing, nodes and their associated lists need to be used with discretion. If you 
 	 don't need a list, don't use one. When you need a list, don't try to force something else into your 
 	 code. This is a good pattern to follow for all of the data structures you will learn about during this semester 
 	 and beyond.
@@ -88,25 +88,25 @@
 	</figure>
 	</aside>
 <p>
-	In this course, diagrams will use the arrow to indicate that a node has a next node. If there is no arrow, 
+	In this course, diagrams of collections using nodes will use the arrow to indicate that a node has a next node. If there is no arrow, 
 	there is no next node and the end of the list has been reached. Figure 2 follows this pattern. In the figure 
 	there are two nodes making up the entire list. The characters 'f' and 'a' have been stored in the list. The 
 	node containing the element 'a' is the next node for the node containing the element 'f'. 
 </p>
 <p>
 	It is useful to understand how these nodes are used to make lists in both imperative and functional programming 
-	languages. Especially when you are trying to decide what language or type of language would be good to select 
+	languages. Especially when you are trying to decide what language or type of language would be a good option 
 	for writing all or part of a specific application.
 </p>
 <h3>Functional Programming Lists</h3>
 <p>
-	A fundimental principle of functional programming is that once a value has been stored in a variable, the value 
+	A fundamental principle of functional programming is that once a value has been stored in a variable, the value 
 	can not be changed. Values can be anything. That includes lists. Yet lists need to grow, merge, and get values 
 	removed from them. There appears to be a problem. How can the modification needs of lists align with the 
 	principle that values are fixed?
 </p>
 <p>
-	The easy, but computationally and memory expensive, way is to make a copy of the list every time you want to 
+	The naive, easy, but computationally and memory expensive, way is to make a copy of the list every time you want to 
 	change it. Ouch. This is not a good choice. The creators of functional programming languages know this. That's 
 	why they got outside of the box and found a solution.
 </p>
@@ -165,15 +165,15 @@
 <p>
 	Notice that list N still has a value of 0 in its third node, not 6. That's because all modifications for 
 	lists in functional programming languages, including the value change done above, are non-destructive. 
-	Any change you make doesn't destroy the original list unlike non-functional languages like Python. 
+	Any change you make doesn't destroy the original list unlike non-functional languages such as Python. 
 	Non-destructive list modification is very helpful, especially when you are writing concurrent code. 
 	(More on that later in another course.)
 </p>
 
 <aside class="left">
 	If you are interested in concurrent computing, and let's face it...who isn't &#128526, BYU-Idaho offers 
-	a course subsequent to this one you can take.
-	<a href="">Put a link here to the massively parallel course description</a> 	
+	a course subsequent to this one you can take. It is
+	<a href="https://www.byui.edu/catalog#/courses/SkofRwwbI?bc=true&bcCurrent=Massively%20Parallel%20Computation&bcGroup=Computer%20Science&bcItemType=Courses">CSE 481</a>. 	
 </aside>
 <h4>Appending a Value to a List</h4>
 <p>
@@ -239,7 +239,7 @@
 	Before diving in please understand that values, including lists, in non-functional programming languages 
 	can be changed. Take Python as an example. There you can change the values of variables all you want. Also, 
 	when you use list methods like append, remove, pop, sort, and others, the original list is changed. This 
-	is a destructive use of the list since the list as it originally was is now gone. Because of this, the 
+	is a destructive use of the list since the list as it was originally no longer exists. Because of this, the 
 	images below will have a before and after section showing you how the list(s) have changed.
 </p>
 <h4>Appending Lists</h4>
@@ -299,7 +299,7 @@
 </p>
 <h4>Appending a Value to a List</h4>
 <p>
-	It is no suprise that appending the value 75 to N is also destructive<kbd>N:75&#10230;N</kbd>.
+	It is no suprise that appending the value 75 to N is also destructive, <kbd>N:75&#10230;N</kbd>.
 </p>
 <figure>
   <img src="images/non-functional_append_list.png" alt="No nodes are duplicated only the one originally 
@@ -313,8 +313,8 @@
 
 <h4>Removing Values</h4>
 <p>
-	Once again, let's use <kbd>h</kbd> to represent the head value. Being destructive, this behaviour 
-	does not produce a tail,<kbd>f::N &#10230;h|N</kbd>.
+	Once again, let's use <kbd>h</kbd> to represent the head value. Being destructive, this behavior 
+	does not produce a tail, <kbd>f::N &#10230;h|N</kbd>.
 </p>
 <p>
 	In this case, the N variable is changed to refer to what was the second node in the list and the 
@@ -344,7 +344,7 @@
 	example sorting and inserting or removing something from the middle of a list, but those behaviours 
 	follow the same sort of things you've seen here in this reading. There is a lot that you've been 
 	shown here. It will probably take a good amount of time with you playing around with sketches of lists 
-	to more completely understand what is going on with lists.
+	to more completely understand the implications of how functional and non-functional lists are treated in various languages.
 </p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
