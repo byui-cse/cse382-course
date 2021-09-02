@@ -5,26 +5,48 @@
 
 <head>
         <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
+        <style>
+          #course_tracker {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          #course_tracker td, #course_tracker th {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+
+          #course_tracker tr:nth-child(even){background-color: #f2f2f2;}
+
+          #course_tracker th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+          }
+          defn{
+            font-weight: bold;
+            font-style: italic;
+            font-size: 125%;
+          }
+        </style>
 </head>
 
 <body>
 <div class="hero-image">
   <div class="hero-text">
-    <h1>Algorithmic Thinking</h1>
-    <p>CSE 180</p>
+    <h1>Functional Programming Data Structures and Patterns</h1>
+    <p>CSE 382</p>
   </div>
 </div>
 	<h1>Syllabus</h1>
 	<h3>Course Description</h3>
 	<p>
-      In this course you will have the opportunity to gain the knowledge and
-      practice required to design and apply algorithms to solve personal, spiritual,
-      and personal challenges you have in your life, and help others apply the same
-      to their lives. This course builds your ability to see yourself as a logical,
-      algorithmic thinker, with power and ability to make good, defensible decisions
-      and communicate your thinking to others, along with why the decisions you have
-      made are good.
+      In this course you will have the opportunity learn about and create code for several basic functional programming data structures and patterns. As in all languages, data structures and patterns are algorithms. In functional programming languages, the code for these consists of functions.
   </p>
+  <section>
 	<h3>Design Principles</h3>
 	<p>
       This course is based on one underlying principle; namely, that you are a
@@ -65,167 +87,165 @@
         just like you would teach someone the Gospel of Jesus Christ. Love them,
         help them find their own answers, and lead them to the scriptures.</p>
 	</p>
+  </section>
+  <section>
 	<h3>Prerequisites</h3>
-	<p>None.</p>
-	<h3>Platforms, Requirements, and Resources</h3>
 	<p>
-      You will need a laptop computer running  MacOS, Windows, or Linux.
-      Internet connectivity is also required.
+    You must have successfully completed one of the following
+   <ol>
+     <li>CSE 121A - The Clojure Language, or</li>
+     <li>CSE 121E - The Erlang Language</li>
+   </ol>
+   It is also strongly suggested, though not required, that you take CSE 381 prior to taking this class.
   </p>
-  <p>
-      There is no text, all readings are found in iLearn or the BYU-Idaho Library.
-  </p>
+  </section>
+  <section>
 	<h3>Course Outcomes</h3>
 	<p>
       When you successfully complete this course, you will be able to:
 		<ol>
-        <li>solve life-challenges where algorithmic thinking skills are needed to
-            design and create an algorithm that can then be used to inform
-            decisions or draw conclusions,</li>
-        <li>use algorithmic thinking to assess what key variables are needed and
-            to illuminate key assumptions made when creating and applying an
-            algorithm to life-challenges,</li>
-        <li>use self-designed algorithms to make informed decisions,</li>
-        <li>interpret quantitative data regarding the quality of self-designed
-            algorithms, and</li>
-        <li>communicate self-designed algorithms to others in an efficient,
-            mathematical, way.</li>
+        <li>Translate well-defined designs of several highly used, functional programming data structures such as trees, deques, etc. to working code.</li>
+        <li>Translate well-defined, highly used, functional programming patterns to working code.</li>
+        <li>Apply appropriate data structures to industry-like problems.</li>
+        <li>Apply appropriate functional programming patterns to industry-like problems.</li>
+        <li>Engage with the functional programming community to continue their growth and development as functional programming engineers.</li>
+        <li>Have an increased understanding of how functional programming is used in industry.</li>
 		</ol>
 	</p>
-	<h3>Course Structure</h3>
-	<p>
-      This is a semester-long course. In weeks 1 through 6 you will have assigned
-      readings and quizzes, and an interaction with other class members as you work
-      to understand principles of algorithms and their application. You will
-      discover and apply these algorithms in your life. In week 7 you will use what
-      you have learned to help others by finding algorithms they use in their lives
-      that they may not be aware of. In weeks 8 through 12 you will explore how to
-      evaluate the efficiency of the algorithms you discovered in weeks 1 through 6
-      to help you improve your use of them in your life. In week 13 you will explore
-      the efficiency of the algorithms you found in week 7 to help others improve
-      their lives. In week 14 you will report on the growth you have achieved over
-      the semester due to your increased understanding of algorithms.
+  </section>
+  <section>
+  <h2>Platforms, Requirements, and Resources</h2>
+  <h3>Computational Requirements</h3>
+  <p>
+      You will need a laptop computer running MacOS, Windows, or Linux.
+      Internet connectivity is also required.
   </p>
-
-	<h3>Assessments</h3>
-	<p>
-		  <ul>
-          <li>Week 1
-<p>
-You will introduce yourself to the class and ponder how you see yourself as a
-logical thinker.
-</p></li>
-         <li>Week 2 through Week 6
-<p>
-You will take a quiz after completing the assigned reading, and you will
-explore different types of algorithms.
-</p></li>
-        <li>Week 7
-<p>
-You will, as a project, discover and appropriately describe algorithms others
-use in their lives.
-</p></li>
-        <li>Week 8 through Week 12
-<p>
-You will take a quiz after completing the assigned reading, and you will
-explore how to use calculation to classify and assess algorithms by their
-efficiency.
-</p></li>
-       <li>Week 13
-<p>
-You will, as a project, correctly evaluate for efficiency algorithms you have
-discovered and described that others use in their daily educational,
-spiritual, and personal lives, and suggest improved alternatives.
-</p></li>
-       <li>Week 14
-<p>
-You will ponder your experience in the class and write a self-assessment report,
-including the final grade you will claim for the course, taking into account
-your peers&rsquo; evaluations of your work measured in percentage/letter-grade
-terms per the following section.
-</p></li>
-		</ul>
-	</p>
-	<h3>Grade Calculation</h3>
-	<p>
-
+    <h3>Behavioral Requirements</h3>
+    <ul>
+      <li> attend class, as assessments will happen in class each day that are not reproducible outside of class.</li>
+      <li>read assigned portions of the course materials before the first class each Week.</li>
+      <li>complete all team and personal assessments to deepen your understanding of selected topics.</li>
+    </ul>
+      <h3>Resources</h3>
+  <p>
+      There is no text for this course, all readings are found in iLearn.
   </p>
-  <div>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col  class="org-left" />
-<col  class="org-left" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">Percentage</th>
-<th scope="col" class="org-left">Grade</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">90 &#x2013; 100</td>
-<td class="org-left">A</td>
-</tr>
+  </section>
+  <section>
+	<h2>Course Structure</h2>
+	<p>
+      This is a semester-long course. Each week you will have reading material and a set of tasks to learn from. Each week consists of a full three class hours. During the first, new material is presented and discussed. During the second student-submitted questions regarding the new material are answered and discussed. The third day is reserved for answering any additional questions from students and completing, not starting, the team tasks for the week in a mentoring environment with the instructor as mentor.
+  </p>
+  <p>
+    To help you see and report your learning progress this table is made available to you.
+  </p>
+    <h4>Course Tracker</h4>
+  <table id="course_tracker">
+    <tr>
+      <th>Week</th><th>RD</th><th>FP1</th><th>RQ</th><th>FP2</th><th>FP3</th><th>%CU</th>
+    </tr>
+    <tr>
+      <td>01</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
 
-<tr>
-<td class="org-left">80 &#x2013; 89</td>
-<td class="org-left">B</td>
-</tr>
+    <tr>
+      <td>02</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
 
-<tr>
-<td class="org-left">70 &#x2013; 79</td>
-<td class="org-left">C</td>
-</tr>
+    <tr>
+      <td>03</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
 
-<tr>
-<td class="org-left">60 &#x2013; 69</td>
-<td class="org-left">D</td>
-</tr>
+    <tr>
+      <td>04</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
 
-<tr>
-<td class="org-left">0 &#x2013; 59</td>
-<td class="org-left">F</td>
-</tr>
-</tbody>
-</table>
-</div>
+    <tr>
+      <td>05</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
 
-  <h3>From the University Catalog</h3>
+    <tr>
+      <td>06</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>07</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>08</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>09</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>10</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>11</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>12</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr>
+      <td>13 & 14</td><td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+  </table>
+  <p>
+    The definitions for the acronyms used in the Course Tracker
+  </p>
+  <ul>
+    <li>RD - I got the reading for the week done before the first day of class for this week.</li>
+    <li>P1 - I was present and fully participated in the discussion and activities for the first class of this week.</li>
+    <li>P1 - Before the end of the day of the first class day of the week, I submitted at least one relevant question about this weeks' material.</li>
+    <li>P2 - I was present and fully participated in the discussion and activities for the second class of this week.</li>
+    <li>P3 - I was present in the classroom and fully participated with my team as we worked on completing the tasks for this week.</li>
+    <li>%CU - This is percentage of the tasks for this week that I fully participated in creating solutions for with my team and that I fully understood.</li>
+  </ul>
+</section>
+  <section>
+	<h2>Assessment</h2>
+    <h3>Late Work.</h3> 
       <p>
-          As you assess your learning for your final grade claim, apply these
-          definitions from the catalog.
+        Late work is accepted only if the reason is extraordinary, and acceptance is reached through private and prolonged negotiation. Also, you must come talk to me in person in my office (or in a zoom meeting if remote) — NOT by email, nor any other means of communication.
       </p>
-      <ul>
-          <li><p>
-              “A” represents outstanding understanding, application, and integration of
-              subject material and extensive evidence of original thinking, skillful use of
-              concepts, and ability to analyze and solve complex problems. Demonstrates
-              diligent application of Learning Model principles, including initiative in
-              serving other students.
-              </p></li>
-          <li><p>
-              “B” represents considerable/significant understanding, application, and
-              incorporation of the material which would prepare a student to be successful
-              in next level courses, graduate school or employment. The student participates
-              in the Learning Model as applied in the course.
-             <p></li>
-          <li><p>
-              “C” represents sufficient understanding of subject matter. The student
-              demonstrates minimal initiative to be prepared for class. Sequenced courses
-              could be attempted but mastering new materials might prove challenging. The
-              student participates only marginally in the Learning Model.
-              </p></li>
-          <li><p>
-              “D” represents poor performance and initiative to learn and understand and
-              apply course materials. Retaking a course or remediation may be necessary to
-              prepare for additional instruction in this subject matter.
-             </p></li>
-          <li><p>
-              “F” represents failure in the course.
-          </p></li>
-      </ul>
-  <h3>Help and Other Resources</h3>
+    <h3>Claiming a Grade</h3>
+	<p>
+    Three times during the semester, you will meet with me in my office, or via Zoom if you are part of a remote class. The purpose of this meeting is for you to present your course tracker and evidence of your learning to me. After this you will make a grade-to-date claim using your evidence to support why that grade is correct. 
+  </p>
+  <p>
+    Afterwards I will give you my thoughts on the strength of your claim. The last claim that you make, taking into account any feedback from me, will be your final grade for the course.
+  </p>
+    <h4>Grade Definitions</h4>
+  <p>
+    This class does not use the +- style of grading. Instead, use the definitions of letter grades from the University Catalog:
+    <p>
+<defn>A</defn> represents outstanding understanding, application, and integration of subject material and extensive evidence of original thinking, skillful use of concepts, and ability to analyze and solve complex problems. Demonstrates diligent application of Learning Model principles, including initiative in serving other students. Note: Notice this description of A implies that you have gone above and beyond. To claim this grade, throughout the 4 week period being reviewed, you must have consistently done things similar to what you see in the list below and recorded evidence of this behavior in your portfolio. Examples of the required types of behaviors are:
+<ul>
+  <li>teaching and/or helping others in the class but not in your group,</li>
+  <li>helping a Non-CS, Non-CE, Non-EE, Non-SE major with their home- work for a non-tech class using the principles you learned in this class,</li>
+  <li>applying what you've learned in this class in another class you are
+currently taking, and</li>
+  <li>doing work not assigned such as writing code using what you are learn-
+ing that has not been assigned, etc.</li>
+</ul>
+</p>
+<p>
+<defn>B</defn> represents considerable/significant understanding, application, and incorporation of the material which would prepare a student to be successful in next level courses, graduate school or employment. The student participates in the Learning Model as applied in the course.
+</p>
+<p>
+<defn>C</defn> represents sufficient understanding of subject matter. The student demonstrates minimal initiative to be prepared for class. Sequenced courses could be attempted, but mastering new materials might prove challenging. The student participates only marginally in the Learning Model.
+</p>
+<p>
+<defn>D</defn> represents poor performance and initiative to learn and understand and apply course materials. Retaking a course or remediation may be necessary to prepare for additional instruction in this subject matter.
+</p>
+</section>
+  <h2>Help and Other Resources</h2>
   <p>
       If any technical difficulties with your computer arise during the course,
       contact the Help Desk before contacting your instructor.
