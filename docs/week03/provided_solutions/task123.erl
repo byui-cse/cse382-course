@@ -3,10 +3,8 @@
 
 
 
-
-c_map([],_)->[];
-c_map([H|T],Mapping_fun) ->
-	[Mapping_fun(H)]++c_map(T,Mapping_fun).
+c_map(List,Predicate)->
+	[Predicate(X)||X <- List].
 
 
 encipher(String) ->
