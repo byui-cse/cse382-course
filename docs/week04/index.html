@@ -72,7 +72,7 @@
     surface area. This is true not only for clothes, paper, and and other such things, 
     but for data as well. If your code snippet, function, or application accepts a bunch of 
     data and then produces, as output, fewer computed results than the amount of data it 
-    started with, the application was a data fold. Maybe your app took in a bunch of historical data 
+    started with, your snippet, function, or application was a data fold. Maybe your app took in a bunch of historical data 
     about the weather and produced a prediction for the next few days. That app is a fold. 
 </p>
 </p>
@@ -112,7 +112,7 @@
 <p>
 
   <aside class="left_wide">
-    <figcaption>Fig. 1 - The declaration and anti-pattern definition <br>of the foldl functor.</figcaption>
+    <figcaption>Fig. 1 - The declaration and anti-pattern definition <br>of the <kbd>foldl</kbd> functor.</figcaption>
   <figure>
     $$\begin{align*}
   foldl &:: [a]\text{ } accum \text{ }(\lambda :: \text{ }a\text{ } b\rightarrow c)\rightarrow c\\
@@ -126,7 +126,7 @@
   </aside>
 </p>
 <p>
-    Let's start with the foldl function. Take a look at Figure 2. There you will see foldl's declaration states 
+    Let's start with the <kbd>foldl</kbd> function. Take a look at Figure 2. There you will see <kbd>foldl</kbd>'s declaration states 
     that the functor's set of parameters is a list, an accumulator, and a lambda function. It also states the value of foldl 
     is a single value. It is important to understand that the accumulator can be of any type but that  the type 
     of the lambda's parameter 'a' must match the type of the accumulator for the functor. Also, if the accumulator 
@@ -171,9 +171,9 @@
   </aside>
 </p>
 <p>
-    While organizing your code like it is in Figure 2 may seem to make sense, it should be avoided. Figure 2 is 
+    While organizing your code like it is in Figure 1 may seem to make sense, it should be avoided. Figure 1 is 
     included in this reading as an example of a common anti-pattern. Anti-patterns are patterns that seem good but have hidden badness. Don't use them. Instead, the temp variable should be discarded and the call to lambda 
-    should be placed in the last phrase of the clause as you see in Figure 3.
+    should be placed in the last phrase of the clause as you see in Figure 2.
 </p>
 
 <h4>foldr</h4>
@@ -193,18 +193,18 @@
 <p>
 
 <p>
-    Foldr is much like foldl. That's why the declarations of the two functors is nearly identical. The difference 
-    between the two shows up in the definitions. In the pseudocode found in Figure 4 you'll find that the major 
-    difference is how h and t are dealt with. For this bit of pseudocode t represents the last element of the list 
-    and h represents the rest of the remaining elements of the list. You'll find as you examine Figure 4 that while 
-    foldl moves from the head element to the tail element, foldr moves from the tail element to the head element. 
+    <kbd>Foldr</kbd> is much like <kbd>foldl</kbd>. That's why the declarations of the two functors is nearly identical. The difference 
+    between the two shows up in the definitions. In the pseudocode found in Figure 3 you'll find that the major 
+    difference is how <kbd>h</kbd> and <kbd>t</kbd> are dealt with. For this bit of pseudocode t represents the last element of the list 
+    and h represents the rest of the remaining elements of the list. You'll find as you examine Figure 3 that while 
+    <kbd>foldl</kbd> moves from the head element to the tail element, <kbd>foldr</kbd> moves from the tail element to the head element. 
     That's why you will see the h and t variables switching places if you compare the last clause of foldl with 
     the last clause of foldr.
 </p>
 <h3>Unfold</h3>
 <p>
     While the fold functors accumulate a list of values into a single value, unfold does the opposite. Unfold 
-    produces a potentially infinite set of results from a set of initial values called the seed. That set may 
+    produces a potentially infinite set of results from a set of initial values called the seed. This seed set may 
     have only one element.
 </p>
 </p>
@@ -216,13 +216,13 @@
   </aside>
 <p>
 <p>
-    You've used unfold functors before. Think of when you've needed a pseudo-random number. When you used 
+    You've used <kbd>unfold</kbd> functors before. Think of when you've needed a pseudo-random number. When you used 
     a function to get that number, you used an unfold functor. Random number generators need a seed to 
     get started. You may not have needed to provide a seed value since there is usually a fa&ccedil;ade function provided 
     by the library writers that, by default, uses the current time in milliseconds as the seed. 
 </p>
 <p>
-    In many languages, unfold functors that produce random numbers are called Random Number Streams since 
+    In many languages, <kbd>unfold</kbd> functors that produce random numbers are called Random Number Streams since 
     after the initial seed is provided, repeated calls to the functor produces a predictable, calculable 
     result. In other words, if the same seed is used for two different calls of the functor, the same 
     results are generated in the same order.
@@ -245,16 +245,16 @@
   </aside>
 </p>
 <p>
-    The version of unfold in Figure 5 is naive. It is not an infinite stream. Later in the course unfold is 
-    revisited when the lazy execution and stream patterns are covered in depth. Those patterns will let you 
-    create a non-naive, infinite unfold functor. For now, this version of unfold will suffice with <kbd>c</kbd> 
+    The version of unfold in Figure 4 is naive. It is not an infinite stream. Later in the course <kbd>unfold</kbd> is 
+    revisited when the lazy execution and stream patterns are covered in depth. Those patterns will show you how to 
+    create a non-naive, infinite <kbd>unfold</kbd> functors. For now, this version of <kbd>unfold</kbd> will suffice with <kbd>c</kbd> 
     being the current count and <kbd>s</kbd> being the current state.
 </p>
 <p>
     Notice that in this case, the second phrase of the second clause of the unfold functor is not an anti-pattern. 
     It isn't an anti-pattern because the result of the call to the lambda function can not be directly 
-    included in the next call to the functor. One of the elements of the 2-tuple that is the value of the lambda 
-    function needs to be prepended to the list that is the value of the unfold functor.
+    included in the next call to the functor. Why?? Because, <kbd>b</kbd>, one of the elements of the 2-tuple that is the value of the lambda
+    function, needs to be prepended to the list that is the value of the <kbd>unfold</kbd> functor.
 </p>
 <p>
     As an oversimplified example of how the naive unfold could be used, think of generating the first 50 even numbers. 
