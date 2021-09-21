@@ -4,7 +4,7 @@
 
 ;tasks 1, 2, and 3
 (defn c-foldl [list accumulator fold-func]
-  "A version of the fold left pattern.
+  "A version of the fold left functor pattern.
    Arguments:
      - a list of any type of elements that is to be folded into 1 value
      - an initial value to which is merged the elements of the list
@@ -26,7 +26,8 @@
                                   (apply str [a b c]))))))
 
 (defn build-text []
-  "A testing function to build a text string from a set of Three Letter Acronyms."
+  "An exercising function used to build a 
+  text string from a set of Three Letter Acronyms"
   		(c-foldl (build-TLAs) " " #(str/join " " [%1 %2])))
 
 (defn speed-test []

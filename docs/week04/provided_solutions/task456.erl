@@ -3,18 +3,28 @@
 
 
 
-
+%%
+%% An implementation of the fold right functor pattern.
+%%
+%% Parameters - 1)A list of any type of elements that is to be folded into 1 value
+%%              2)An initial value to which is merged the elements of the list
+%%				3)A function used to merge the accumulator and each element of the list
+%% Value - A single value of some type
+%% Complexity - O(n*u) where u is the complexity of the fold-func function
+%%
 c_foldr([],Accume,_)->Accume;
 c_foldr(List,Accume,Fold_fun) ->
 	c_foldr(lists:droplast(List),Fold_fun(Accume,lists:last(List)),Fold_fun).
 
-
+%% An exercising function used to build a 
+%% text string from a set of Three Letter Acronyms.
 build_text() ->
 	%I have chosen to use 2000 random Three Letter Acronyms (TLAs) as my words
 	TLAs = lists:sublist(list_lib:shuffle([[A,B,C]||A<-lists:seq(65,90),B<-lists:seq(65,90),C<-lists:seq(65,90)]),2000),
 	%to do the concatenation, you probably would want to use iolist concatenation instead of regular string concatenation.
 	c_foldr(TLAs,"",fun(Accume,C)-> C++" "++Accume end).
 
+%%A testing function to display the speed of c_foldr relative to the native list:foldr function
 speed_test() ->
 	TLAs = lists:sublist(list_lib:shuffle([[A,B,C]||A<-lists:seq(65,90),B<-lists:seq(65,90),C<-lists:seq(65,90)]),2000),
 	

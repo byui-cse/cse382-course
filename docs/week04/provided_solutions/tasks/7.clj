@@ -2,7 +2,7 @@
 
 
 (defn c-unfold [count state unfold-func]
-  "A naieve implementation of unfold. This version is 
+  "A naive implementation of the unfold functor pattern. This version is 
    very limited and should not be used in production.
    Arguments:
      - the number of items to be generated
@@ -30,6 +30,6 @@
   {:cur-count (- count 1) :cur-state (+ state 1)})
 
 (defn test-behavior []
-  "A function to begin testing the c-unfold function"
+  "A function to begin exercising the c-unfold function"
   (let [gen-list (c-unfold 50 0 test-predicate)]
     (and (= (count gen-list) 50) (= (reduce + 0 gen-list) 1225))))

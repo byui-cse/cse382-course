@@ -8,7 +8,7 @@
 ;tasks 4, 5, and 6
 (defn c-foldr [list accumulator fold-func]
   (t123/c-foldl (reverse list) accumulator fold-func))
-"A version of the fold right pattern.
+"A version of the fold right functor pattern.
    Arguments:
      - a list of any type of elements that is to be folded into 1 value
      - an initial value to which is merged the elements of the list
