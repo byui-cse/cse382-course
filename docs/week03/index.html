@@ -53,6 +53,13 @@
     <p>The Functor Pattern Part 1: map and filter</p>
   </div>
 </div>
+\(
+\newcommand\when{\text{ } when\text{ }}
+\newcommand\otherwise{\text{ } otherwise\text{ }}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
   <blockquote class="style1">
     <span>...every sufficiently good analogy is yearning to become a functor.</span>
     <p class="style1">- John Baez</p>
@@ -218,12 +225,10 @@ solved. In problem solving space, this approach is called
   <figure>
     $$\begin{align*}
   filter &:: [a]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow[b]\\
-  filter &:: [a]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow [\text{ }]\\&\text{ }when\text{ }[a]\text{ is empty };\\
+  filter &:: [a]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow [\ ]\ \quad when\text{ }[a]\text{ is empty };\\
   filter &:: [h\mid t]\text{ }(\lambda :: a\rightarrow Boolean)\rightarrow\\
-  &[h]:filter\text{ }t\text{ }(\lambda :: a\rightarrow Boolean)\\
-  &when\text{ }\lambda\text{ }a = true\\
-  &filter\text{ }t\text{ }(\lambda :: a\rightarrow Boolean)\\
-  &when\text{ }\lambda\text{ }a = false.
+  &[h]\doubleplus filter\text{ }t\ \lambda\quad when\ \lambda\ h = true\\
+  &filter\text{ }t\ \lambda\quad when\text{ }\lambda\ h = false.
   \end{align*}
   $$ 
   </figure>
