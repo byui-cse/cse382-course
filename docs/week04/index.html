@@ -278,14 +278,13 @@
   </p>
   <h3>Laws that Determine if Something is a Functor</h3>
   <ol>
-    <li>\(map\text{ }::\text{ }a\text{ }id = a\) <p>
-      This rule states that the functor must be able to map an identity function to a value and not change 
-      the value. The value may be a list of values or any other grouping.
+    <li>\(map\text{ }::\ a\ id = a\) <p>
+      This rule states that the potential functor must be able to apply an identity function to an item and the value of the functor be the same as the item. The item may be a single item or any grouping of items.
     </p></li>
     <li>
-      \(map\text{ }::\text{ }a\text{ }(f\circ g) = (map\text{ }::\text{ }a\text{ }f)\circ (map\text{ }::\text{ }a g)\)<p>
-        This rule states that the functor must be able to apply a composed function and achieve the same 
-        results as applying the individual functions individually.
+      \(map\ ::\ a\ (f\circ g) = (map\text{ }::\ a\ f)\circ (map\ :: a\ g)\)<p>
+        This rule states that the potential functor must be able to apply a composed function and achieve the same 
+        results as applying the individual functions separately and then composing their values.
       </p>
     </li>
   </ol>
