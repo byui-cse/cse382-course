@@ -98,18 +98,18 @@
   </aside>
   <p>
   <p>
-    Say you had two functions, \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). 
+    Say you had two functions, \(g\ ::\ a\rightarrow b\) and \(f\ ::\ b\rightarrow c\). 
     If you call \(g\) and then pass the result to \(f\) you've composed the two functions. You may have used an intermediate 
     variable when you've dont this, or maybe you didn't. It makes no difference. You did function composition.
   </p>
   <p>
-    Here is one common way to express that composition. \(f\circ g\). Now, if you look about it, \(f\circ g\) could 
+    Here is one common way to express that composition. \(f\circ g\). Now, if you think about it, \(f\circ g\) could 
     be thought of as just another function. You could have written one function and included the code from \(f\) 
     and \(g\) in it. It would, more than likely, be bad to do so...but you could have. So you can view \(f\circ g\) 
     as if it was a function named \(h\) and \(h\) would be equivalent to  \(f\circ g\), or stated more succinctly, \(h\equiv 
-    f\circ g\). Remember that \(g\text{ }::\text{ }a\rightarrow b\) and \(f\text{ }::\text{ }b\rightarrow c\). It then follows that \(h\) has a parameter of type \(a\), a value of type \(c\) and a declaration of \(h text{ }::
-    \text{ }a\rightarrow c\). As \(h\equiv 
-    f\circ g\), it follows that \(f\circ g\text{ }::\text{ }a\rightarrow c\).
+    f\circ g\). Remember that \(g\ ::\ a\rightarrow b\) and \(f\ ::\ b\rightarrow c\). It then follows that \(h\) has a parameter of type \(a\), a value of type \(c\) and a declaration of \(h\ ::
+    \ a\rightarrow c\). As \(h\equiv 
+    f\circ g\), it follows that \(f\circ g\ ::\ a\rightarrow c\).
 
   <p>
     It is common among programmers to compose functions where the values of the functions are different. You've 
@@ -122,38 +122,42 @@
   
   <h2>Monads</h2>
   <p>
-    Functional programming doesn't allow side effects. Users, databases, web access points and any other type of 
-    input or output are all side effects. Monads allow you to write composable 
-    functions that access these types of behaviors. Monoids just can't pull that off. Another ability of monads is 
-    they can be used to compose functions that add or update <a href="https://www.lifewire.com/metadata-definition-and-examples-1019177">meta-data</a>  regarding the data.
+    Monads are all about meta-data. Meta-data is data about the data. For example, consider the list \([1,2,3,4,5]\). One piece of meta-data describing the list is its length, \(5\). Another could be its average, or its sum, or anything else that is important to know regarding lists in your application.
+  </p>
+  <p>
+    As pieces of data move through your application, meta-data about them can be passed with them if the data and the meta-data are included together in some combined type like a 2-tuple, 3-tuple, n-tuple, dictionary, list, tree, etc. One common piece of meta-data is whether a computation worked or failed. Examples of needing this meta-data could be when you are accessing data from or storing data in untrustworthy locations such as databases, users, files, or any other data source. These data storage and source items are side effects, though monads can be used for much more than dealing with side effects.
+  </p>
+  <p>
+    Since users, databases, web access points and any other type of 
+    input or output are all side effects and are all untrustworthy it would be nice to know if the request for storage or access of data worked or failed. You can write a monad type a and a set of functions who's values are the monad type to help you more readily deal with this situation. Monoids just can't pull that off. Another ability of any monad you create is the functions that are part of that monad can be combined together in an way that is similar to function composition.
   </p>
   
   <p>
-    Monads are functions that have a single parameter, just like monoids do. However, their value is different. 
-    A monoid has a description like this. \(f\text{ }::\text{ }a\rightarrow b\). A function that is part of a 
-    monad has a description that looks like this. 
-    \(f\text{ }::\text{ }a\rightarrow Mb\) There is that small but very important change from \(b\) to 
+    Let's first look at monad consisting of a generic monad type and a set of single parameter functions who's value is that monad type.
+    As you read earlier, a monoid has a description like this \(f\ ::\ a\rightarrow b\). A function that is part of a 
+    monad has a description that looks like this 
+    \(f\ ::\ a\rightarrow Mb\). There is that small but very important change from \(b\) to 
     \(Mb\). What does that change mean? What is the meaning of \(M\)?
   </p>
 
   <aside class="right">
   <figure>
-    <dfn>Monad Pattern</dfn> - a group of unary functions that are closed under binding, one of 
+    <dfn>Monad Pattern</dfn> - a type and a group of unary functions that produce that type which are closed under binding, one of 
     which is an identity function, to reduce the amount of complicatedness caused by side effects in
     applications.
   </figure>
     <figcaption>Fig. 2</figcaption>
   </aside>
   <p>
-    Those are two very good questions. Let's start by defining \(Mb\). In the above example, \(Mb\) is a \(function\). 
-    It is a function that builds a value of type \(b\). The \(Mb\) function is specific to the need and is written by you. It may be 
-    code that accesses a database to build the \(b\). It may be code that gets data from the user to build the \(b\). 
-    It may be code that writes meta-data associated with the data to disk concurrently and builds a \(b\). It can be A LOT of 
-    different things. But what it does is build an \(b\). That's why \(Mb\) is referred to as a constructor function.
+    Those are two very good questions. Let's start by defining \(Mb\). In the above example, \(Mb\) is some type of wrapper, of your choice, around \(b\). The \(Mb\) could be a 2-tuple, a 3-tuple, a n-tuple, a dictionary, list, or any other containing type as discussed earlier. 
+    \(Mb\) is specific to the need and is designed and written by you. It may be 
+    the result of accessing a database to build the \(Mb\). It may be the result of getting data from the user to build the \(Mb\). 
+    It may be the result of code that calculates meta-data from the data and builds a \(Mb\). It can be A LOT of 
+    different things.
   </p>
   <p>
     For functions in a monoid, their value is a direct computation resulting from the value of the parameter. 
-    For functions in a monad, their value is a function that is builds and has as its value a \(b\). How the \(Mb\) does this varies depending on the value of the parameter of the function in the monad. 
+    For functions in a monad, their value is a wrapped element \(Mb\). How these functions do this varies depending on what the types of the parameters of the monadal functions. 
     Reread the two previous sentences many times until you understand the difference..because they are 
     significantly different.
   </p>
@@ -162,79 +166,99 @@
   </p>
   <p>
     \(\begin{align*}
-    f\text{ }&::\text{ }a\rightarrow Mb\\
-    g\text{ }&::\text{ }b\rightarrow Mc\\
-    h\text{ }&::\text{ }c\rightarrow Md\\
+    f\ &::\ a\rightarrow Mb\\
+    g\ &::\ b\rightarrow Mc\\
+    h\ &::\ c\rightarrow Md\\
 
     \end{align*}\)
   </p>
   <p>
     Notice that it appears that you might be able to compose these functions together. That appearance is 
     a lie.&#128561; They can't be composed because composition requires the value of the first function to match the 
-    type of the second. The constructor \(Mb\) is not the same type as \(b\). Therefore, \(Mb\) can not 
-    be passed to \(g\text{ }::\text{ }b\rightarrow Mc\), regardless of what \(Mb\) does under 
+    type of the second. The monad type \(Mb\) is not the same type as \(b\). Therefore, \(Mb\) can not 
+    be passed to \(g\ ::\ b\rightarrow Mc\), regardless of what \(Mb\) does under 
     the hood. Composition is out! What, then, can we do to link these functions together in a way somewhat 
     similar to composition with monoids?
   </p>
   <h3>Binding</h3>
   <p>
     For a monad to be a monad, the functions making up the monad must be closed under what is called binding. To 
-    make it easier to understand binding, we'll use a symbol to represent binding, \(\ggg \).
+    make it easier to understand binding, we'll use this symbol, \(\ggg \), to represent binding.
   </p>
   <p>
-    \((f\ggg g\ggg h)\text{ }::\text{ }a\rightarrow Md\)
-  </p>
-
-  <p>
-    Notice the similarities and differences between this and the composition of three similar monoidal functions.
-    \((f\circ g\circ h)\text{ }::\text{ }a\rightarrow d\)
+    Consider the functions \(f,g\), and \(h) above. Binding these three functions would result in the following situation.
   </p>
   <p>
-    One major difference is that functions bound together have as their value a constructor, not a computed value. 
-    That constructor, being a function, can then be passed around and the actual computation can be delayed under 
-    one very common condition, the composition is often done inside a lambda function.
+    \((f\ggg g\ggg h)\ ::\ Ma\rightarrow Md\)
   </p>
   <p>
-    What then does the function declaration look like for this mysterious bind function? Well...one declaration 
-    that could be used looks like this. It binds two functions \(f\) and \(g\) and has an initial parameter, \(a\).
+    Its as if there was a function that had a parameter that was \(a\) and had a value that was \(Md\), though no such function exists. In this way it is similar to function composition.
   </p>
 
   <p>
-    \(bind\text{ }::\text{ }a\text{ }f\text{ }g\rightarrow (\lambda\text{ }::\text{ }a\rightarrow Mc) \)
+    Notice the similarities and differences between binding and the composition of three similar monoidal functions.
+    \((f\circ g\circ h)\ ::\ a\rightarrow d\)
   </p>
   <p>
-    The value of the \(bind\) function is a lambda that has a single 
-    parameter that is of the initial data type and has a value that is a constructor.
+    One major difference is that functions bound together have as their value a monadal type, not just a raw computed value.
   </p>
   <p>
-    This is fine and dandy, but look what it would look like to use. Imagine that a is a url string. The code 
-    to bind the three functions \(f, g, \text{ and } h\) is this.
+    What then does the function declaration look like for this mysterious bind function? Well...monads have to be designed for specific situations. Let's design a bind function for a monad that helps us deal with successful vs unsuccessful computations. Let's call this the <kbd>maybe</kbd> monad. Let's have the monad type for <kbd>maybe</kbd> be a 2-tuple where the first tuple element is either \(ok\) or \(fail\) indicating success or failure. Bind, in this case, is then
+  </p>
+
+  <p>
+    \(\begin{align*}
+    maybe\_bind\ ::&\ Ma\ f\rightarrow\\
+    &Ma\looparrowright \{ok\_fail\}\\
+    &case\\
+    &\quad ok\_fail = ok\rightarrow\\
+    &\quad\quad q\ a\\
+    &\quad otherwise\rightarrow \{fail,a\} 
+    \end{align*}\)
   </p>
   <p>
-    bind("http://www.somename.com", h, bind(url,f,g))
+    The value of the \(maybe\_bind\) function is the value of the \(a\) function which is any of the monadal functions, \(f,g\), or \(h\) defined above.
   </p>
   <p>
-    Ughhh! That's a variation of the example of ugly code from week 05!&#128552; Also, since the monad could consist of any number of functions, not just the three in this example, this version of \(bind\) gets even uglier to use as more functions are bound. Let's fix it by applying the same solution 
-    we used in week 05. Currying!&#129395; 
+    For <kbd>maybe</kbd> to be a monad, there must also be an \(id\) function(see the rules below) that wraps raw data in a monad type. For the <kbd>maybe</kbd> id function is
   </p>
   <p>
-    Now the declaration and definition of <kbd>bind</kbd> looks like this
+    \(maybe\_id\ ::\ a\rightarrow Ma\)
   </p>
   <p>
-    \(
-    \begin{align*}
-    bind\text{ }&::\text{ }a\rightarrow (\lambda\text{ }::\text{ }f)\\
+    for any appropriate type.
+  </p>
+  <p>
+    These functions are fine and dandy, but look what it would look like to use them. Imagine that a is a URL string. The code 
+    to bind the three functions \(f, g, \text{ and } h\) in that order with the URL is this.
+  </p>
+  <p>
+    \(maybe\_bind\ ::\ (maybe\_bind\ ::\ (maybe\_bind\ ::\ (maybe\_unit\ ::\ \text{"http://www.somename.com"}) f) g) h\).
+  </p>
+  <p>
+    Ughhh! That's a variation of the example of ugly code from week 05!&#128552; Also, since the monad could consist of any number of functions, not just the three in this example, using \(maybe\_bind\) gets even uglier to use as more functions are bound. Let's fix it by applying the same solution 
+    we used in week 05. Chaining!&#129395; 
+  </p>
+  <p>
+    Let's make a version of the \(chain\) function that can be used with any monad we choose to create in the future and call it \(m\_chain\). In the pseudocode below, let \(bind\) be the binding function for a monad and \([f]\) be a subset of that monad's functions.
+  </p>
+  <p>
+    \(\begin{align*}
+    m\_chain\ ::&\ Ma\ bind\ [f]\rightarrow Mb\\
     \\
-    bind\text{ }&::\text{ }a\rightarrow (\lambda\text{ }::f\rightarrow \text{ }f(a)).
-    \end{align*}
-    \)
+    m\_chain\ ::&\ Ma\ \_\ []\rightarrow Ma;\\
+    m\_chain\ ::&\ Ma\ bind\ [h\mid t]\rightarrow\\
+    &m\_chain\ ::\ (bind\ Ma\ h)\ bind\ t
+    \end{align*}\)
   </p>
   <p>
-    where \(f\) is any function in the monad. Using this version of <kbd>bind</kbd> with our three example 
-    functions is much cleaner. 
+    Using this version of <kbd>chain</kbd> with our example <kbd>maybe</kbd> monad is much cleaner. 
   </p>
   <p>
-    bind("http://www.somename.com")(f)(g)(h)
+    \(chain\ ::\ (maybe\_unit\ \text{"http://www.somename.com"})\ maybe\_bind\ [f,g,h]\)
+  </p>
+  <p>
+    Remember that conceptually, bind being applied to these three functions can be represented as \((f\ggg g\ggg h)\ ::\ a\rightarrow Md\) and that the end result of the binding is a monadal type, \(Md\).
   </p>
 
   <h2>The Rules</h2>
@@ -267,27 +291,26 @@
         </p></li>
       </ol>
   </p>
-  <h3>Rules that Determine if Something is a Monad</h3>
+  <h3>Rules that Determine if a Set of Functions is a Monad</h3>
   <p>
     A group, collection, set, etc. of functions is a monad if;
 
     <ol>
-      <li>let \(\mathbb{F}\) be a set of functions. \(\exists\text{ }bind\text{ }\in\mathbb{F}\)
+      <li>let \(\mathbb{F}\) be a set of functions. \(\exists\ bind\ \in\mathbb{F}\)
         <p>
           There is a composition-like function called <kbd>bind</kbd>.
         </p></li>
-      <li>\( bind\text{ }::\text{ }a\rightarrow (\lambda\text{ }::\text{ }f) \)
+      <li>\( bind\ ::\ Ma\ (\lambda\ ::\ f\ a\rightarrow Mb)\rightarrow Mb\)
         <p>
-          The <kbd>bind</kbd> function's value is a function that has \(a\) as its parameter with a value that 
-          is a constructor for \(a\).
+          The <kbd>bind</kbd> function has as parameters a monadal type \(Ma\) and a function that has parameters of type \(a\) and a value of type \(Mb\). The value of <kbd>bind</kbd> is an \(Mb).
         </p>
       </li>
       <li>
-        For \(\ggg \text{ be equivalent to } bind. (f\ggg  g)\ggg h \equiv f\ggg (g\ggg h)\)<p>
+        let \(\ggg \text{ be equivalent to } bind. (f\ggg  g)\ggg h \equiv f\ggg (g\ggg h)\)<p>
         The <kbd>bind</kbd> function must obey the law of associativity</p>
       </li>
-      <li>\(\exists\text{ function } unit:: a\ggg f=f\)<p>
-        There is a unit function that doesn't change a monadal function under binding. It just wraps it.
+      <li>\(\exists\text{ function } unit:: a\rightarrow Ma\)<p>
+        There is a unit function that doesn't change a raw value. It just wraps it to make it a monadal type.
       </p></li>
     </ol>
   </p>

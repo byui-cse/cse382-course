@@ -12,6 +12,36 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 
 </head>
 
@@ -25,22 +55,22 @@
 <h1>Your Tasks</h1>
 <h2>Task 1</h2>
 <p>
-    Create pseudocode for and, using your language, write as a monoid the following set operations.
+    Create pseudocode for and, using your language, write as a monoids the following operations that can be used on lists.
     <ol>
-        <li>union</li>
+        <li>append</li>
         <li>intersection</li>
         <li>difference</li>
         <li>symmetric_difference</li>
     </ol>
-    Write tests for your code.
+    Write code that exercises the functions you've written.
 </p>
 <h2>Task 2</h2>
 <p>
-    Consider these functions that work with sets. Are they part of the monoid from Task 1? Why or why not?
+    Consider these behaviors that work on lists. Could they be added the monoid from Task 1? Why or why not?
     <li>is_element_of</li>
-    <li>create_subset_where</li>
-    <li>is_subset_of</li>
-    <li>Assuming the elements of the set are numeric, a pair of functions called divide_all_by and add_to_all</li>
+    <li>create_sublist_where</li>
+    <li>is_sublist_of</li>
+    <li>Assuming the elements of the list are numeric, a pair of functions called divide_all_by and add_to_all</li>
 </p>
 <h2>Task 3</h2>
 <p>
