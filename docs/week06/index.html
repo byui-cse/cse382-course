@@ -212,15 +212,15 @@
     &Ma\looparrowright \{ok\_fail,a\}\\
     &case\\
     &\quad ok\_fail = ok\rightarrow\\
-    &\quad\quad q\ a\\
+    &\quad\quad f\ a\\
     &\quad otherwise\rightarrow \{fail,a\} 
     \end{align*}\)
   </p>
   <p>
-    The value of the \(maybe\_bind\) function is the value of the \(a\) function which is any of the monadal functions, \(f,g\), or \(h\) defined above.
+    The value of the \(maybe\_bind\) function is the value of the \(f\) function which is any of the  functions that are part of the <kbd>maybe </kbd>monad.
   </p>
   <p>
-    For <kbd>maybe</kbd> to be a monad, there must also be an \(id\) function(see the rules below) that wraps raw data in a monad type. For the <kbd>maybe</kbd> id function is
+    For <kbd>maybe</kbd> to be a monad, there must also be an \(id\) function(see the rules below) that wraps raw data in a monadal type. For the <kbd>maybe</kbd> id function is
   </p>
   <p>
     \(maybe\_id\ ::\ a\rightarrow Ma\)
