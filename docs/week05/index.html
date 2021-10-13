@@ -148,10 +148,11 @@
     chain\text{ }&::\text{ }links\text{ }a\rightarrow b\\
     \\
     chain\text{ }&::\text{ }links\text{ }a\rightarrow \\
-    &chain\_worker\text{ }::\text{ }rev(links) a.\\
+    &chain\_worker\text{ }::\text{ }(rev\ links)\ a.\\
     \\
     chain\_worker\text{ }&::\text{ }reversed\_links\text{ }a\rightarrow b\\
     \\
+    chain\_worker\text{ }&::\ []\ a\rightarrow\ a;\\
     chain\_worker\text{ }&::\text{ }[h\mid t]\text{ }a\rightarrow\\
     &h\text{ }::\text{ }(chain\_worker\text{ }::\text{ }t\text{ }a).
     \end{align*}
