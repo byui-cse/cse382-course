@@ -193,7 +193,8 @@
     The basic idea behind currying is to map a function that has multiple parameters to a series of functions 
     that each have only one. Then, by executing each of the functions, the same result can be achieved. For 
     example, you could think of this as \(f(a,b)\) being the same as \(f(a)(b)\) if \(f(a)\) returned a 
-    function that was then passed the parameter \(b\).
+    function that was then passed the parameter \(b\). 
+    What you are really doing here, is storing parameters that you do have while you wait for those you don't have yet.
   </p>
   <p>
     It may seem strange that a function could or should return a function, but that's one of the principles 
