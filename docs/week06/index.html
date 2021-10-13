@@ -208,12 +208,14 @@
 
   <p>
     \(\begin{align*}
+    maybe\_bind\ ::&\ Ma\ f\rightarrow Mb\\
+    \\
     maybe\_bind\ ::&\ Ma\ f\rightarrow\\
     &Ma\looparrowright \{ok\_fail,a\}\\
     &case\\
     &\quad ok\_fail = ok\rightarrow\\
     &\quad\quad f\ a\\
-    &\quad otherwise\rightarrow \{fail,a\} 
+    &\quad otherwise\rightarrow \{fail,a\}. 
     \end{align*}\)
   </p>
   <p>
@@ -223,10 +225,14 @@
     For <kbd>maybe</kbd> to be a monad, there must also be an \(id\) function(see the rules below) that wraps raw data in a monadal type. For the <kbd>maybe</kbd> id function is
   </p>
   <p>
-    \(maybe\_id\ ::\ a\rightarrow Ma\)
+    \(\begin{align*}
+    maybe\_id\ ::&\ a\rightarrow Ma\\
+    maybe\_id\ ::&\ a\rightarrow\\
+    &\{ok, a\}.
+    \end{align*}\)
   </p>
   <p>
-    for any appropriate type.
+    for any \(a\) of any type.
   </p>
   <p>
     These functions are fine and dandy, but look what it would look like to use them. Imagine that a is a URL string. The code 
@@ -240,7 +246,7 @@
     we used in week 05. Chaining!&#129395; 
   </p>
   <p>
-    Let's make a version of the \(chain\) function that can be used with any monad we choose to create in the future and call it \(m\_chain\). In the pseudocode below, let \(bind\) be the binding function for a monad and \([f]\) be a subset of that monad's functions.
+    Let's make a version of the \(chain\) function that can be used with any monad we choose to create in the future and call it \(m\_chain\). In the pseudocode below, let \(bind\) be the binding function for a monad and \([f]\) be a subset, proper or improper, of that monad's functions.
   </p>
   <p>
     \(\begin{align*}
@@ -315,7 +321,7 @@
     </ol>
   </p>
   <p>
-    There is a good <a href="https://youtu.be/ZhuHCtR3xq8">video on monoids and monads</a> by Brian Beckman.
+    There is a <a href="https://youtu.be/ZhuHCtR3xq8">video on monoids and monads</a> by Brian Beckman available.
   </p>
 
 <footer>
