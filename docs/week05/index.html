@@ -50,10 +50,17 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 05</h1>
-    <p>The Currying Pattern</p>
+    <p>The Chaining, Currying, and Partial Completion Patterns</p>
   </div>
 </div>
+\(
+\newcommand\when{\ when\ }
+\newcommand\otherwise{\ otherwise\ }
+\newcommand\::{\ ::\ }
 
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
   <blockquote class="style1">
     <span>Currying is an incredibly useful technique...It allows you to generate a library of small, easily configured functions that behave consistently, are quick to use, and that can be understood when reading your code..</span>
     <p class="style1">- M. David Green</p>
@@ -211,14 +218,103 @@
     </p>
     \[curried\_perform\text{ }::\text{ }card\_number\text{ }::\text{ }pin\text{ }::\text{ }transaction\_id\rightarrow success\]
     <p>
-      Notice that each function except for the last returns a lambda that is passed an additional, single piece of data. The currying process is accumulating the parameters. When all of the parameters have been passed, the execution of the code can proceed. For this to happen, there needs to be 'partial application' of each parameter as it is received. 
+      Notice that each function except for the last returns a lambda that is passed an additional, single piece of data. The currying process is accumulating the parameters of the function. When all of the parameters have been passed, the execution of the code can proceed.
+    </p>
+    <p>
+      When you are creating a new function and know that there will be times when only some of the parameters are known and others will be known later, you can create your function curried. You can also do this when there are more than a few parameters and currying will make the use of your function more beautiful. You are not limited to currying when creating functions. You can curry an existing function from any library, custom or language standard, using a function that generates the intermediate lambda functions for you. The pseudocode for such a function is below.
+    </p>
+    <p>
+      In the pseudocode you will find a mystery function called \(count\) with one parameter, a function. This represents the tools your language makes available to you so you can find out the arity of a function. Another mystery function is \(list\_t0\_params\). This represents the tools you language makes available, if any, to convert a list to a bunch of parameters.
+    </p>
+    <p>
+      \(\begin{align*}
+      curry\ ::&\ f\rightarrow\lambda\\
+      \\
+      curry\ ::&\ f\rightarrow\\
+      &curry\_helper\ f (count\ f)\ [].\\
+      \\
+      \\
+      curry\_helper\ ::&\ f\ a:::Integer\ accumulator:::[b]\rightarrow\lambda\\
+      \\
+      curry\_helper\ ::&\ f\ 0\ accumulated\_parameters\rightarrow\\
+      &f\ (list\_to\_params\ accumpulated\_parameters);\\
+      curry\_helper\ ::&\ f\ parameter\_count\ accumulated\_parameters\rightarrow\\
+      &\lambda\ ::\ parameter\rightarrow\\
+      &\quad\quad curry\_helper\ f\ parameter\_count-1\ [parameter]\doubleplus accumulated\_ parameters.
+      \end{align*}\)
     </p>
     <p>
       Now be careful and be wise. Remember that your code must be beautiful. If you start using currying 
       when other choices would be better, your code will quickly digress into ugliness. Use currying to add 
       beauty.
     </p>
+    <h3>Partial Completion</h3>
+    <p>
+      There are times when we need to front-load some computation so that the data that is the result of that computation can be used repeatedly. One way to do this is to apply the principle of partial completion.
+    </p>
+  <aside class="left">
+  <figure>
+    <dfn>Partial Completion</dfn> - the principle of breaking up a function that has \(n\) parameters into \(m\) 
+    functions that have fewer parameters, occasionally this is \(n\) functions with \(1\) parameter.
+  </figure>
+    <figcaption>Fig. 4</figcaption>
+  </aside>
+    <p>
+      When you have a major process that your code needs to complete, it is common to need to reuse the results of a portion of the process repeatedly. For example, your code may need to load a large data set and do one or more mappings. Then later, dependent on other calculations or input, do some filtering and sorting.
+    </p>
+    <p>
+      As an example, if the data set represented user information for a large social networking company, after doing a bunch of data mapping, there often is a need to accumulate the data in multiple ways. This means you would need to apply different filtering and reducing lambdas for each different accumulation. It would be a waste to reload and re-map the data. It would be much better to reuse the mapped data.
+    </p>
+    <p>
+      There are multiple ways to deal with this situation. One would be to store the mapped data in a database of some sort. That would then require the data to be reloaded. That's going to be slow. The same would happen if you were writing and reading to disk.
+    </p>
+    <p>
+      Another option could be to store the data in a variable and then create a series of functions, each of which executed a different set of filters and reductions, and has the variable passed to them as a parameter. That's a lot of code to maintain.
+    </p>
+    <p>
+      There is a more beautiful way. You can create one function that does the mappings and has as its value a lambda, \(a\), which waits for another lambda to use in a filter. When \(a\) is passed some lambda it performs the filter operation and has as its value another lambda waiting for yet another lambda, maybe some more filter, mapping, or reduction lambdas.  
+    </p>
 
+    <p>
+      Please don't misunderstand me. Partial completion is not limited to situations that use map, filter, or reduce. You are limited only by your imagination on how you can apply this pattern when you are designing your code. It is situationally dependent. What you choose to include at each step of the way is up to you. Just make sure you are increasing the beauty of your code, not making it uglier.
+    </p>
+    <p>
+      Consider this situation. There is a csv file containing data in a table. You need to get statistical information from various columns of this table. There are times when you need data from one column, and times when you need data from other columns. All of this within a single execution of your application.
+    </p>
+    <p>
+      You could write a function that has as parameters the file to load, which column you want the data from, and a lambda that performs all of the calculations to generate the statistical information needed from that column. Unfortunately, this approach will mean reloading and re-preparing the data each time you access a column.
+    </p>
+    <p>
+      As an alternative, you could load and prepare the data and then assign this to a variable. That means you need to pass the variable around to all of the places it is needed, and write a bunch of code, in each place, to indicate the column containing the data and code to calculate the statistics needed. To make this somewhat nicer, you could write a function for each of the columns and statistics needed from that column. Unfortunately, you will either write just a few functions to cover just a few situations or you will need to write a function for all possible combinations of columns and statistics needed. Ouch! That's a lot of functions.
+    </p>
+    <p>
+      If you were to use partial completion, you could write a function, let's call this one <kbd>load_and_prep</kbd>, that loads and prepares the data and has as its value a lambda waiting for which column to work with. Let's call that the <kbd>column lambda</kbd>. The <kbd>column lambda</kbd> could have as its value a lambda, we'll call this one the <kbd>stats lambda</kbd>, that performs the statistical calculations you want done. Now you've covered all possible combinations, even those you haven't thought of yet. Using this setup would look like this.
+    </p>
+    <p>
+      \(data\leftarrow load\_and\_prep\ \ 'nation\_wide\_purchases.csv'\)
+    </p>
+    <p>
+      Later, when conditional choices had been made due to further data gathering and calculation, you could decide which column or columns you need to manipulate. Such a use could look like this.
+    </p>
+    <p>
+      \(columns\leftarrow data\ [zip,region,state,amount]\)
+    </p>
+    <p>
+      Even later, you could apply some lambda to get the statistics you want. You could even apply different lambdas depending on the specific situation.
+    </p>
+    <p>
+      \(stats\_by\_zip\leftarrow\ columns\ \lambda\)
+    </p>
+    <p>
+      It is also possible, if you know all of these elements at the same time to apply them to the loaded and prepared data. For example,
+    </p>
+    <p>
+      \(stats\_by\_zip\leftarrow data\ \ 'nation\_wide\_purchases.csv'\ [zip,region,state,amount]\ \lambda\).
+    </p>
+    <p>
+      Partial completion gives you the most flexibility with the least complicatedness in these types of situations. Remember, use it when it will increase the beauty of your code.
+    </p>
+    
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
