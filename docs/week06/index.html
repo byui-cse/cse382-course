@@ -73,15 +73,24 @@
 
   <h2>Monoids</h2>
   <p>
-    Monoids are an organized bunch of functions with only one parameter that follow 3 simple rules. All the 
-    functions in the bunch must be composable, there must be a unit function, and when any two functions are 
-    composed the result must be in the same bunch. 
+    A monoid is an organized bunch of functions that follow a few simple rules.
+    The bunch of functions
+    <ol>
+      <li>all have one parameter of a single type,</li>
+      <li>value type matches the parameter type,</li>
+      <li>is closed under composition, </li>
+      <li>the functions are associative, and</li>
+      <li>there is a unit, or identity, value for the bunch of functions.</li>
+    </ol>
   </p>
   <p>
     The word bunch was chosen specifically. It implies some sort of association that isn't used in common 
     programming <a href="https://www.merriam-webster.com/dictionary/parlance">parlance</a> like list, set, or 
     collection are. You can have any type of bunch, and as long as the functions in the bunch follow the rules for 
     being a monoid, the bunch of functions is a monoid.
+  </p>
+  <p>
+    The mathematical description of the group of functions is that it is a <a href="https://encyclopedia2.thefreedictionary.com/Semigroup+(mathematics)" target="_blank">semi-group</a> for which there is an identity value. Some of the rules listed above are inherited since any monoid is a semi-group.
   </p>
   <p>
     You've composed functions A LOT up to this point in your life in the code you've written. Week 05's 
@@ -91,25 +100,24 @@
   </p>
   <aside class="left">
   <figure>
-    <dfn>Monoid Pattern</dfn> - a group of unary functions that are closed under composition, one of 
-    which is an identity function, to reduce the amount of unique, un-reused code in an application or library.
+    <dfn>Monoid Pattern</dfn> - a group of functions that follow the monoid rules used to reduce the amount of unique, un-reused code in an application or library and aid in producing concurrent applications.
   </figure>
     <figcaption>Fig. 1</figcaption>
   </aside>
   <p>
   <p>
-    Say you had two functions, \(g\ ::\ a\rightarrow b\) and \(f\ ::\ b\rightarrow c\). 
+    Say you had two functions, \(g\ ::\ a\rightarrow a\) and \(f\ ::\ a\rightarrow a\). 
     If you call \(g\) and then pass the result to \(f\) you've composed the two functions. You may have used an intermediate 
-    variable when you've dont this, or maybe you didn't. It makes no difference. You did function composition.
+    variable when you've done this, or maybe you didn't. It makes no difference. You did function composition.
   </p>
   <p>
     Here is one common way to express that composition. \(f\circ g\). Now, if you think about it, \(f\circ g\) could 
     be thought of as just another function. You could have written one function and included the code from \(f\) 
     and \(g\) in it. It would, more than likely, be bad to do so...but you could have. So you can view \(f\circ g\) 
     as if it was a function named \(h\) and \(h\) would be equivalent to  \(f\circ g\), or stated more succinctly, \(h\equiv 
-    f\circ g\). Remember that \(g\ ::\ a\rightarrow b\) and \(f\ ::\ b\rightarrow c\). It then follows that \(h\) has a parameter of type \(a\), a value of type \(c\) and a declaration of \(h\ ::
-    \ a\rightarrow c\). As \(h\equiv 
-    f\circ g\), it follows that \(f\circ g\ ::\ a\rightarrow c\).
+    f\circ g\). Remember that \(g\ ::\ a\rightarrow a\) and \(f\ ::\ a\rightarrow a\). It then follows that \(h\) has a parameter of type \(a\), a value of type \(a\) and a declaration of \(h\ ::
+    \ a\rightarrow a\). As \(h\equiv 
+    f\circ g\), it follows that \(f\circ g\ ::\ a\rightarrow a\).
 
   <p>
     It is common among programmers to compose functions where the values of the functions are different. You've 
@@ -278,6 +286,9 @@
     A group, collection, set, etc. of functions is a monoid if;
 
       <ol>
+        <li>
+          The group is a semi-group.
+        </li>
         <li>
           \(\text{For functions }a,b\in\mathbb{C},\exists\text{ rule } \circ\text{ such that } a\circ b \in\mathbb{C}\)<p>
             For any two functions in a group, collection, set, etc., there is a composition rule such that 
