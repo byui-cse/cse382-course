@@ -49,7 +49,7 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 06</h1>
-    <p>The Monoid and Monad Patterns</p>
+    <p>The Monoid and Monad Architectural Patterns</p>
   </div>
 </div>
 <blockquote class="style1">
@@ -66,9 +66,9 @@
 <h2>The Curse of Complicatedness</h2>
 <p>
   One of the biggest problems that exists in software engineering today is uncontrolled complicatedness. The 
-  size and complicatedness of libraries has and continues to grow exponentially while at the same time, the 
-  number of libraries grows. The patterns for this week exist to help reduce this complicatedness on both 
-  levels, that of size and that of number.
+  size and complicatedness of libraries, applications, and systems has continued to grow exponentially while at the same time, the 
+  number of libraries, applications, and systems grows. The patterns for this week exist to help reduce this complicatedness at all of these 
+  levels, both those of size and those of number.
 </p>
 
   <h2>Monoids</h2>
@@ -275,6 +275,33 @@
     Remember that conceptually, bind being applied to these three functions can be represented as \((f\ggg g\ggg h)\ ::\ a\rightarrow Md\) and that the end result of the binding is a monadal type, \(Md\).
   </p>
 
+  <h2>The Architectural Pattern</h2>
+  <p>
+    As mentioned at the beginning of this reading, reducing the complicatedness of libraries, applications, and systems is the purpose of the monoid and monad patterns.
+  </p>
+  <figure style= "float:left;width:50%">
+  <img src="images/sub_apps_as_monoids.png" alt="monoids or monads combined together to be sub-sections of applications">
+  <figcaption>Figure 1. - Any number of monoids and/or monads can be composed or bound together to be a subsection of an application.</figcaption>
+</figure>
+<p>
+  Consider Figure 1. Any sub-appliction, a logically consistant portion of an appliction, can be designed as a monoid or monad that binds together other monoids or monads. To do so, there must be a set of moniodal or monadal functions of the higher-level monoid or monad that use, via composition or binding, the functions of the underlying monoids or monads.
+</p>
+<p>
+  Following this architectural pattern, another sub-app can be designed as a monoid or monad that uses, via composition or binding, the functions of the other underlying sub-app monoids or monads. But the pattern doesn't end there. Applications can be designed as monoids or monads using, via composition or binding, any number of sub-apps. It also follows from this pattern that sub-systems, systems, sub-networks, networks, and inter-networks can all be designed to be monoids or monads using, via composition or binding, functions of their underlying monoids or monads.
+</p>
+<p>
+  We have explored this pattern from the bottom up. If we consider it from the top down, any inter-network, network, system, sub-system, application, or sub-application you create can be recursively designed as some combination of monoids and/or monads. Each level dealing only with a minimal amount of complicatedness.
+</p>
+<p>
+  Think about this non-technical analogy to this architectural design. There are managers who take all the complicatedness of knowing about and dealing with every decision and interaction of all the employees they manage, be that one or multiple levels down. These managers are known by the epitaph of micromanagers. Invariably the complicatedness overwhelms them and they are less effective than they could be. But there are managers that take a very different approach.
+</p>
+<p>
+  These managers trust their subordinates to make decisions that those subordinates can handle and for which they have responsibility. This type of manager's job is much less complicated and they tend to do a better job, as do all of those who work as subordinates, as long as this delegation of responsibility pattern is maintained by all of their subordinate managers.
+</p>
+<p>
+  If each level of monoid or monad in an inter-network or other larger or smaller type of interacting assemblage is designed appropriately, each monoid or monad will delegate responsibility for doing appropriate work to its sub monoids or monads. Therefore, each level of any monoid or monad, from inter-network to the lowest-level substituent monoid or monad becomes much more self-documenting. Each also is only as complicated as need be, and the overall complicatedness is decreased.
+</p>
+
   <h2>The Rules</h2>
   <p>
     For the Computer Science version of both monoids and monads, there are rules that can be applied to determine if a something 
@@ -330,6 +357,13 @@
         There is a unit function that doesn't change a raw value. It just wraps it to make it a monadal type.
       </p></li>
     </ol>
+  </p>
+  <h3>Rules to Determine if a Monoid or Monad Should be Used</h3>
+  <p>
+    <ul>
+      <li>If no metadata is needed, use a monoid.</li>
+      <li>If metadata is needed, use a monad.</li>
+    </ul>
   </p>
   <p>
     There is a <a href="https://youtu.be/ZhuHCtR3xq8">video on monoids and monads</a> by Brian Beckman available.
