@@ -66,45 +66,45 @@
   Binary Search Trees are amazing things, but sometimes they don't fit the problem. There are many ways that a 
   heap could be implemented. In functional programming it is common to leverage the concept of a tree for the 
   pattern of a heap. The difference between a tree and the heap data structure described here is how the ordering 
-  rule. In a heap, the least value is the one of interest, therefore it is kept at the root. When adding a value 
+  rule. In a minimum heap, known as a min-heap, the least value is the one of interest, therefore it is kept at the root. When adding a value 
   to a heap, if the new value is less than the root, the new value becomes the root of the tree. If the new value 
   is greater than the root, another rule is used to place the value in the tree. Regardless of what the rule is 
   for insertion in the tree, the new value will either be a new leaf in the tree or the least value of a sub-tree. 
 </p>
-<h3>Leftist Heaps</h3>
+<h3>Leftist Min-Heaps</h3>
 <p>
-  The ordering rule of leftists heaps is this. The left child of a node is greater than or equal to the right child. Being a heap, the value of the root node is always the value of interest. Therefore the \(get\_min\) function has a complexity of \(\mathcal{O}(1)\). You can deduce this from the code below.
+  The ordering rule of min-heaps is this. The data for each of the sub-nodes is less than the data of the parent node. Also, being a leftist heap, left sub-nodes can or can not exist for any node, but if there is a right node, there must first have been a left node added. Being a min-heap, the \(get\_min\) function has a complexity of \(\mathcal{O}(1)\). You can deduce this from the code below which uses a Maybe from week 6.
 </p>
 
 \[\begin{align*}
-    get\_min\text{ }&::\text{ }node\rightarrow a\\
+    get\_min\ &::\ node\rightarrow a\:::Maybe\\
     \\
-    get\_min\text{ }&::\text{ }nil\rightarrow\\
-               &\text{ }nil;\\
-    get\_min\text{ }&::\text{ }\{weight,value,next_l,next_r\} \rightarrow\\
-               &\text{ }value.
+    get\_min\text{ }&::\ none\rightarrow\\
+               &\ \{fail,none\};\\
+    get\_min\ &::\ \{weight,value,next_l,next_r\} \rightarrow\\
+               &\ \{ok,value\}.
 \end{align*}\]
 <p>
   To insert a value into a heap, a fa&ccedil;ade function is used called \(insert\). In the code snippet below this function calls the \(merge\) function passing the heap to insert the value into and creating a single node heap for the value being inserted.
 </p>  
 \[\begin{align*}
 
-    insert\text{ }&::\text{ }value,node\rightarrow root\_node\\
+    insert\ &::\ value,node\rightarrow root\_node\\
     \\
-    insert\text{ }&::\text{ }value,node\rightarrow\\
+    insert\ &::\ value,node\rightarrow\\
     &merge:: \{1,value,nil,nil\}\text{ }node.\\
 \end{align*}\]
 <p>
   This means that \(merge\) does all the work for inserting a value and for merging two heaps, \(h\) and \(i\) in the snippet below.
 </p>
 \[\begin{align*}
-    merge\text{ }&::\text{ }h,i\rightarrow root\_node\\
+    merge\ &::\ h,i\rightarrow root\_node\\
     \\
-    merge\text{ }&::\text{ }nil,i\rightarrow\\
+    merge\ &::\ nil,i\rightarrow\\
                &i;\\
-    merge\text{ }&::\text{ }h,nil\rightarrow\\
+    merge\ &::\ h,nil\rightarrow\\
                &h;\\
-    merge\text{ }&::\text{ }h\text{ }i \rightarrow\\
+    merge\ &::\ h\text{ }i \rightarrow\\
         &i\looparrowright \{i\_weight,i\_value,i\_next\_l,i\_next\_r\}\\
         &h\looparrowright \{h\_weight,h\_value,h\_next\_l,h\_next\_r\}\\
         &case\\
@@ -114,14 +114,14 @@
 \end{align*}\]
 
 <p>
-Being a heap, the only element that can be removed is the least element. When this element is removed its child nodes must be stitched back together via merging.
+Being a min-heap, the only element that is 'popped' is the least element. When this element is removed its child nodes must be stitched back together via merging.
 </p>
 
 \[\begin{align*}
-    remove\_min\text{ }&::\text{ }node\rightarrow root\_node\\
-    remove\_min\text{ }&::\text{ }nil\rightarrow\\
+    remove\_min\ &::\ node\rightarrow root\_node\\
+    remove\_min\ &::\ nil\rightarrow\\
                &nil;\\
-    remove\_min\text{ }&::\text{ }\{weight,value,next\_l,next\_r\}\rightarrow\\
+    remove\_min\ &::\ \{weight,value,next\_l,next\_r\}\rightarrow\\
                &merge\text{ }::\text{ }next\_r\text{ }next\_l.
 \end{align*}\]
 
