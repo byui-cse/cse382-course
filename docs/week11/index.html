@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-i        con">
     <script type="text/javascript">
                  var codeType = "Clojure"
     </script>
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
     <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
     <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
-
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
     </script>
 
@@ -43,113 +42,140 @@
         }
     });
     </script>
+
+
 </head>
 
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 381: Week 11</h1>
-    <p>Lazy Evaluation, Infinite Sets, and Streams</p>
+    <h1>CSE 382: Week 07</h1>
+    <p>The Lazy Evaluation Pattern</p>
   </div>
 </div>
-\(
-\newcommand\when{\text{ } when\text{ }}
-\newcommand\otherwise{\text{ } otherwise\text{ }}
-\)
-<h2>It Can be Good to be Lazy</h2>
+<blockquote class="style1">
+    <span>Progress isn't made by early risers. It's made by lazy men trying to find easier ways to do something.</span>
+    <p class="style1">- Patrick Bennett</p>
+  </blockquote>
+
+<h2>The Lazy Evaluation Pattern</h2>
 <p>
-  Lazy evaluation, is common in some languages and not in others. The idea behind it is this. "Why use resources to compute something until the time you actually need it?"
+  Doing computation right now is the way most programmers think and most programming languages work by default. This 
+  eager computation has, for the most part, been a good thing. It is, however, not the only possibility and that 
+  other possibility opens up a world of computation that can allow what otherwise would use too much memory to be 
+  feasible. 
 </p>
 <p>
-  In this way it is similar to Just In Time (JIT), also known as lean, factory management. Why spend the money to store product when the factory could schedule the production of the product just in time to ship it? Most of the products you use today are produced in factories that follow lean management principles. 
-</p>
-<p>
-  Consider this computing situation. You are using a language that has a range structure. It allows you to create a range of numbers using a single function call. Using pseudocode it looks like this. \(range\text{ }::\text{ }i\rightarrow Range\).
-</p>
-<p>
-  So the range function returns a Range of Ints, a list with elements 0 through i, right? If the \(Range\) uses lazy computation, the answer is no. Why use the CPU time and memory required to hold the entire list? Why not set up the \(Range\) to include only the elements asked for later when they are needed?
-</p>
-<p>If the \(Range\) had 3 billion elements, would you really want to use enough RAM to hold 3 billion elements before you even get a chance to do anything with the first element of the list? Probably not. Instead the \(Range\) could produce only those items you are needing as they are needed. This means if you could even access the elements of the \(Range\) out of order only those access would be created. Lazy evaluation lets these types of behaviors happen.</p>
-<p>
-  As with everything, lazy evaluation can come with some drawbacks. It can increase the space complexity of a calculation in some circumstances. It can also be difficult to calculate the time complexity of a function that uses something that is lazy or is lazy itself. As with everything, choose wisely. Lazy evaluation isn't the answer to all you computing needs.
+  Consider this situation. As part of some calculation, 100,000,000,000 sequential odd numbers are needed one at a 
+  time or in small groups. Calculating all 100,000,000,000 ahead of time is very costly memory-wise, especially if 
+  some of them end up never being used for one reason or another. If each number or group of numbers was calculated 
+  only at the time they were needed, then this memory problem goes away. This contrived, simple example is not the 
+  only time such calculations occur.
 </p>
 
-<h2>Oh What Can We Do?!</h2>
+<aside class="left">
+  <figure>
+    <dfn>Lazy Evaluation</dfn> - delaying calculation until the time the result of the calculation is needed by some 
+    other calculation.
+  </figure>
+    <figcaption>Fig. 1</figcaption>
+</aside>
 <p>
-  Consider this situation, you need to represent an infinite set of even numbers for use in a function. Computers are definitely finite things. Oh no!
+  It is very common in applications that display a lot of items to wait to retrieve additional items until 
+  it is apparent that the user will be looking at the next item or items soon. That way computational resources 
+  such as memory, CPU, and network bandwidth aren't wasted on items that will never be seen.
 </p>
 <p>
-  Don't panic. If you've ever used a pseudo-random number generator, you've used an apparently infinite set of numbers. Be aware! Any pseudo-random number generator has a limited number of times you can request another number before it resets and starts over. In other words, pseudo-random number generators are periodic. This periodicity is caused by the algorithm used to calculate the next pseudo-random number lazily.
+  It is important to understand that this delayed, or lazy, loading is not the only way lazy evaluation can be of 
+  use. Any time you have returned a lambda that is used as some sort of delayed evaluation, you have applied lazy 
+  evaluation. That lambda was probably stored and, if your computational flow determined it was needed, evaluated 
+  later.
+</p>
+<h2>Lazy Lambdas</h2>
+<p>
+  There are two types of lazy lambdas, the first you are already familiar with. They have one or more parameters 
+  and you've used them when doing currying, passing lambdas to be used later, and returning lambdas from functions. 
+  Let's call these impure lazy lambdas.
 </p>
 <p>
-  When the lazy evaluation being done only allows access to the 'next' element, evaluation is referred to as a stream. The analogy is that when you are standing in a lake where a stream ends, you get the next bit of water the stream has. You don't get to skip any.
+  What, then, would a pure lazy lambda be? One without parameters. To think of a silly, simple example, a function called 
+  \(lazy\_add\) that has two parameters and a pure lambda for a value.
+</p>
+    \[
+    \begin{align*}
+    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow\lambda\text{ }::\\
+    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow (\lambda\text{ }::\text{ }\rightarrow a+b).
+    \end{align*}
+    \]
+<p>
+   In most languages addition is done eagerly but this \(lazy\_add\) function doesn't actually add the numbers. What it does do is create a lambda that will add the numbers at a later time when the lambda is executed. Since the value of the lambda's value is the sum of the 
+  two numbers, it would be as if the 'raw' addition was done later.
 </p>
 <p>
-  Below is an inelegant, anti-pattern for a stream that produces positive even numbers beyond some given starting point.
+  This silly and simple example of a pure lazy lambda should not be viewed as an judicious replacement for all 
+  eager addition. The only time it might be useful would be if the two numbers were very large and the adding of 
+  those numbers would have a negative speed or memory impact on the immediate calculation. Again, this is a silly example 
+  created to reveal the principle.
 </p>
 <p>
-\[\begin{align*}
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow \{Int,(func\text{ }::\text{ }Int)\}\\
-\\
-pos\_evens\_stream\text{ }&::\text{ }seed \when seed < 0\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }0;\\
-pos\_evens\_stream\text{ }&::\text{ }seed \when 1=(seed\mod 2)\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }seed-1;\\
+  A more reasonable example of where pure lazy lambdas might be useful is when doing database access, a 
+  computationally expensive behavior. It is highly feasible that one or more variants of a database query or update 
+  should be delayed and executed later. The queries or updates could be wrapped in pure lazy lambdas and then, when 
+  more data is known regarding which should be used, the appropriate lambda could be selected and executed.
+</p>
+<p>
+  As with impure lazy lambda's, the possible applications of pure lazy lambdas is bounded only by imagination 
+  and need.
+</p>
+<h2>Lazy Streams</h2>
+<p>
+  Lazy Streams solve a very different problem. Consider a situation where a large, and potentially infinite, 
+  series of values is needed. Precomputing them all is at least computationally infeasible and is impossible in 
+  the infinite case. Instead, one or more elements of the series can be computed as needed. Thus a stream of the computed values 
+  is available to draw from at the time they are needed. Therefore, this stream of values is lazy.
+</p>
+<p>
+  There are many ways such a stream can be created. A common way is to have the stream exist in its own 
+  computational unit, be that a thread, process, network resource, or some other unit that accomplishes the 
+  processing required to generate the next value or group of values. The choice of what type of computational unit to choose depends on the language selected and the situation 
+  within which the stream exists among other possibilities.
+</p>
 
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
-                          &\{seed+2,(func\text{ }::\text{ }\rightarrow pos\_evens\_stream\text{ }::\text{ }seed+2)\}
-
-\end{align*}
-\]
-</p>
 <p>
-  If you wanted to work with the infinite set of even numbers, the initial seed would be \(0\). The initial and subsequent uses would look like this.
+  Regardless of which of these computational units is selected, the function doing the computation follows the 
+  same basic pattern. 
+  <ol>
+    <li>
+      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s) called a seed. 
+    </li>
+    <li>
+      Each recursive call updates the value of a seed-type value and passes it to the next recursive call 
+      of itself.
+    </li>
+    <li>
+      Each recursive call blocks (waits) until a request is made for the next value or set of values.
+    </li>
+    <li>
+      Recursion continues until the request made is for termination of the stream or, if the stream is non-infinite, a value after the last value is requested.
+    </li>
+  </ol>
 </p>
+\[
+    \begin{align*}
+    stream\text{ }&::\text{ }seed\rightarrow a\\
+    stream\text{ }&::\text{ }seed\rightarrow \\
+        &await\text{ }::\text{ }request\\
+        &f\text{ }::\text{ }seed\rightarrow next\\
+        &respond\text{ }::\text{ }next\\
+        &stream\text{ }::\text{ }next\text{ when }request\text{ is not termination}\\
+        &next\text{ otherwise}.
+    \end{align*}
+    \]
 <p>
-\[\begin{align*}
-&pos\_evens\_stream\text{ }::\text{ }seed\looparrowright \{even\_num,get\_next\}\\
-&get\_next\text{ }::\text{ }\looparrowright \{another\_even, get\_another\}
-\end{align*}
-\]
-</p>
-<p>
-  Using this is awkward. Too many variables have to be created when the tuple being returned by \(pos\_evens\_stream\) is decomposed. There is a better way.
-</p>
-<h3>Using Concurrency for Streams</h3>
-<p>
-  Consider approaching streams this way. Concurrency in all modern languages allow some sort of communication between concurrently executing code. Often this is done with bi-directional message passing. There are other ways for this communication to happen, but they tend to be bug-ridden and can cause a lot of unnecessary crashing.
-</p>
-<p>
-  When a functional programming language's concurrency allows for bi-directional message passing, a well designed function that is being run concurrently executes a library blocking function as one of its lines of code. This way, the function can wait for some data or some other message before proceeding, sending a response, and then completing.
-</p>
-<p>
-  If such a function calls itself recursively an elegant stream pattern emerges.
-</p>
-
-<p>
-\[\begin{align*}
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow (Int,(func\text{ }::\text{ }Int))\\
-\\
-pos\_evens\_stream\text{ }&::\text{ }seed \when seed < 0\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }0;\\
-pos\_evens\_stream\text{ }&::\text{ }seed \when 1=(seed\mod 2)\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }seed-1;\\
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
-                          &await\text{ }::\text{ }\rightarrow\\
-                          &\space\space\space\space seed+2\\
-                          &pos\_evens\_stream\text{ }::seed+2.
-\end{align*}
-\]
-</p>
-<p>
-  In this pseudo-code, the language's blocking library function is called \(await\). The version of this function used in this case has no parameters since no data is needed from outside \(pos\_evens\_stream\). This version of \(await\) returns the next even number. Then \(pos\_evens\_stream\) calls itself with a new value for \(seed\).
-</p>
-<p>
-  Each language's concurrency library will also have not only makes a function like \(pos\_evens\_stream\) execute concurrently but also has a value that is some sort of identifier for the concurrent process so messages can be passed. This identifier is sometimes called a handle. This is so the handle can be passed as a parameter to functions that will need to do bi-directional message passing with the concurrently executing function. 
-</p>
-<h2>Wrap Up</h2>
-<p>
-  The principle of lazy evaluation is powerful. When followed it can save a lot of wasted computation time and space. Following the stream pattern can be a good way of leveraging lazy evaluation when a large series of values need to be generated.
+  Following this pattern, a function could be a stream producing prime numbers. It could be producing even numbers. 
+  It could be a stream accessing a database and supplying data. It could be a stream accessing a network or 
+  Internet node and supplying data. For a step in a factory, it could be computing which piece of partially completed product should be worked on next. In the world of Internet software creation, such a stream would be 
+  called a micro-service. The options are limitless. 
 </p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
