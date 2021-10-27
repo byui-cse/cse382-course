@@ -66,7 +66,7 @@
     <ol>
         <li>
             <p>
-                Write pseudocode for a stream that can be access by multiple, concurrently running functions. The stream should be a simple, alpha-numeric, not numeric, counter. Such a stream could be used to provide unique id's for rows in massive data  permutations. A good way to do this could be using <a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm#cite_note-2">Heap's Algorithm</a> , not a heap data structure, to generate permutations.
+                Write pseudocode for a stream that can be accessed by multiple, concurrently running functions. The stream should be a simple, alpha-numeric, not numeric, id generator. Such a stream could be used to provide unique id's for rows in massive data  permutations. A good way to do this could be using <a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm#cite_note-2">Heap's Algorithm</a> , not a heap data structure, to generate permutations.
             </p>
             <p>
                 To aid you in this, here is functional style pseudocode for Heap's Algorithm. It has two sub-algorithms used to make it easier to read. The third is an algorithm for swapping elements in a functional list. The complexity of the swapping sub-algorithm is \(\mathcal{O}(n)\) assuming the <kbd>split</kbd> BIF for your language is also \(\mathcal{O}(n)\).
