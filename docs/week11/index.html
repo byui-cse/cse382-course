@@ -50,133 +50,46 @@
 <div class="hero-image">
   <div class="hero-text">
     <h1>CSE 382: Week 07</h1>
-    <p>The Lazy Evaluation Pattern</p>
+    <p>Tries</p>
   </div>
 </div>
 <blockquote class="style1">
-    <span>Progress isn't made by early risers. It's made by lazy men trying to find easier ways to do something.</span>
-    <p class="style1">- Patrick Bennett</p>
+    <span>Inside every large program is a small program struggling to get out. 
+</span>
+    <p class="style1">- Tony Hoare</p>
+  </blockquote>
+  <blockquote class="style1">
+    <span>All race conditions, deadlock conditions, and concurrent update problems are due to mutable variables. 
+</span>
+    <p class="style1">- Robert C. Martin, Clean Architecture</p>
   </blockquote>
 
-<h2>The Lazy Evaluation Pattern</h2>
+<h2>Tries</h2>
 <p>
-  Doing computation right now is the way most programmers think and most programming languages work by default. This 
-  eager computation has, for the most part, been a good thing. It is, however, not the only possibility and that 
-  other possibility opens up a world of computation that can allow what otherwise would use too much memory to be 
-  feasible. 
+  Consider a situation where a binary search tree has been created using complicated data that requires a complicated comparison when traversing the tree. If the tree is of any significant size, the comparisons can become a drag on the speed of execution. Maybe the complicated data in the tree looks something like this tuple\(\{last\_name,first\_name,address\}\). It is then necessary to reduce the amount of comparison computations to increase the speed of traversal.
 </p>
 <p>
-  Consider this situation. As part of some calculation, 100,000,000,000 sequential odd numbers are needed one at a 
-  time or in small groups. Calculating all 100,000,000,000 ahead of time is very costly memory-wise, especially if 
-  some of them end up never being used for one reason or another. If each number or group of numbers was calculated 
-  only at the time they were needed, then this memory problem goes away. This contrived, simple example is not the 
-  only time such calculations occur.
+   When an insert or search is done in this binary search tree, if the first comparison the code is doing compares last names, there is a lot of duplication of computation due to people with the same last name but differing first names or addresses. If the address is the first thing compared, there are a lot of common portions of street addresses and therefore, again, a lot of duplicated computation.
 </p>
+
 
 <aside class="left">
   <figure>
-    <dfn>Lazy Evaluation</dfn> - delaying calculation until the time the result of the calculation is needed by some 
-    other calculation.
+    <dfn>Trie</dfn> - for \(k\ge 2\), a \(k\)-ary search tree with augmented edges rather than augmented nodes where the augmentation data indicates the subnode to search and, eventually, the result of the search or insertion.
   </figure>
-    <figcaption>Fig. 1</figcaption>
+    <figcaption>Figure. 1</figcaption>
 </aside>
 <p>
-  It is very common in applications that display a lot of items to wait to retrieve additional items until 
-  it is apparent that the user will be looking at the next item or items soon. That way computational resources 
-  such as memory, CPU, and network bandwidth aren't wasted on items that will never be seen.
+  The purpose of Tries is to reduce duplication of comparisons for complicated data with a lot of possible partially duplicate data points. Also, each trie is a tree with some number of sub-nodes. In binary trees, the the upper limit is 2 sub-nodes. There is no limit to the number of sub-nodes in a trie. However, as the engineer, you must select some rational way, given your data to represent the possible sub-nodes. If a representation was selected that was in conflict with your data, the trie could degrade into a list or a binary tree. Be wise and select the appropriate data structure to hold the outgoing nodes based on known and anticipated data.
 </p>
-<p>
-  It is important to understand that this delayed, or lazy, loading is not the only way lazy evaluation can be of 
-  use. Any time you have returned a lambda that is used as some sort of delayed evaluation, you have applied lazy 
-  evaluation. That lambda was probably stored and, if your computational flow determined it was needed, evaluated 
-  later.
-</p>
-<h2>Lazy Lambdas</h2>
-<p>
-  There are two types of lazy lambdas, the first you are already familiar with. They have one or more parameters 
-  and you've used them when doing currying, passing lambdas to be used later, and returning lambdas from functions. 
-  Let's call these impure lazy lambdas.
-</p>
-<p>
-  What, then, would a pure lazy lambda be? One without parameters. To think of a silly, simple example, a function called 
-  \(lazy\_add\) that has two parameters and a pure lambda for a value.
-</p>
+
     \[
     \begin{align*}
     lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow\lambda\text{ }::\\
     lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow (\lambda\text{ }::\text{ }\rightarrow a+b).
     \end{align*}
     \]
-<p>
-   In most languages addition is done eagerly but this \(lazy\_add\) function doesn't actually add the numbers. What it does do is create a lambda that will add the numbers at a later time when the lambda is executed. Since the value of the lambda's value is the sum of the 
-  two numbers, it would be as if the 'raw' addition was done later.
-</p>
-<p>
-  This silly and simple example of a pure lazy lambda should not be viewed as an judicious replacement for all 
-  eager addition. The only time it might be useful would be if the two numbers were very large and the adding of 
-  those numbers would have a negative speed or memory impact on the immediate calculation. Again, this is a silly example 
-  created to reveal the principle.
-</p>
-<p>
-  A more reasonable example of where pure lazy lambdas might be useful is when doing database access, a 
-  computationally expensive behavior. It is highly feasible that one or more variants of a database query or update 
-  should be delayed and executed later. The queries or updates could be wrapped in pure lazy lambdas and then, when 
-  more data is known regarding which should be used, the appropriate lambda could be selected and executed.
-</p>
-<p>
-  As with impure lazy lambda's, the possible applications of pure lazy lambdas is bounded only by imagination 
-  and need.
-</p>
-<h2>Lazy Streams</h2>
-<p>
-  Lazy Streams solve a very different problem. Consider a situation where a large, and potentially infinite, 
-  series of values is needed. Precomputing them all is at least computationally infeasible and is impossible in 
-  the infinite case. Instead, one or more elements of the series can be computed as needed. Thus a stream of the computed values 
-  is available to draw from at the time they are needed. Therefore, this stream of values is lazy.
-</p>
-<p>
-  There are many ways such a stream can be created. A common way is to have the stream exist in its own 
-  computational unit, be that a thread, process, network resource, or some other unit that accomplishes the 
-  processing required to generate the next value or group of values. The choice of what type of computational unit to choose depends on the language selected and the situation 
-  within which the stream exists among other possibilities.
-</p>
 
-<p>
-  Regardless of which of these computational units is selected, the function doing the computation follows the 
-  same basic pattern. 
-  <ol>
-    <li>
-      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s) called a seed. 
-    </li>
-    <li>
-      Each recursive call updates the value of a seed-type value and passes it to the next recursive call 
-      of itself.
-    </li>
-    <li>
-      Each recursive call blocks (waits) until a request is made for the next value or set of values.
-    </li>
-    <li>
-      Recursion continues until the request made is for termination of the stream or, if the stream is non-infinite, a value after the last value is requested.
-    </li>
-  </ol>
-</p>
-\[
-    \begin{align*}
-    stream\text{ }&::\text{ }seed\rightarrow a\\
-    stream\text{ }&::\text{ }seed\rightarrow \\
-        &await\text{ }::\text{ }request\\
-        &f\text{ }::\text{ }seed\rightarrow next\\
-        &respond\text{ }::\text{ }next\\
-        &stream\text{ }::\text{ }next\text{ when }request\text{ is not termination}\\
-        &next\text{ otherwise}.
-    \end{align*}
-    \]
-<p>
-  Following this pattern, a function could be a stream producing prime numbers. It could be producing even numbers. 
-  It could be a stream accessing a database and supplying data. It could be a stream accessing a network or 
-  Internet node and supplying data. For a step in a factory, it could be computing which piece of partially completed product should be worked on next. In the world of Internet software creation, such a stream would be 
-  called a micro-service. The options are limitless. 
-</p>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

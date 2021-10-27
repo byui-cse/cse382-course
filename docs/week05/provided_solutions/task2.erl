@@ -8,7 +8,7 @@ execute()->
 	%Generate a bunch of simulated data.
 
 	Regions = [europe,north_america,central_america,south_america,africa,south_asia,east_asia],
-	Years = lists:seq(2017,2021),
+	Years = (lists:seq(2017,2021)),
 	%The elements of the tuple are Month, Year, Region, and Sales in that order.
 	Sales = [{M,Y,R,rand:uniform()*10_000_000} || M<-lists:seq(1,12), Y<-Years, R<-Regions],
 

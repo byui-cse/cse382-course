@@ -74,37 +74,37 @@
             \[
     \begin{align*}
     &\text{%%Heap's algorithm for generating a list of permutations}\\
-    heaps\_algo\text{ }&::\text{ }Int\text{ }[a]\text{ }[a]\rightarrow [a]\\
+    heaps\_algo\ &::\ b:::Int\ [a]\ [a]\rightarrow [a]\\
     \\
-    heaps\_algo\text{ }&::\text{ }1\text{ }permutation\text{ }accum\rightarrow\\
+    heaps\_algo\ &::\ 1\ permutation\ accum\rightarrow\\
         &[permutation]\doubleplus accum;\\
-    heaps\_algo\text{ }&::\text{ }k\text{ }permutation\text{ }accum\rightarrow\\
-        &perms\_for\text{ }::\text{ }k\text{ }1\text{ }(heaps\_algo\text{ }::\text{ }k-1\text{ }permutation\text{ }accum).
+    heaps\_algo\ &::\ k\ permutation\ accum\rightarrow\\
+        &perms\_for\ ::\ k\ 1\ (heaps\_algo\ ::\ k-1\ permutation\ accum).
     \\
     \\
     &\text{%%the perms_for sub-algorithm}\\
-    perms\_for\text{ }&::\text{ }Int\text{ }Int\text{ }[a]\rightarrow [a]\\
+    perms\_for\ &::\ k:::Int\ i:::Int\ [a]\rightarrow [a]\\
     \\
-    perms\_for\text{ }&::\text{ }k\text{ }i\text{ }accum\text{ }when\text{ }k = i\rightarrow\\
+    perms\_for\ &::\ k\ i\ accum\ when\ k = i\rightarrow\\
         &accum;\\
 
-    perms\_for\text{ }&::\text{ }k\text{ }i\text{ }accum\text{ }when\text{ }k\pmod 2 = 0\rightarrow\\
+    perms\_for\ &::\ k\ i\ accum\ when\ k\pmod 2 = 0\rightarrow\\
     &[h\mid \_] = accum\\
-    &perms\_for\text{ }::\text{ }k\text{ }(i+1)\text{ }(heaps\_algo\text{ }::\text{ }k-1\text{ }(swap\text{ }::\text{ }i,k,h)\text{ }accum)\\
+    &perms\_for\ ::\ k\ (i+1)\ (heaps\_algo\ ::\ k-1\ (swap\ ::\ i,k,h)\ accum)\\
 
-    perms\_for\text{ }&::\text{ }k\text{ }i\text{ }accum\rightarrow\\
+    perms\_for\ &::\ k\ i\ accum\rightarrow\\
     &[h\mid \_] = accum\\
-    &perms\_for\text{ }::\text{ }k\text{ }(i+1)\text{ }(heaps\_algo\text{ }::\text{ }k-1\text{ }(swap\text{ }::\text{ }1,k,h)\text{ }accum)\\
+    &perms\_for\ ::\ k\ (i+1)\ (heaps\_algo\ ::\ k-1\ (swap\ ::\ 1,k,h)\ accum)\\
     \\
     \\
     &\text{%%the swap sub-algorithm}\\
-    swap\text{ }&::\text{ }a\text{ }a\text{ }[a]\rightarrow [a]\\
+    swap\ &::\ a\ a\ [a]\rightarrow [a]\\
     \\
-    swap\text{ }&::\text{ }a\text{ }b\text{ }list\rightarrow\\
-    &lesser = min\text{ }::\text{ }a\text{ }b\\
-    &greater = max\text{ }::\text{ }a\text{ }b\\
-    &(head,[elem1\mid t1]) = split\text{ }::\text{ }(lesser - 1)\text{ }list\\
-    &(mid,[elem2\mid end]) = split\text{ }::\text{ }(greater-lesser-1)\text{ }t1\\
+    swap\ &::\ a\ b\ list\rightarrow\\
+    &lesser = min\ ::\ a\ b\\
+    &greater = max\ ::\ a\ b\\
+    &\{beginning,[elem1\mid t1]\} = split\ ::\ (lesser - 1)\ list\\
+    &\{mid,[elem2\mid end]\} = split\ ::\ (greater-lesser-1)\ t1\\
     &head\doubleplus elem2\doubleplus mid\doubleplus elem1\doubleplus end.
 
     \end{align*}
