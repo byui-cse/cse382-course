@@ -61,65 +61,8 @@
 <p>
     Use lazy computation to do some interesting mathematics of your choice using numbers greater than 64 bits. Use a big-number library for your language, if needed.
 </p>
+
 <h2>Task 2</h2>
-<p>
-    <ol>
-        <li>
-            <p>
-                Write pseudocode for a stream that can be accessed by multiple, concurrently running functions. The stream should be a simple, alpha-numeric, not numeric, id generator. Such a stream could be used to provide unique id's for rows in massive data  permutations. A good way to do this could be using <a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm#cite_note-2">Heap's Algorithm</a> , not a heap data structure, to generate permutations.
-            </p>
-            <p>
-                To aid you in this, here is functional style pseudocode for Heap's Algorithm. It has two sub-algorithms used to make it easier to read. The third is an algorithm for swapping elements in a functional list. The complexity of the swapping sub-algorithm is \(\mathcal{O}(n)\) assuming the <kbd>split</kbd> BIF for your language is also \(\mathcal{O}(n)\).
-            </p>
-            \[
-    \begin{align*}
-    &\text{%%Heap's algorithm for generating a list of permutations}\\
-    heaps\_algo\ &::\ b:::Int\ [a]\ [a]\rightarrow [a]\\
-    \\
-    heaps\_algo\ &::\ 1\ permutation\ accum\rightarrow\\
-        &[permutation]\doubleplus accum;\\
-    heaps\_algo\ &::\ k\ permutation\ accum\rightarrow\\
-        &perms\_for\ ::\ k\ 1\ (heaps\_algo\ ::\ k-1\ permutation\ accum).
-    \\
-    \\
-    &\text{%%the perms_for sub-algorithm}\\
-    perms\_for\ &::\ k:::Int\ i:::Int\ [a]\rightarrow [a]\\
-    \\
-    perms\_for\ &::\ k\ i\ accum\ when\ k = i\rightarrow\\
-        &accum;\\
-
-    perms\_for\ &::\ k\ i\ accum\ when\ k\pmod 2 = 0\rightarrow\\
-    &[h\mid \_] = accum\\
-    &perms\_for\ ::\ k\ (i+1)\ (heaps\_algo\ ::\ k-1\ (swap\ ::\ i,k,h)\ accum)\\
-
-    perms\_for\ &::\ k\ i\ accum\rightarrow\\
-    &[h\mid \_] = accum\\
-    &perms\_for\ ::\ k\ (i+1)\ (heaps\_algo\ ::\ k-1\ (swap\ ::\ 1,k,h)\ accum)\\
-    \\
-    \\
-    &\text{%%the swap sub-algorithm}\\
-    swap\ &::\ a\ a\ [a]\rightarrow [a]\\
-    \\
-    swap\ &::\ a\ b\ list\rightarrow\\
-    &lesser = min\ ::\ a\ b\\
-    &greater = max\ ::\ a\ b\\
-    &\{beginning,[elem1\mid t1]\} = split\ ::\ (lesser - 1)\ list\\
-    &\{mid,[elem2\mid end]\} = split\ ::\ (greater-lesser-1)\ t1\\
-    &head\doubleplus elem2\doubleplus mid\doubleplus elem1\doubleplus end.
-
-    \end{align*}
-    \]
-    <h4>Hint</h4>
-    <p>
-        You can listen for a request in any function called by your process. 
-    </p>
-        </li>
-        <li>Use a modified version of Heap's Algorithm to write code in your language that streams single permutations using lazy, one-at-a-time generation per request.</li>
-        <li>Test your generator serially.</li>
-        <li>Test your generator concurrently.</li>
-    </ol>
-</p>
-<h2>Task 3</h2>
 <p>
     <ol>
         <li>Write pseudocode for a stream that uses a <a href="https://www.cut-the-knot.org/Curriculum/Algorithms/SpigotForPi.shtml">spigot algorithm</a> to produce a stream of digits of pi.</li>
