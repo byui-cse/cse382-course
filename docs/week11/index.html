@@ -85,7 +85,7 @@
 
     \[
     \begin{align*}
-    (a,[a\looparrowleft b:::trie_node]):::trie_Node
+    (a,[a\looparrowleft b:::trie\_node]):::trie\_node
     \end{align*}
     \]
 
@@ -136,6 +136,43 @@
 <p>
   You might choose to use a trie forest when implementing a spell-checker or a word completion suggestion tool. Given any initial, ordered list of characters, all words beginning with that initial list could be displayed. Also, as the user entered additional characters the list of potential completions could be filtered, giving the user just the appropriate, complete words. This could be done for any text editor, including those used to write code.
 </p>
+<h2>Trie Functions</h2>
+<p>
+  In addition to the node above, there are two functions that make up the trie behavior. They are \(lookup\) and \(add\). Since both of these require the use of recursion to search for either an existing piece of data or a location for another piece of data, it is no surprise that the pseudocode for them is quite similar. 
+</p>
+<p>
+  For the \(lookup\) function, the head of the data list is popped for each recursion. If it is found to be the data of one sub-trie of the current trie, then the recursion continues, if not, the recursion ends with a find failure. If, on the other hand, the list is emptied and the current trie has the \(end\) indicator as the data of one of its sub-tries, the recursion ends with a find success. The pseudocode below describes this behavior.
+</p>
+
+ \[
+    \begin{align*}
+    lookup\ ::&\ [a]\ trie\_node\rightarrow \{ok_fail,[a],trie\_root\}\\
+    \\
+    lookup\ ::&\ []\ \{_,sub\_tries\_dictionary\}\rightarrow\\
+              &case found\_sub\_trie \leftarrow get\ end\\
+              &\quad found\_sub\_trie = \{ok,_\}\\
+              &\qquad \{ok,[],found\_sub\_trie\};\\
+    lookup\ ::&\ [h\mid t]\ root\rightarrow\\
+              &root\looparrowright\{_,sub\_tries\_dictionary\}\\
+              &case found\_sub\_trie \leftarrow get h\\
+              &\quad found\_sub\_trie = \{ok,sub\_trie\}\\
+              &\qquad lookup t sub\_trie\\
+              &case found\_sub\_trie = \{fail,_\}\\
+              &\qquad \{fail,t,root\}.
+
+    \end{align*}
+ \]
+
+
+
+
+ \[
+    \begin{align*}
+    (a,[a\looparrowleft b:::trie\_node]):::trie\_node
+    \end{align*}
+ \]
+
+<h2>Similar Data Structures</h2>
 <p>
   There are other options that are similar, but not the same as tries. <a href="http://classes.eastus.cloudapp.azure.com/~barr/classes/comp410/papers/2002-burst_tries_a_fast_efficient_data_structure_for_string_keys">Burst tries</a> are one of these. It may be that using a burst trie could be more efficient than using a trie but only if there is some sub-set of data that is more frequently accessed than the rest of the data. Burst tries are a type of adaptive data structure. This means the location in the structure changes to move the most sought after data to locations where fewer comparisons are needed to determine if the data is in the collection.
 </p>
