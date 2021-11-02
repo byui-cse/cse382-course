@@ -49,7 +49,7 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 382: Week 07</h1>
+    <h1>CSE 382: Week 11</h1>
     <p>Tries</p>
   </div>
 </div>
@@ -75,20 +75,74 @@
 
 <aside class="left">
   <figure>
-    <dfn>Trie</dfn> - for \(k\ge 2\), a \(k\)-ary search tree with augmented edges rather than augmented nodes where the augmentation data indicates the subnode to search and, eventually, the result of the search or insertion.
+    <dfn>Trie</dfn> - for \(k\ge 1\), a \(k\)-ary search tree with augmented edges rather than augmented nodes where the augmentation data indicates the sub-trie to search.
   </figure>
     <figcaption>Figure. 1</figcaption>
 </aside>
 <p>
-  The purpose of Tries is to reduce duplication of comparisons for complicated data with a lot of possible partially duplicate data points. Also, each trie is a tree with some number of sub-nodes. In binary trees, the the upper limit is 2 sub-nodes. There is no limit to the number of sub-nodes in a trie. However, as the engineer, you must select some rational way, given your data to represent the possible sub-nodes. If a representation was selected that was in conflict with your data, the trie could degrade into a list or a binary tree. Be wise and select the appropriate data structure to hold the outgoing nodes based on known and anticipated data.
+  The purpose of Tries is to reduce duplication of comparisons for complicated data with a lot of possible partially duplicate data points. Also, each trie is a tree with some number of sub-tries. In binary trees, the the upper limit is 2 sub-tries. There is no limit to the number of sub-tries in a trie. However, as the engineer, you must select some rational way, given your data to represent the possible sub-tries. If a representation was selected that was in conflict with your data, the trie could degrade into a list or a binary tree. Be wise and select the appropriate data structure to indicate edges for sub-tries based on known and anticipated data. In the node below, a dictionary maps each edge indicator to the root node of a sub-trie.
 </p>
 
     \[
     \begin{align*}
-    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow\lambda\text{ }::\\
-    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow (\lambda\text{ }::\text{ }\rightarrow a+b).
+    (a,[a\looparrowleft b:::trie_node]):::trie_Node
     \end{align*}
     \]
+
+<p>
+  The type of \(a\) can be any single, not composite, type. Alphanumeric characters are the most common type for \(a\).
+</p>
+<h2>A Common Example</h2>
+<p>
+  Consider this situation. You need to be able to search a large data set consisting of last names, first names, ages, addresses, and other pieces of data regarding people. You could hash the data of each individual and use a dictionary. If there are \(n\) characters being hashed, hashing the data for each search would be a \(\mathcal{O}(n)\) process followed by a \(\mathcal{O}\) search process for an overall complexity of \(\mathcal{O}(n)\).  
+</p>
+<p>
+  Using a trie would also be \(\mathcal{O}(n)\) yet there would be no collisions and rehashing during the trie creation process like there would be in the dictionary creation process. This may make the use of the trie more efficient, depending on the structure of  the data.
+</p>
+<aside class="right">
+  <figure>
+    <img src="images/bad_trie.png" alt="a branching tree diagram showing the names Daniel, and Dani being fully overlapped by Daniella.">
+  </figure>
+    <figcaption>Figure. 2</figcaption>
+</aside>
+<p>
+  Also, this data regarding people will be of different lengths. When each piece of data is appended to produce a single alpha-numeric string, people's names, addresses, etc yields strings of varying lengths. Therefore, the \(a\) type will also need to include a data end indicator. The simplified diagram below consists just of first names to help clarify the need for an end-of-data-indicator.
+</p>
+
+<p>
+  Consider this set of names. Daniel, Daniella, Dani, Della, Denver, and Dylan. Without data-end indicators, Figure 2 would describe the trie. In this visualization, and without an end-of-data-indicator, it is impossible to tell if Dani or Daniel are found in the trie, or if only Danielle was added. This is why the end-of-data-indicator is so important.
+</p>
+<p>
+  Consider if \(end\) was used as the end-of-data-indicator. then the data in a new trie could be visualized as in Figure 3.  
+</p>
+<aside class="left">
+  <figure>
+    <img src="images/good_trie.png" alt="a branching tree diagram showing the names Daniel, and Dani being fully overlapped by Daniella.">
+  </figure>
+    <figcaption>Figure. 3</figcaption>
+</aside>
+<p>
+  Now, if Dani was searched for, when the character \(i\) is reached, it is known that Dani was added as data. This may have happened before Danielle or Daniel were added or after. That isn't relevant. All that is needed is when all the characters in a search string have been found, there is an end-of-data-indicator that is one of the sub-tries of the current node.
+</p>
+<p>
+  Tries can be very useful when doing checks for existence for many types of data, not just data about people. You are limited only by your imagination. But consider this situation. What if all of the data didn't start with the same alpha-numeric character? How then can there be a root of the trie? There are many ways this could be resolved, but one of the most significant is the use of forests. 
+</p>
+<p>
+  A forest of tries would consist of a collection with the data type being tries. As an analogy, a pine forest can be viewed as consisting of a collection of pine trees. The collection that is used to hold each of the tries could be a tuple, a list, a dictionary, a binary tree, or any other data structure type that makes sense for the number of tries in the forest.
+</p>
+<p>
+  If I, the author, was working with data where I knew the first alpha-numeric characters were fairly evenly distributed, meaning each has a nearly equal possibility of being a root of a trie, I would use a special trie_node with \(root\) as its value and the node's data structure element to hold my trie forest. If, on the other hand, I knew there were only three or four possible first characters, I would consider using a tuple. Which collection you use for your trie forest should be determined by the data you are including in the forest.
+</p>
+<p>
+  You might choose to use a trie forest when implementing a spell-checker or a word completion suggestion tool. Given any initial, ordered list of characters, all words beginning with that initial list could be displayed. Also, as the user entered additional characters the list of potential completions could be filtered, giving the user just the appropriate, complete words. This could be done for any text editor, including those used to write code.
+</p>
+<p>
+  There are other options that are similar, but not the same as tries. <a href="http://classes.eastus.cloudapp.azure.com/~barr/classes/comp410/papers/2002-burst_tries_a_fast_efficient_data_structure_for_string_keys">Burst tries</a> are one of these. It may be that using a burst trie could be more efficient than using a trie but only if there is some sub-set of data that is more frequently accessed than the rest of the data. Burst tries are a type of adaptive data structure. This means the location in the structure changes to move the most sought after data to locations where fewer comparisons are needed to determine if the data is in the collection.
+</p>
+<p>
+   If there is a more commonly used sub-set of data and this sub-set remains fairly constant over time, the cost of rebuilding the data structure can be amortized to reduce overall cost. If the sub-set doesn't exist or is not consistent over time, a burst trie would not be a good choice. Again, this is an example of you, as the engineer, needing to be aware of your data and its use.
+</p>
+
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
