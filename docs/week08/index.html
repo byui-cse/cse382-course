@@ -53,8 +53,8 @@
   </div>
 </div>
 \(
-\newcommand\when{\text{ } when\text{ }}
-\newcommand\otherwise{\text{ } otherwise\text{ }}
+\newcommand\when{\  when\ }
+\newcommand\otherwise{\  otherwise\ }
 \)
 <blockquote class="style1">
     <span>The programmer's primary weapon in the never-ending battle against slow systems is to change the intra-modular structure. Our first response should be to reorganize the modules' data structures.</span>
@@ -162,29 +162,29 @@
     and \(1\) meaning greater than, and \(comp\) being a comparator function comparing two elements of the tree, 
     then the \(add\) algorithm for BSTs is:  
 \[\begin{align*}
-    add\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow root\_node\\
+    add\ &::\ node\ a\ (comp\  a\ b\rightarrow n)\rightarrow root\_node\\
     \\
-    add\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
-               &\text{ }(a,nil,nil);\\
-    add\text{ }&::\text{ }(value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
-               &(value,(add\text{ }::\text{ }nextL\text{ }a\text{ }comp),nextR);\\
-    add\text{ }&::\text{ }(value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\rightarrow\\
-               &(value,nextL,(add\text{ }::\text{ }nextR\text{ }a\text{ }comp)).
+    add\ &::\ nil\ a\ (comp\  a\ b\rightarrow n)\rightarrow\\
+               &\ (a,nil,nil);\\
+    add\ &::\ (value,nextL,nextR)\  a\ (comp\  a\ b\rightarrow n)\when comp\ ::\ a\ value = -1\rightarrow\\
+               &(value,(add\  nextL\ a\ comp),nextR);\\
+    add\ &::\ (value,nextL,nextR)\  a\ (comp\  a\ b\rightarrow n)\otherwise\rightarrow\\
+               &(value,nextL,(add\  nextR\ a\ comp)).
 \end{align*}\]
 <p>
     The \(contains\) algorithm for BSTs is:
 </p>
 \[\begin{align*}
-    contains\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow Boolean\\
+    contains\ &::\ node\ a\ (comp\  a\ b\rightarrow n)\rightarrow Boolean\\
     \\
-    contains\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
-                    &\text{ }false;\\
-    contains\text{ }&::\text{ }(value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = 0\rightarrow\\
+    contains\ &::\ nil\ a\ (comp\  a\ b\rightarrow n)\rightarrow\\
+                    &\ false;\\
+    contains\ &::\ (value,nextL,nextR)\ a\ (comp\  a\ b\rightarrow n)\when comp\  a\ value = 0\rightarrow\\
                &true;\\
-    contains\text{ }&::\text{ }(value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
-               &contains\text{ }::\text{ }nextL\text{ }a\text{ }comp;\\
-    contains\text{ }&::\text{ }(value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\rightarrow\\
-               &contains\text{ }::\text{ }nextR\text{ }a\text{ }comp.
+    contains\ &::\ (value,nextL,nextR)\ a\ (comp\  a\ b\rightarrow n)\when comp\  a\ value = -1\rightarrow\\
+               &contains\  nextL\ a\ comp;\\
+    contains\ &::\ (value,nextL,nextR)\ a\ (comp\  a\ b\rightarrow n)\otherwise\rightarrow\\
+               &contains\  nextR\ a\ comp.
 \end{align*}\]
 </p>
 <h4>Ordering Rule For Red-Black Trees</h4>
@@ -213,16 +213,16 @@
     a BST. The only difference is that when the elements of the node are accessed, the node's color is ignored.
 </p>
 \[\begin{align*}
-    contains\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow Boolean\\
+    contains\ &::\ node\ a\ (comp\ ::\ a\ b\rightarrow n)\rightarrow Boolean\\
     \\
-    contains\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
-                    &\text{ }false;\\
-    contains\text{ }&::\text{ }(color,value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = 0\rightarrow\\
+    contains\ &::\ nil\ a\ (comp\ ::\ a\ b\rightarrow n)\rightarrow\\
+                    &\ false;\\
+    contains\ &::\ (color,value,nextL,nextR)\ a\ (comp\ a\ b\rightarrow n)\when comp\ a\ value = 0\rightarrow\\
                &true;\\
-    contains\text{ }&::\text{ }(color,value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
-               &contains\text{ }::\text{ }nextL\text{ }a\text{ }comp;\\
-    contains\text{ }&::\text{ }(color,value,nextL,nextR)\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\rightarrow\\
-               &contains\text{ }::\text{ }nextR\text{ }a\text{ }comp.
+    contains\ &::\ (color,value,nextL,nextR)\ a\ (comp\ a\ b\rightarrow n)\when comp\ a\ value = -1\rightarrow\\
+               &contains\ nextL\ a\ comp;\\
+    contains\ &::\ (color,value,nextL,nextR)\ a\ (comp\ a\ b\rightarrow n)\otherwise\rightarrow\\
+               &contains\ nextR\ a\ comp.
 \end{align*}\]
 <p>
     The color is also ignored for the first part of the red-black tree \(add\) function. That means that until after the node 
@@ -230,15 +230,15 @@
 
     The \(add\) algorithm for red-black trees is:  
 \[\begin{align*}
-    add\text{ }&::\text{ }node\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow root\_node\\
+    add\ &::\ node\ a\ (comp\ a\ b\rightarrow n)\rightarrow root\_node\\
     \\
-    add\text{ }&::\text{ }nil\text{ }a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\rightarrow\\
-               &\text{ }(red,a,nil,nil);\\
-    add\text{ }&::\text{ }(color,value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\when comp\text{ }::\text{ }a\text{ }value = -1\rightarrow\\
-               &balance\_l\text{ }::(color,value,(add\text{ }::\text{ }nextL\text{ }a\text{ }comp),nextR);\\
+    add\ &::\ nil\ a\ (comp\ a\ b\rightarrow n)\rightarrow\\
+               &\ (red,a,nil,nil);\\
+    add\ &::\ (color,value,nextL,nextR)\  a\ (comp\ a\ b\rightarrow n)\when comp\ a\ value = -1\rightarrow\\
+               &balance\_l\ (color,value,(add\ nextL\ a\ comp),nextR);\\
 
-    add\text{ }&::\text{ }(color,value,nextL,nextR)\text{ } a\text{ }(comp\text{ }::\text{ }a\text{ }b\rightarrow n)\otherwise\\
-               &balance\_r\text{ }::\text{ }(color,value,nextL,(add\text{ }::\text{ }nextR\text{ }a\text{ }comp)).
+    add\ &::\ (color,value,nextL,nextR)\  a\ (comp\ a\ b\rightarrow n)\otherwise\\
+               &balance\_r\ (color,value,nextL,(add\ nextR\ a\ comp)).
 \end{align*}\]
 </p>
 
@@ -253,38 +253,38 @@
 <h3>balance_l</h3>
 <p>
 \[\begin{align*}
-    balance\_l\text{ }&::\text{ }(color,value,nextL,nextR)\rightarrow root\_node\\
+    balance\_l\ &::\ (color,value,nextL,nextR)\rightarrow root\_node\\
     \\
     &\textbf{%%black node has left red child with left red grandchild}\\
-    balance\_l\text{ }&::\text{ }(black,value,(red,aValue,(red,bValue,bLeft,bRight),aRight),nextR)\rightarrow\\
+    balance\_l\ &::\ (black,value,(red,aValue,(red,bValue,bLeft,bRight),aRight),nextR)\rightarrow\\
                &(red,aValue,(black,bValue,bLeft,bRight),(black,value,aRight,nextR));\\
 
 
     &\textbf{%%black node has left red child with right red grandchild}\\
-    balance\_l\text{ }&::\text{ }(black,value,(red,aValue,aLeft,(red,bValue,bLeft,bRight)),nextR)\rightarrow\\
+    balance\_l\ &::\ (black,value,(red,aValue,aLeft,(red,bValue,bLeft,bRight)),nextR)\rightarrow\\
                &(red,bValue,(black,aValue,aLeft,bLeft),(black,value,bRight,nextR));\\
 
     &\textbf{%%otherwise}\\
-    balance\_l\text{ }&::\text{ }(color,nextL,nextR)\rightarrow\\
+    balance\_l\ &::\ (color,nextL,nextR)\rightarrow\\
                &(color, nextL,nextR);\\
 \end{align*}\]
 </p>
 <h3>balance_r</h3>
 <p>
 	\[\begin{align*}
-    balance\_r\text{ }&::\text{ }(color,value,nextL,nextR)\rightarrow root\_node\\
+    balance\_r\ &::\ (color,value,nextL,nextR)\rightarrow root\_node\\
     \\
 
     &\textbf{%%black node has right red child with right red grandchild}\\
-    balance\_r\text{ }&::\text{ }(black,value,nextL,(red,aValue,aLeft,(red,bValue,bLeft,bRight)))\rightarrow\\
+    balance\_r\ &::\ (black,value,nextL,(red,aValue,aLeft,(red,bValue,bLeft,bRight)))\rightarrow\\
                &(red,aValue,(black,value,nextLeft,aLeft),(black,bValue,bLeft,bRight));\\
 
     &\textbf{%%black node has right red child with left red grandchild}\\
-    balance\_r\text{ }&::\text{ }(black,value,nextL,(red,aValue,(red,bValue,bLeft,bRight),aRight))\rightarrow\\
+    balance\_r\ &::\ (black,value,nextL,(red,aValue,(red,bValue,bLeft,bRight),aRight))\rightarrow\\
                &(red,bValue,(black,value,nextL,bLeft),(black,aValue,bRight,aRight));\\
 
     &\textbf{%%otherwise}\\
-    balance\_r\text{ }&::\text{ }(color,nextL,nextR)\rightarrow\\
+    balance\_r\ &::\ (color,nextL,nextR)\rightarrow\\
                &(color, nextL,nextR);\\
 \end{align*}\]
 </p>
