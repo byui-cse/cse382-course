@@ -73,7 +73,7 @@
 </p>
 <h3>Leftist Min-Heaps</h3>
 <p>
-  The ordering rule of min-heaps is this. The data for each of the sub-nodes is less than the data of the parent node. Also, being a leftist heap, left sub-nodes can or can not exist for any node, but if there is a right node, there must first have been a left node added. Being a min-heap, the \(get\_min\) function has a complexity of \(\mathcal{O}(1)\). You can deduce this from the code below which uses a Maybe from week 6.
+  The ordering rule of min-heaps is this. The data for each of the sub-nodes is less than the data of the parent node. For leftist heaps, left sub-nodes can or can not exist for any node, but if there is a right node, there must first have been a left node added. Being a min-heap, the \(get\_min\) function has a complexity of \(\mathcal{O}(1)\). You can deduce this from the code below which uses a Maybe from week 6.
 </p>
 
 \[\begin{align*}
@@ -85,7 +85,7 @@
                &\ \{ok,value\}.
 \end{align*}\]
 <p>
-  To insert a value into a heap, a fa&ccedil;ade function is used called \(insert\). In the code snippet below this function calls the \(merge\) function passing the heap to insert the value into and creating a single node heap for the value being inserted.
+  To insert a value into a heap, a fa&ccedil;ade function is used called \(insert\). In the code snippet below this function calls the \(merge\) function that has two parameters, the heap to insert the value into and the value. This creates a single heap node for the value being inserted and adds it to the indicated heap.
 </p>  
 \[\begin{align*}
 
@@ -95,7 +95,7 @@
     &merge:: \{1,value,nil,nil\}\text{ }node.\\
 \end{align*}\]
 <p>
-  This means that \(merge\) does all the work for inserting a value and for merging two heaps, \(h\) and \(i\) in the snippet below.
+  This means that \(merge\) does all the work for both inserting a value and merging two heaps, \(h\) and \(i\) in the snippet below.
 </p>
 \[\begin{align*}
     merge\ &::\ h,i\rightarrow root\_node\\
@@ -114,7 +114,8 @@
 \end{align*}\]
 
 <p>
-Being a min-heap, the only element that is 'popped' is the least element. When this element is removed its child nodes must be stitched back together via merging.
+    <h3>Data Removal</h3>
+Being a min-heap, usually the only element that is 'popped' or removed is the least element. When the least element is removed its child nodes must be stitched back together via merging.
 </p>
 
 \[\begin{align*}
