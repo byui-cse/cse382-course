@@ -53,6 +53,10 @@
     <p>Tries</p>
   </div>
 </div>
+\(
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
 <blockquote class="style1">
     <span>Inside every large program is a small program struggling to get out. 
 </span>
@@ -80,7 +84,7 @@
     <figcaption>Figure. 1</figcaption>
 </aside>
 <p>
-  The purpose of Tries is to reduce duplication of comparisons for complicated data with a lot of possible partially duplicate data points. Also, each trie is a tree with some number of sub-tries. In binary trees, the the upper limit is 2 sub-tries. There is no limit to the number of sub-tries in a trie. However, as the engineer, you must select some rational way, given your data to represent the possible sub-tries. If a representation was selected that was in conflict with your data, the trie could degrade into a list or a binary tree. Be wise and select the appropriate data structure to indicate edges for sub-tries based on known and anticipated data. In the node below, a dictionary maps each edge indicator to the root node of a sub-trie.
+  The purpose of Tries is to reduce duplication of comparisons for complicated data with a lot of possible partially duplicate data points. Also, each trie is a tree with some number of sub-tries. In binary trees, the the upper limit is 2 sub-trees. There is no limit to the number of sub-tries in a trie. However, as the engineer, you must select some rational way, given the data to be stored in the trie, to contain the possible sub-tries. If a representation was selected that was in conflict with your data, the trie could degrade into a list or a binary tree. Be wise and select the appropriate data structure to indicate edges for sub-tries based on known and anticipated data. The pseudocode below describes the node structure that is used through the remainder of this reading. Notice I, the author, have selected a dictionary that maps each edge indicator to the root node of a sub-trie. This choice is arbitrary given that the data to be used with the trie pseudocode below is unknown.
 </p>
 
     \[
@@ -136,47 +140,88 @@
 <p>
   You might choose to use a trie forest when implementing a spell-checker or a word completion suggestion tool. Given any initial, ordered list of characters, all words beginning with that initial list could be displayed. Also, as the user entered additional characters the list of potential completions could be filtered, giving the user just the appropriate, complete words. This could be done for any text editor, including those used to write code.
 </p>
-<h2>Trie Functions</h2>
+<h2>Trie Algorithms</h2>
 <p>
-  In addition to the node above, there are two functions that make up the trie behavior. They are \(lookup\) and \(add\). Since both of these require the use of recursion to search for either an existing piece of data or a location for another piece of data, it is no surprise that the pseudocode for them is quite similar. 
+  In addition to the node above, there are two algorithms that make up the trie behavior. In this reading they are called \(lookup\) and \(add\). Since both of these require the use of recursion to search for either an existing piece of data or a location for another piece of data, it is no surprise that the pseudocode for them is quite similar. 
 </p>
 <p>
-  For the \(lookup\) function, the head of the data list is popped for each recursion. If it is found to be the data of one sub-trie of the current trie, then the recursion continues, if not, the recursion ends with a find failure. If, on the other hand, the list is emptied and the current trie has the \(end\) indicator as the data of one of its sub-tries, the recursion ends with a find success. The pseudocode below describes this behavior.
+  For the \(lookup\) algorithm, the head of the data list is popped for each recursion. If it is found to be the data of a sub-trie of the current trie, then the recursion continues, if not, the recursion ends with a find failure. If, on the other hand, the list is emptied and the current trie has the \(end\) indicator as the data of one of its sub-tries, the recursion ends with a find success. The pseudocode below describes this behavior.
 </p>
-
- \[
-    \begin{align*}
-    lookup\ ::&\ [a]\ trie\_node\rightarrow \{ok_fail,[a],trie\_root\}\\
-    \\
-    lookup\ ::&\ []\ \{_,sub\_tries\_dictionary\}\rightarrow\\
-              &case found\_sub\_trie \leftarrow get\ end\\
-              &\quad found\_sub\_trie = \{ok,_\}\\
-              &\qquad \{ok,[],found\_sub\_trie\};\\
-    lookup\ ::&\ [h\mid t]\ root\rightarrow\\
-              &root\looparrowright\{_,sub\_tries\_dictionary\}\\
-              &case found\_sub\_trie \leftarrow get h\\
-              &\quad found\_sub\_trie = \{ok,sub\_trie\}\\
-              &\qquad lookup t sub\_trie\\
-              &case found\_sub\_trie = \{fail,_\}\\
-              &\qquad \{fail,t,root\}.
-
-    \end{align*}
- \]
-
- <h3>What is That???</h3>
- <p>
-   Your language may or may not have dictionary behaviors. Not to fear. A dictionary can be implemented using a BST with the data being a 2-tuple where the key is the first tuple element and the value is the second. When adding using a \(put\) function or searching using a \(get\) function, a lambda is used to do the comparison and is passed both the search key, and the tuple value. The value of this lambda function is true or false.
+<aside class="left">
+<h3>Note:</h3>
+<h4>Get? Put? What's That?</h4>
+<p>
+   Your language may or may not have dictionary behaviors. Not to fear. A dictionary can be implemented using a BST with the data being a 2-tuple where the key is the first tuple element and the value is the second. In the pseudocode for this reading, inserting a key-value pair into the dictionary uses \(put\) and searching uses \(get\).
  </p>
+</aside>
+ \[
+    \begin{align*}
+    lookup\ ::&\ [a]\ root:::Trie\rightarrow \{ok\_fail\}\\
+    \\
+    lookup\ ::&\ []\ \_\rightarrow\\
+              &\{fail\};\\
+    lookup\ ::&\ [h\mid t]\ \{a,tries\}\ when\ (get\ done\ tries) = \{ok,\_\}\rightarrow\\
+              &case\\
+              &\quad a = h\\
+              &\qquad \{ok\}\\
+              &\quad otherwise\\
+              &\qquad \{fail\};\\
+    lookup\ ::&\ [h\mid n\mid t]\ {a,tries}\rightarrow\\
+              &\{found,trie\}\leftarrow get\ n\ tries\\
+              &case\\
+              &\quad found = fail\\
+              &\qquad \{fail\}\\
+              &otherwise\\
+              &\qquad lookup\ [n]\doubleplus t\ trie.
 
+    \end{align*}
+ \]
+<p>
+  As mentioned previously, both the \(lookup\) algorithm description above and the \(add\) algorithm description below use recursion and an embedded set of trie nodes. Therefore it is no surprise that the pseudocode is similar for both algorithms. A helper algorithm called \(add\_remaining\) is used by \(add\) to increase readability. The \(add\_remaining\) algorithm is used to add a series of embedded trie nodes when an additional branch is needed. For example, if a trie contained this series of nodes, \(D\rightarrow a\rightarrow n\rightarrow i\rightarrow end\) and the name Daniella needed to be added, branching and the addition of nodes for the e,l,l, and a characters is needed. This is the behavior of the \(add\_remaining\) algorithm. It adds any data still in the list when leaving a common portion of the trie. Figure 4 shows the end result of applying \(add\_remaining\) when adding Daniella to a trie containing Dani.
+</p>
 
+<aside class="right">
+  <figure>
+    <img src="images/dani_plus.png" alt="a branching tree diagram showing the name Daniella and Dani in the same trie.">
+  </figure>
+    <figcaption>Figure. 4</figcaption>
+</aside>
 
 
  \[
     \begin{align*}
-    (a,[a\looparrowleft b:::trie\_node]):::trie\_node
+    add\ ::&\ [a]\ root:::Trie\rightarrow \{ok\_fail,result\_root:::Trie\}\\
+    \\
+    add\ ::&\ []\ root\rightarrow\\
+           &\{fail,root\};\\
+    add\ ::&\ [h\mid t]\ root\ when\ t=[]\rightarrow\\
+           & add\_remaining\ [h]\ root;\\
+    add\ ::&\ [h\mid n\mid t]\ \{a,tries\}\ when\ h=a\rightarrow\\
+           &\{found,trie\} \leftarrow\ get\ n\ tries\\
+           &case\\
+           &\quad found = ok\\
+           &\qquad \{a,add\ [n]\doubleplus t\ trie\}\\
+           &\quad otherwise\\
+           &\qquad \{a,add\_remaining\ [n]\doubleplus t\ trie\}.
+    
     \end{align*}
  \]
 
+ \[
+    \begin{align*}
+      add\_remaining\ ::&\ [a]\ root:::Trie\rightarrow \{ok\_fail\}\\
+      \\
+      add\_remaining\ ::&\ []\ \{a,tries\}\rightarrow\\
+        &\{a,(put\ end\ \{end\ nil\})\};\\
+      add\_remaining\ ::&\ [h\mid t] \{a,tries\}\rightarrow\\
+      &sub\_tries:::Dictionary\\
+      &trie \leftarrow \{h,sub\_tries\}\\
+      &put\ h\ (add\_remaining\ t\ trie)\ tries.
+    \end{align*}
+ \]
+<p>
+  In the pseudocode above, the line \(sub\_tries:::Dictionary\) indicates the creation of an empty dictionary called \(sub\_tries\). How this is done in code is language dependent.
+</p>
 <h2>Similar Data Structures</h2>
 <p>
   There are other options that are similar, but not the same as tries. <a href="http://classes.eastus.cloudapp.azure.com/~barr/classes/comp410/papers/2002-burst_tries_a_fast_efficient_data_structure_for_string_keys">Burst tries</a> are one of these. It may be that using a burst trie could be more efficient than using a trie but only if there is some sub-set of data that is more frequently accessed than the rest of the data. Burst tries are a type of adaptive data structure. This means the location in the structure changes to move the most sought after data to locations where fewer comparisons are needed to determine if the data is in the collection.
