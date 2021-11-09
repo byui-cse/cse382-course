@@ -120,7 +120,7 @@
 \end{align*}\]
 
 <p>
-    In the above pseudocode, at each level of the heap, the right-side heap spines are merged and, if needed, the sub-heaps are swapped. This swapping is done by the \(rank\_and\_swap\) helper function when the rank of the left sub-heap is less than the rank of the right sub-heap, thus enforcing the leftist requirement. The swap function also updates the rank of the current root as needed. The pseudocode for the \(rank\_and\_swap\) function is seen below. 
+    In the above pseudocode, at each level of the heap, the right-side heap spines are merged and, if needed, the sub-heaps are swapped. This swapping is done by the \(rank\_and\_swap\) helper algorithm when the rank of the left sub-heap is less than the rank of the right sub-heap, thus enforcing the leftist requirement. The swap algorithm also updates the rank of the current root as needed. The pseudocode for the \(rank\_and\_swap\) algorithm is seen below. 
 </p>
 \[\begin{align*}
     rank\_and\_swap\ ::&\ root\rightarrow root\\
