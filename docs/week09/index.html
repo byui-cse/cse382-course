@@ -77,11 +77,11 @@
 </p>
 
 \[\begin{align*}
-    get\_min\ &::\ node\rightarrow a\:::Maybe\\
+    get\_min\ &::\ node\rightarrow a:::Maybe\\
     \\
     get\_min\text{ }&::\ none\rightarrow\\
                &\ \{fail,none\};\\
-    get\_min\ &::\ \{weight,value,next_l,next_r\} \rightarrow\\
+    get\_min\ &::\ \{rank,value,next_l,next_r\} \rightarrow\\
                &\ \{ok,value\}.
 \end{align*}\]
 <p>
@@ -89,41 +89,64 @@
 </p>  
 \[\begin{align*}
 
-    insert\ &::\ value,node\rightarrow root\_node\\
+    insert\ &::\ value\ node\rightarrow b:::Maybe\\
     \\
-    insert\ &::\ value,node\rightarrow\\
-    &merge:: \{1,value,nil,nil\}\text{ }node.\\
+    insert\ &::\ none\ none\rightarrow\\
+            &\{fail,none\};\\
+    insert\ &::\ value\ none\rightarrow\\
+            &\{ok,\{1,value,none,none\}\};\\
+    insert\ &::\ value\ root\rightarrow\\
+    &merge:: \{1,value,none,none\}\ root.\\
 \end{align*}\]
 <p>
   This means that \(merge\) does all the work for both inserting a value and merging two heaps, \(h\) and \(i\) in the snippet below.
 </p>
 \[\begin{align*}
-    merge\ &::\ h,i\rightarrow root\_node\\
+    merge\ &::\ h\ i\rightarrow root\\
     \\
-    merge\ &::\ nil,i\rightarrow\\
+    merge\ &::\ none\ none\rightarrow\\
+               &none;\\
+    merge\ &::\ none\ i\rightarrow\\
                &i;\\
-    merge\ &::\ h,nil\rightarrow\\
+    merge\ &::\ h\ none\rightarrow\\
                &h;\\
-    merge\ &::\ h\text{ }i \rightarrow\\
-        &i\looparrowright \{i\_weight,i\_value,i\_next\_l,i\_next\_r\}\\
-        &h\looparrowright \{h\_weight,h\_value,h\_next\_l,h\_next\_r\}\\
+    merge\ &::\ h\ i \rightarrow\\
+        &i\looparrowright \{i\_rank,i\_value,il\_sub,ir\_sub\}\\
+        &h\looparrowright \{h\_rank,h\_value,hl\_sub,hr\_sub\}\\
         &case\\
-               &\quad \{h\_value,h\_next\_l,(merge\text{ }::\text{ } h\_next\_r\text{ }i)\}\when h\_value\le i\_value \\
-               &\quad \{i\_value,i\_next\_l,(merge\text{ }::\text{ } h\text{ }i\_next\_r)\}\otherwise.
+               &\quad rank\_and\_swap\ \{h\_rank,h\_value,hl\_sub,(merge\ hr\_sub\ i)\}\when h\_value\le i\_value \\
+               &\quad rank\_and\_swap\ \{i\_rank,i\_value,il\_sub,(merge\ h\ ir\_sub)\}\otherwise.
 
 \end{align*}\]
 
 <p>
-    <h3>Data Removal</h3>
+    In the above pseudocode, at each level of the heap, the right-side heap spines are merged and, if needed, the sub-heaps are swapped. This swapping is done by the \(rank\_and\_swap\) helper function when the rank of the left sub-heap is less than the rank of the right sub-heap, thus enforcing the leftist requirement. The swap function also updates the rank of the current root as needed. The pseudocode for the \(rank\_and\_swap\) function is seen below. 
+</p>
+\[\begin{align*}
+    rank\_and\_swap\ ::&\ root\rightarrow root\\
+    \\
+    rank\_and\_swap\ ::&\ none\rightarrow none;\\
+    rank\_and\_swap\ ::&\ \{rank,value,none,\{r\_rank,rl\_sub,rr\_sub\}\}\rightarrow\\
+            & \{1,value,\{r\_rank,rl\_sub,rr\_sub\},none\};\\
+    &\%\%\text{This next clause handles the 'do no swap only update rank' case.}\\
+    rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank\ l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} when\ l\_rank \ge r\_rank\rightarrow\\
+            &\{r\_rank+1,value,\{l\_rank,l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\};\\
+    rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank,l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} otherwise\rightarrow\\
+            &\{l\_rank+1,value,\{r\_rank,r\_value,rl\_sub,rr\_sub\},\{l\_rank,l\_value,ll\_sub,lr\_sub\}\}.
+\end{align*}\]
+
+<h3>Data Removal</h3>
+<p>
 Being a min-heap, usually the only element that is 'popped' or removed is the least element. When the least element is removed its child nodes must be stitched back together via merging.
 </p>
 
 \[\begin{align*}
-    remove\_min\ &::\ node\rightarrow root\_node\\
-    remove\_min\ &::\ nil\rightarrow\\
-               &nil;\\
-    remove\_min\ &::\ \{weight,value,next\_l,next\_r\}\rightarrow\\
-               &merge\text{ }::\text{ }next\_r\text{ }next\_l.
+    remove\_min\ &::\ node\rightarrow b:::Maybe\\
+    \\
+    remove\_min\ &::\ none\rightarrow\\
+               &\{fail,none\};\\
+    remove\_min\ &::\ \{rank,value,next\_l,next\_r\}\rightarrow\\
+               &\{ok,merge\ ::\ next\_r\text{ }next\_l\}.
 \end{align*}\]
 
 <footer>
