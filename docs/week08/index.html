@@ -70,7 +70,7 @@
   ease of speech and just remember what we actually mean.
 </p>
 <p>
-    For this course the functors we'll focus on are \(add\) and \(contains\). A fully fledged set 
+    For this course the functors we'll focus on are \(add\_helper\) and \(contains\). A fully fledged set 
     of functors would include other behaviors.
 </p>
 <h3>The Data Organization of Binary Trees</h3>
@@ -160,7 +160,7 @@
 <p>
      Let \(n\in\{-1,0,1\}\) with \(0\) meaning equality, \(-1\) meaning less than, 
     and \(1\) meaning greater than, and \(comp\) being a comparator function comparing two elements of the tree, 
-    then the \(add\) algorithm for BSTs is:  
+    then the \(add\_helper\) algorithm for BSTs is:  
 \[\begin{align*}
     add\ &::\ node\ a\ (comp\  a\ b\rightarrow n)\rightarrow root\_node\\
     \\
@@ -209,7 +209,7 @@
 <p>
 <p>
     To help overcome this problem, the BST's node is augmented with an additional piece of data, a color. The two 
-    possible colors are red an black. The \(contains\) function for a red-black tree is nearly identical to that for 
+    possible colors are red and black. The \(contains\) function for a red-black tree is nearly identical to that for 
     a BST. The only difference is that when the elements of the node are accessed, the node's color is ignored.
 </p>
 \[\begin{align*}
@@ -224,21 +224,34 @@
     contains\ &::\ (color,value,nextL,nextR)\ a\ (comp\ a\ b\rightarrow n)\otherwise\rightarrow\\
                &contains\ nextR\ a\ comp.
 \end{align*}\]
+
 <p>
-    The color is also ignored for the first part of the red-black tree \(add\) function. That means that until after the node 
-    is added to the tree, the \(add\) function for red-black trees has the same behavior and rules as the BST. Then the tree may need to be balanced. That's why a balancing function is applied after \(add\). 
-
-    The \(add\) algorithm for red-black trees is:  
+    In order to maintain the rules for red-black trees and support the balancing algorithms that are described below, the root of the tree will need to be forced, or coerced, into having its color be black. To ensure this, a facade add algorithm and a helper for it are used. The facade sets the tree's root to always have black as its color.
+</p>
 \[\begin{align*}
-    add\ &::\ node\ a\ (comp\ a\ b\rightarrow n)\rightarrow root\_node\\
+    add\ &::\ node\ a\ (comparitor\ a\ b\rightarrow n)\rightarrow root\_node\\
     \\
-    add\ &::\ nil\ a\ (comp\ a\ b\rightarrow n)\rightarrow\\
-               &\ (red,a,nil,nil);\\
-    add\ &::\ (color,value,nextL,nextR)\  a\ (comp\ a\ b\rightarrow n)\when comp\ a\ value = -1\rightarrow\\
-               &balance\_l\ (color,value,(add\ nextL\ a\ comp),nextR);\\
+    add\ &::\ none\ a\ \_\rightarrow\\
+        &\{black,a,none,none\};\\
+    add\ &::\ root\ a\ comparitor\rightarrow\\
+        &add\_helper\ root\ a\ comparitor\looparrowright \{\_,next\_l,next\_r\}\\
+        &\{black,next\_l,next\_r\}.
+\end{align*}\]
+<p>
+    The color is also ignored for the first part of the red-black tree \(add\_helper\) function. That means that until after the node 
+    is added to the tree, the \(add\_helper\) function for red-black trees has the same behavior and rules as the BST. Then the tree may need to be balanced. That's why balancing functions are applied after \(add\_helper\) completes at each level of recursion. 
 
-    add\ &::\ (color,value,nextL,nextR)\  a\ (comp\ a\ b\rightarrow n)\otherwise\\
-               &balance\_r\ (color,value,nextL,(add\ nextR\ a\ comp)).
+    The \(add\_helper\) algorithm for red-black trees is:  
+\[\begin{align*}
+    add\_helper\ &::\ node\ a\ (comp\ a\ b\rightarrow n)\rightarrow root\_node\\
+    \\
+    add\_helper\ &::\ nil\ a\ (comp\ a\ b\rightarrow n)\rightarrow\\
+               &\ (red,a,nil,nil);\\
+    add\_helper\ &::\ (color,value,nextL,nextR)\  a\ (comp\ a\ b\rightarrow n)\when comp\ a\ value = -1\rightarrow\\
+               &balance\_l\ (color,value,(add\_helper\ nextL\ a\ comp),nextR);\\
+
+    add\_helper\ &::\ (color,value,nextL,nextR)\  a\ (comp\ a\ b\rightarrow n)\otherwise\\
+               &balance\_r\ (color,value,nextL,(add\_helper\ nextR\ a\ comp)).
 \end{align*}\]
 </p>
 
@@ -289,7 +302,7 @@
 \end{align*}\]
 </p>
 <p>
-	When looking at <a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html">visualizations</a> of red-black trees, it is common for the visualization to separately apply needed color changes and then adjust the node structures. The balance functions above do both of these steps at the same time. 
+	When looking at <a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html">visualizations</a> of red-black trees, it is common for the visualization to separately apply needed color changes and then adjust the node structures. The balance functions above do both of these steps at the same time so don't let the visualization lead you to believe they should be done separately. 
 </p>
 <h2>Wrap Up</h2>
 <p>
