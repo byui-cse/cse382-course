@@ -269,6 +269,32 @@
     \end{align*}\)
   </p>
   <p>
+    This version of chain has a specific weakness. Chaining continues even after a failure is indicated by a algorithm having a value with \(fail\) in the metadata. This can be resolved by creating a different chaining function as seen here.
+  </p>
+  <p>
+    \(\begin{align*}
+    maybe\_chain\ ::&\ Ma\ bind\ [f]\rightarrow Mb\\
+    \\
+    maybe\_chain\ ::&\ Ma\ \_\ []\rightarrow Ma;\\
+    maybe\_chain\ ::&\ Ma\ bind\ [h\mid t]\rightarrow\\
+    &result = bind\ Ma\ h\\
+    &result\looparrowright \{ok\_fail,a\}\\
+    &case\\
+    &\quad ok\_fail = fail\\
+    &\qquad \{fail,h,a\}\text{%%Put into the metadata any appropriate items for your situation.}\\
+    &\quad otherwise\\
+    &\qquad maybe\_chain\ ::\ (bind\ Ma\ h)\ bind\ t
+    \end{align*}\)
+  </p>
+
+  <p>
+    This version of chaining resolves the issue of needing to check the value of each function called prior to executing the next function, an ugly anti-pattern used in many applications, libraries, and code sets.
+  </p>
+
+  <p>
+    Think of the \(maybe\_chain\) version of chaining a template. You can use it to create early exit chaining for any monad. You can also include or exclude any appropriate items in the metadata that is part of the value of your chain algorithm. This could include items such as a counter indicating which function failed or the function that failed. You are limited only by your imagination and what is appropriate for the monad.
+  </p>
+  <p>
     Using this version of <kbd>chain</kbd> with our example <kbd>maybe</kbd> monad is much cleaner. 
   </p>
   <p>
