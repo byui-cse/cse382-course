@@ -80,15 +80,15 @@
 </p>
 <aside class="right">
 <h3>Note:</h3>
-<h4>Little-Endian? What's That?</h4>
+<h4>Big-Endian? What's That?</h4>
 <p>
-  A binary number is little-endian if the least significant bit, the 1's place, is on the left
-  and the most significant bit is on the right. Here are some examples
+  A binary number is big-endian if the least significant bit, the 1's place, is on the right
+  and the most significant bit is on the left. Here are some examples
 </p>
-\(4 = 001\\5=101\\6=011\)
+\(4 = 100\\5=101\\6=110\)
 </aside>
 <p>
-  There is also a purposeful relationship built in to RALists between little-endian binary numbers and the list of trees that is the internal representation of the list. Consider Figure 1 below. Each of the trees in each of the lists are related to a little-endian binary number in a specific way.
+  There is also a purposeful relationship built in to RALists between big-endian binary numbers and the list of trees that is the internal representation of the list. Consider Figure 1 below. Each of the trees in each of the lists are related to a big-endian binary number in a specific way.
 </p>
 
 <p>
@@ -113,7 +113,7 @@ It is true that traversing shallower binary trees is less computationally expens
   Because of how the internals of this RAList are designed, getting a value associated with an index number consists of two steps. First the list element containing the appropriate tree must be found. While we normally think of searching of a list as being \(\mathcal{O}(n)\), this is not the case for this list. Consider this. For any RAList containing more than one value, the number of elements of the list is significantly less than the number of values stored in the list. Using a rule of thumb approach, the complexity of this search must be \(\mathcal{O}(\log n)\).
 </p>
 <p>
-  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a little-endian binary representation and stripping away any trailing zeros. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(\log n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
+  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a big-endian binary representation and stripping away any trailing zeros. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(\log n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
 </p>
 <p>
   The pseudocode below breaks the task of getting a value at an index into three functions. The \(get\) function is the top-level function that is used. The others are helper functions. The \(get\) function has as parameters \(r\_a\_list\) and \(index\), the list containing the value and the index of the item in the list. The value of the \(get\) function is the item stored at the index or \(nil\) if there is no item at the stated index.
@@ -142,7 +142,7 @@ It is true that traversing shallower binary trees is less computationally expens
                &h.\\
 \end{align*}\]
 <p>
-  The value of \(search\) is used as the first parameter of the other helper function, \(find\)  and its value is the item associated with the \(index\) or \(nil\) if there is no such value. The \(find\) function's second parameter is the \(index\) converted into a little-endian representation as described above. t is referred to as the \(direction\_list\) in the snippet below. The \(find\) function is called recursively examining each element of the \(direction\_list\) one at a time. If the element is \(0\), the tree is traversed to the left. If the element is \(1\), the tree is traversed to the right. 
+  The value of \(search\) is used as the first parameter of the other helper function, \(find\)  and its value is the item associated with the \(index\) or \(nil\) if there is no such value. The \(find\) function's second parameter is the \(index\) converted into a big-endian representation as described above. t is referred to as the \(direction\_list\) in the snippet below. The \(find\) function is called recursively examining each element of the \(direction\_list\) one at a time. If the element is \(0\), the tree is traversed to the left. If the element is \(1\), the tree is traversed to the right. 
 </p>
 \[\begin{align*}
     find\ &::\ tree\ direction\_list\rightarrow value\\
@@ -230,13 +230,13 @@ It is true that traversing shallower binary trees is less computationally expens
   The pseudocode below describes the first portion of the algorithm. In this pseudocode the name of the function that is the first part of the algorithm is \(cons\).
 </p>
 \[\begin{align*}
-    cons\ &::\ tree\ direction\_list\ value\rightarrow r\_a\_list\\
+    cons\ &::\ leaf\ r\_a\_list\rightarrow r\_a\_list\\
     \\
     cons\ &::\ nil\ r\_a\_list\rightarrow\\
                 &error\_indicator;\\
     cons\ &::\ lea\mspace{-2mu}f\ nil\rightarrow\\
                 &error\_indicator;\\
-    cons\ &::\ lea\mspace{-2mu}f\ r\_a\_list\when is\_lea\mspace{-2mu}f\ ::\  lea\mspace{-2mu}f = false\rightarrow\\
+    cons\ &::\ lea\mspace{-2mu}f\ r\_a\_list\when is\_lea\mspace{-2mu}f\  lea\mspace{-2mu}f = false\rightarrow\\
                 &error\_indicator;\\
     cons\ &::\ lea\mspace{-2mu}f\ []\rightarrow\\
                 &[lea\mspace{-2mu}f];\\
@@ -244,7 +244,7 @@ It is true that traversing shallower binary trees is less computationally expens
                 &r\_a\_list\rightarrow[h\mid t]\\
                 &case\\
                 &\quad\when is\_lea\mspace{-2mu}f\ ::\ h=true\rightarrow\\
-                &\qquad link::\{2,lea\mspace{-2mu}f,h\} t\\
+                &\qquad link\ \{2,lea\mspace{-2mu}f,h\}\ t\\
                 &\quad otherwise\rightarrow\\
                 &\qquad lea\mspace{-2mu}f\doubleplus r\_a\_list.
     
@@ -262,11 +262,11 @@ It is true that traversing shallower binary trees is less computationally expens
     link\ &::\ tree\ []\rightarrow\\
                 &[tree];\\
     link\ &::\ tree\ [h\mid t]\when is\_lea\mspace{-2mu}f\ ::\ h=true\rightarrow\\
-                &link\ ::\ \{2,tree,h\}\ t;\\        
+                &link\ \{2,tree,h\}\ t;\\        
     link\ &::\ tree\ [h\mid t]\rightarrow\\
                 &tree\rightarrow \{weight,\_,\_\}\\
                 &h\rightarrow \{h\_weight,\_,\_\}\\
-                &link\ ::\ \{weight+h\_weight,tree,h\}\ t\otherwise.
+                &link\ \{weight+h\_weight,tree,h\}\ t\otherwise.
 \end{align*}\]
 <p>
   The gist of the algorithms is that a new tree is created that has a left and right subtree that are the two trees being linked. The \(weight\) of the generated tree is the sum of the weights of the two subtrees.
