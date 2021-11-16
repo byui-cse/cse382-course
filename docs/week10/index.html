@@ -53,8 +53,8 @@
   </div>
 </div>
 \(
-\newcommand\when{\text{ } when\text{ }}
-\newcommand\otherwise{\text{ } otherwise\text{ }}
+\newcommand\when{\  when\ }
+\newcommand\otherwise{\ otherwise\ }
 
 \newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
 \newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
@@ -110,21 +110,21 @@ It is true that traversing shallower binary trees is less computationally expens
 
 <h3>Getting Values by Index</h3>
 <p>
-  Because of how the internals of this RAList are designed, getting a value associated with an index number consists of two steps. First the list element containing the appropriate tree must be found. While we normally think of searching of a list as being \(\mathcal{O}(n)\), this is not the case for this list. Consider this. For any RAList having containing more than one value, the number of elements of the list is significantly less than the number of values stored in the list. Using a rule of thumb approach, the complexity of this search must be \(\mathcal{O}(\log n)\).
+  Because of how the internals of this RAList are designed, getting a value associated with an index number consists of two steps. First the list element containing the appropriate tree must be found. While we normally think of searching of a list as being \(\mathcal{O}(n)\), this is not the case for this list. Consider this. For any RAList containing more than one value, the number of elements of the list is significantly less than the number of values stored in the list. Using a rule of thumb approach, the complexity of this search must be \(\mathcal{O}(\log n)\).
 </p>
 <p>
-  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a little-endian binary representation and stripping away any trailing zeros. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
+  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a little-endian binary representation and stripping away any trailing zeros. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(\log n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
 </p>
 <p>
   The pseudocode below breaks the task of getting a value at an index into three functions. The \(get\) function is the top-level function that is used. The others are helper functions. The \(get\) function has as parameters \(r\_a\_list\) and \(index\), the list containing the value and the index of the item in the list. The value of the \(get\) function is the item stored at the index or \(nil\) if there is no item at the stated index.
 </p>
 
 \[\begin{align*}
-    get\text{ }&::\text{ }r\_a\_list\text{ }index\rightarrow value\\
+    get\ &::\ r\_a\_list\ index\rightarrow value\\
     \\
-    get\text{ }&::\text{ }[]\text{ }index\rightarrow nil;\\
-    get\text{ }&::\text{ }r\_a\_list\text{ }index\rightarrow\\
-               &find\text{ }::\text{ }(search\text{ }::\text{ }r\_a\_list\text{ }index\text{ }0)\text{ }(int\_to\_binary\_list\text{ }::\text{ }index).\\
+    get\ &::\ []\ index\rightarrow nil;\\
+    get\ &::\ r\_a\_list\ index\rightarrow\\
+               &find\ (search\ r\_a\_list\ index\ 0)\ (int\_to\_binary\_list\ index).\\
 
 \end{align*}\]
 <p>
@@ -132,29 +132,31 @@ It is true that traversing shallower binary trees is less computationally expens
 </p>
 
 \[\begin{align*}
-    search\text{ }&::\text{ }r\_a\_list\text{ }index\rightarrow value\\
+    search\ &::\ r\_a\_list\ index\rightarrow value\\
     \\
-    search\text{ }&::\text{ }[]\text{ }index\rightarrow\\
+    search\ &::\ []\ index\rightarrow\\
                   &nil;\\
-    search\text{ }&::\text{ }[\{weight,left,right\}\mid t]\text{ }index\when weight < index \rightarrow\\
-                &search\text{ }::\text{ }t\text{ }index;\\
-    search\text{ }&::\text{ }[h\mid t]\text{ }index\rightarrow\\
+    search\ &::\ [\{weight,left,right\}\mid t]\ index\when weight < index \rightarrow\\
+                &search\ t\ index;\\
+    search\ &::\ [h\mid t]\ index\rightarrow\\
                &h.\\
 \end{align*}\]
 <p>
   The value of \(search\) is used as the first parameter of the other helper function, \(find\)  and its value is the item associated with the \(index\) or \(nil\) if there is no such value. The \(find\) function's second parameter is the \(index\) converted into a little-endian representation as described above. t is referred to as the \(direction\_list\) in the snippet below. The \(find\) function is called recursively examining each element of the \(direction\_list\) one at a time. If the element is \(0\), the tree is traversed to the left. If the element is \(1\), the tree is traversed to the right. 
 </p>
 \[\begin{align*}
-    find\text{ }&::\text{ }tree\text{ }direction\_list\rightarrow value\\
+    find\ &::\ tree\ direction\_list\rightarrow value\\
     \\
-    find\text{ }&::\text{ }nil\text{ }direction\_list\rightarrow\\
+    find\ &::\ nil\ direction\_list\rightarrow\\
                 &nil;\\
-    find\text{ }&::\text{ }(value,nil,nil)\text{ }[]\rightarrow\\
+    find\ &::\ \{value,nil,nil\}\ []\rightarrow\\
                 &value;\\
-    find\text{ }&::\text{ }\{value,next\_left,next\_right\}\text{ }[0\mid t]\rightarrow\\
-                &find\text{ }::\text{ }next\_left\text{ }t;\\
-    find\text{ }&::\text{ }\{value,next\_left,next\_right\}\text{ }[1\mid t]\rightarrow\\
-                &find\text{ }::\text{ }next\_right\text{ }t;\\
+    find\ &::\ \{\_,next\_left,\_\} []\rightarrow\\
+                &find\ next\_left [];\\
+    find\ &::\ \{value,next\_left,next\_right\}\ [0\mid t]\rightarrow\\
+                &find\ next\_left\ t;\\
+    find\ &::\ \{value,next\_left,next\_right\}\ [1\mid t]\rightarrow\\
+                &find\ next\_right\ t;\\
 \end{align*}\]
 <p>
   The pseudocode snippet above describes the \(find\) function.
@@ -167,34 +169,36 @@ It is true that traversing shallower binary trees is less computationally expens
   Also, if there is no item for a given index, all duplication must be abandoned and the memory freed. This is done by indicating an error. Error indication is language dependent. Choose an action that is appropriate for your language.
 </p>
 <p>
-  In the pseudocode below, the \(update) function uses a single helper function, \(replace\). Like the \(search\) function above, \(update\) finds the tree containing the item indicated by the \(index\). When it finds the correct tree, it recursively calls \(replace\) which traverses the tree and then replaces the item with the item in the \(value\) parameter.
+  In the pseudocode below, the \(update\) function uses a single helper function, \(replace\). Like the \(search\) function above, \(update\) finds the tree containing the item indicated by the \(index\). When it finds the correct tree, it recursively calls \(replace\) which traverses the tree and then replaces the item with the item in the \(value\) parameter.
 </p>
 \[\begin{align*}
-    update\text{ }&::\text{ }r\_a\_list\text{ }index\text{ }value\rightarrow r\_a\_list\\
+    update\ &::\ r\_a\_list\ index\ value\rightarrow r\_a\_list\\
     \\
-    update\text{ }&::\text{ }[]\text{ }index\text{ }value\rightarrow\\
+    update\ &::\ []\ index\ value\rightarrow\\
                   &error\_indicator;\\
-    update\text{ }&::\text{ }[\{weight,next\_left,next\_right\}\mid t]\text{ }index\text{ }value \when weight < index\rightarrow\\
-                  &\{weight,next\_left,next\_right\}\doubleplus update\text{ }::\text{ }t\text{ }index\text{ }value;\\
+    update\ &::\ [\{weight,next\_left,next\_right\}\mid t]\ index\ value \when weight < index\rightarrow\\
+                  &\{weight,next\_left,next\_right\}\doubleplus update\ ::\ t\ index\ value;\\
 
-    update\text{ }&::\text{ }[h\mid t]\text{ }index\text{ }value\rightarrow\\
-               &replace\text{ }::\text{ }h\text{ }(int\_to\_binary\_list\text{ }::\text{ }index)\doubleplus t.\\
+    update\ &::\ [h\mid t]\ index\ value\rightarrow\\
+               &replace\ ::\ h\ (int\_to\_binary\_list\ ::\ index)\doubleplus t.\\
 
 \end{align*}\]
 <p>
   The biggest, but not only, difference between \(update\) and \(replace\) when compared to \(get\),\(search\), and \(find\) is the duplication of the required list elements and tree nodes. Notice in the snippet above that only those list elements that are before and including the element containing the tree that will be updated are duplicated, but not the trees they contain. This is in line with the behavior of regular functional programming lists as described in week 2. The \(replace\) function also only duplicates the portion of the tree that are traversed in order to replace an item in the leaf of the tree. Since no other nodes are modified, they don't need to be duplicated.
 </p>
 \[\begin{align*}
-    replace\text{ }&::\text{ }tree\text{ }direction\_list\text{ }value\rightarrow node\\
+    replace\ &::\ tree\ direction\_list\ value\rightarrow node\\
     \\
-    replace\text{ }&::\text{ }nil\text{ }direction\_list\text{ }value\rightarrow\\
+    replace\ &::\ nil\ direction\_list\ value\rightarrow\\
                 &error\_indicator;\\
-    replace\text{ }&::\text{ }\{old\_value,nil,nil\}\text{ }[]\text{ }value\rightarrow\\
+    replace\ &::\ \{old\_value,nil,nil\}\ []\ value\rightarrow\\
                 &\{value,nil,nil\};\\
-    replace\text{ }&::\text{ }\{weight,next\_left,next\_right\}\text{ }[0\mid t]\text{ }value\rightarrow\\
-                &\{weight,replace\text{ }::\text{ }next\_left\text{ }t,next\_right\};\\
-    replace\text{ }&::\text{ }\{weight,next\_left,next\_right\}\text{ }[1\mid t]\text{ }value\rightarrow\\
-                &\{weight,next\_left,replace\text{ }::\text{ }next\_right\text{ }t\};\\
+    replace\ &::\ \{old\_value,next_l,nil\}\ []\ value\rightarrow\\
+                &replace\ next\_left\ value\ [];\\
+    replace\ &::\ \{weight,next\_left,next\_right\}\ [0\mid t]\ value\rightarrow\\
+                &\{weight,replace\ ::\ next\_left\ t,next\_right\};\\
+    replace\ &::\ \{weight,next\_left,next\_right\}\ [1\mid t]\ value\rightarrow\\
+                &\{weight,next\_left,replace\ ::\ next\_right\ t\};\\
 \end{align*}\]
 <p>
   Having seen how to get and mutate items in the RAList, an algorithm for building a list that can be used in those ways is needed.
@@ -226,20 +230,20 @@ It is true that traversing shallower binary trees is less computationally expens
   The pseudocode below describes the first portion of the algorithm. In this pseudocode the name of the function that is the first part of the algorithm is \(cons\).
 </p>
 \[\begin{align*}
-    cons\text{ }&::\text{ }tree\text{ }direction\_list\text{ }value\rightarrow r\_a\_list\\
+    cons\ &::\ tree\ direction\_list\ value\rightarrow r\_a\_list\\
     \\
-    cons\text{ }&::\text{ }nil\text{ }r\_a\_list\rightarrow\\
+    cons\ &::\ nil\ r\_a\_list\rightarrow\\
                 &error\_indicator;\\
-    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }nil\rightarrow\\
+    cons\ &::\ lea\mspace{-2mu}f\ nil\rightarrow\\
                 &error\_indicator;\\
-    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }r\_a\_list\when is\_lea\mspace{-2mu}f\text{ }::\text{ } lea\mspace{-2mu}f = false\rightarrow\\
+    cons\ &::\ lea\mspace{-2mu}f\ r\_a\_list\when is\_lea\mspace{-2mu}f\ ::\  lea\mspace{-2mu}f = false\rightarrow\\
                 &error\_indicator;\\
-    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }[]\rightarrow\\
+    cons\ &::\ lea\mspace{-2mu}f\ []\rightarrow\\
                 &[lea\mspace{-2mu}f];\\
-    cons\text{ }&::\text{ }lea\mspace{-2mu}f\text{ }r\_a\_list\rightarrow\\
+    cons\ &::\ lea\mspace{-2mu}f\ r\_a\_list\rightarrow\\
                 &r\_a\_list\rightarrow[h\mid t]\\
                 &case\\
-                &\quad\when is\_lea\mspace{-2mu}f\text{ }::\text{ }h=true\rightarrow\\
+                &\quad\when is\_lea\mspace{-2mu}f\ ::\ h=true\rightarrow\\
                 &\qquad link::\{2,lea\mspace{-2mu}f,h\} t\\
                 &\quad otherwise\rightarrow\\
                 &\qquad lea\mspace{-2mu}f\doubleplus r\_a\_list.
@@ -253,16 +257,16 @@ It is true that traversing shallower binary trees is less computationally expens
 </p>
 
 \[\begin{align*}
-    link\text{ }&::\text{ }tree\text{ }r\_a\_list\rightarrow r\_a\_list\\
+    link\ &::\ tree\ r\_a\_list\rightarrow r\_a\_list\\
     \\
-    link\text{ }&::\text{ }tree\text{ }[]\rightarrow\\
+    link\ &::\ tree\ []\rightarrow\\
                 &[tree];\\
-    link\text{ }&::\text{ }tree\text{ }[h\mid t]\when is\_lea\mspace{-2mu}f\text{ }::\text{ }h=true\rightarrow\\
-                &link\text{ }::\text{ }\{2,tree,h\}\text{ }t;\\        
-    link\text{ }&::\text{ }tree\text{ }[h\mid t]\rightarrow\\
+    link\ &::\ tree\ [h\mid t]\when is\_lea\mspace{-2mu}f\ ::\ h=true\rightarrow\\
+                &link\ ::\ \{2,tree,h\}\ t;\\        
+    link\ &::\ tree\ [h\mid t]\rightarrow\\
                 &tree\rightarrow \{weight,\_,\_\}\\
                 &h\rightarrow \{h\_weight,\_,\_\}\\
-                &link\text{ }::\text{ }\{weight+h\_weight,tree,h\}\text{ }t\otherwise.
+                &link\ ::\ \{weight+h\_weight,tree,h\}\ t\otherwise.
 \end{align*}\]
 <p>
   The gist of the algorithms is that a new tree is created that has a left and right subtree that are the two trees being linked. The \(weight\) of the generated tree is the sum of the weights of the two subtrees.
