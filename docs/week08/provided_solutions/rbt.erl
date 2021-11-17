@@ -66,7 +66,7 @@ exercise(Upper_limit,Count)->
 				end,null,Numbers),
 	io:format("~p~n",[Tree]),
 	%Exercise contains
-	[contains(Tree,Num,fun(X,Y)-> compare(X,Y) end)||Num<-Numbers],
+	io:format("Contains Yes: ~n~p~n",[[contains(Tree,Num,fun(X,Y)-> compare(X,Y) end)||Num<-Numbers]]),
 	%Non existent numbers
-	[contains(Tree,-Num,fun(X,Y)-> compare(X,Y) end)||Num<-Numbers].
+	io:format("Contains No: ~p~n",[[contains(Tree,-Num,fun(X,Y)-> compare(X,Y) end)||Num<-Numbers]]).
 
