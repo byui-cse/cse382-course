@@ -38,11 +38,12 @@ exercise(Upper_limit,Count)->
 	Numbers=[rand:uniform(Upper_limit)||_<-lists:seq(1,Count)],
 	Root = {3,null,null},
 	%Exercise add
-	lists:foldl(fun(Num,Accum_root)-> 
+	Left_list = lists:foldl(fun(Num,Accum_root)-> 
 					add(Accum_root,Num,fun(X,Y)-> compare(X,Y) end) 
 				end,Root,Numbers),
+	io:format("~p~n",[Left_list]),
 	%Exercise contains
-	lists:foldl(fun(Num,Accum_root)-> 
-					contains(Accum_root,Num,fun(X,Y)-> compare(X,Y) end) 
-				end,Root,Numbers).
+	[contains(Left_list,Num,fun(X,Y)-> compare(X,Y) end)||Num<-Numbers],
+	%Non existent numbers
+	[contains(Left_list,Num,fun(X,Y)-> compare(X,Y) end)||Num<-Numbers].
 
