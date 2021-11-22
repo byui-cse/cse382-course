@@ -160,7 +160,7 @@
     \\
     lookup\ ::&\ []\ \_\rightarrow\\
               &\{fail\};\\
-    lookup\ ::&\ [h\mid t]\ \{a,tries\}\ when\ (get\ done\ tries) = \{ok,\_\}\rightarrow\\
+    lookup\ ::&\ [h\mid []]\ \{a,tries\}\ when\ (get\ done\ tries) = \{ok,\_\}\rightarrow\\
               &case\\
               &\quad a = h\\
               &\qquad \{ok\}\\
