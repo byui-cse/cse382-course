@@ -11,12 +11,12 @@
 %% Complexity: Best Case - O(1)
 %% 			   Average Case - O(log n)
 %%
-get(nil,_Index)->%in Erlang nil == []
+get([],_Index)->
 	none;
 get(_Ral,Index) when Index < 0 ->
 	none;
-get([{Value,none,none}|nil,0)->
-	Value;
+get([{Element,none,none}|_T],0)->
+	Element;
 get(Ral,Index)->
 	{Skipped_indices,Tree} = search(Ral,Index,0),
 	case Tree == none of
@@ -24,7 +24,6 @@ get(Ral,Index)->
 			none;
 		_ ->
 			{Leaf_count,_,_} = Tree,
-			io:format("bin list ~p~n",[build_bin_list(Index,Leaf_count)]),
 			find(Tree,build_bin_list(Index-Skipped_indices,Leaf_count))
 	end.
 
@@ -43,10 +42,8 @@ get(Ral,Index)->
 %% Value: a list of 1s and 0s representing N in binary.
 %% Complexity: O(log n).
 %%
-build_bin_list(N,M) when N < 0;N>=M ->
-	fail;
 build_bin_list(_,1)->
-	nil;
+	[];
 build_bin_list(N,Power2) ->
 	Lower_power = Power2 div 2,
 	case N >= Lower_power of
@@ -69,7 +66,9 @@ build_bin_list(N,Power2) ->
 %%        and who's second index is the tree containing the value at the Index parameter.
 %% Complexity: O(log n)
 %%
-search(nil,_Index,_Accum)->{fail,none};
+search([],_Index,_Accum)->{fail,none};
+search([H|_T],0,_)->
+	{0,H};
 search([{_,none,none} | T],Index,Accum)->
 	search(T,Index,Accum+1);
 search([{Leaf_count,_,_}|T],Index,Accum) when Leaf_count < Index-Accum->
@@ -89,8 +88,8 @@ search([H|_],_,Accum)->
 %%
 find(none,_Traversal_list)->
 	none;
-find({Value,_,_},nil)->
-	Value;
+find({Element,_,_},[])->
+	Element;
 find({_,Next_l,_},[0|T])->
 	find(Next_l,T);
 find({_,_,Next_r},[1|T])->
@@ -109,21 +108,21 @@ find({_,_,Next_r},[1|T])->
 %% Complexity: Best Case - O(1)
 %%  		   Average Case - O(log n)
 %%
-update(none,_Index,_Value,_Accum)->none;
-update(nil,_,_,_)->nil;
+update(none,_Index,_Element,_Accum)->none;
+update([],_,_,_)->[];
 update(Ral,Index,_,_) when Index < 0->Ral;
-update([{_,none,none}|T],0,Value,_)->
-	[{Value,none,none}]++T;
-update([H={_,none,none}|T],Index,Value,Accum) when Index > 0 ->
-	[H]++update(T,Index,Value,Accum+1);
-update([H = {Leaf_count,_,_}|T],Index,Value,Accum) when Leaf_count<Index-Accum->
-	[H]++update(T,Index,Value,Accum+Leaf_count);
-update([H = {Leaf_count,_,_}|T],Index,Value, Accum)->
+update([{_,none,none}|T],0,Element,_)->
+	[{Element,none,none}]++T;
+update([H={_,none,none}|T],Index,Element,Accum) when Index > 0 ->
+	[H]++update(T,Index,Element,Accum+1);
+update([H = {Leaf_count,_,_}|T],Index,Element,Accum) when Leaf_count<Index-Accum->
+	[H]++update(T,Index,Element,Accum+Leaf_count);
+update([H = {Leaf_count,_,_}|T],Index,Element, Accum)->
 	case Bin_list = build_bin_list(Index-Accum,Leaf_count) of
 		fail->
 			[H]++T;
 		_->
-			[replace(H,Bin_list,Value)]++T
+			[replace(H,Bin_list,Element)]++T
 	end.
 
 %%
@@ -138,10 +137,10 @@ update([H = {Leaf_count,_,_}|T],Index,Value, Accum)->
 %%        in their unchanged leaves
 %% Complexity: O(log n)
 %%
-replace({_Old_Element,none,none},nil,Element)->
+replace({_Old_Element,none,none},[],Element)->
 	{Element,none,none};
 replace({Leaf_count,Next_l,Next_r},[0|T],Element)->
-	{Leaf_count,replace(Next_l,T,Value),Next_r};
+	{Leaf_count,replace(Next_l,T,Element),Next_r};
 replace({Leaf_count,Next_l,Next_r},[_|T],Element)->
  	{Leaf_count,Next_l,replace(Next_r,T,Element)}.
 
@@ -155,7 +154,7 @@ replace({Leaf_count,Next_l,Next_r},[_|T],Element)->
  cons(none,Ral)->Ral;
  cons(Element,none)->
  	[{Element,none,none}];
- cons(Element,nil)->
+ cons(Element,[])->
  	cons(Element,none);
  cons(Element,[H={_,none,none}|T])->
  	link({2,{Element,none,none},H},T);
@@ -170,7 +169,7 @@ replace({Leaf_count,Next_l,Next_r},[_|T],Element)->
 %%             Trees - the remaining trees in the random access list
 %% Value: a random access list updated such that no two trees have
 %% 		  the same number of leaves and all trees have 2^n leaves, n=(0,1,2,...).
- link(Tree,nil)->
+ link(Tree,[])->
  	[Tree];
  link(Tree = {Leaf_count,_,_},[H={Head_leaf_count,_,_}|T])->
  	link({Leaf_count+Head_leaf_count,Tree,H},T).
