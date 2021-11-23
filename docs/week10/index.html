@@ -113,60 +113,81 @@ It is true that traversing shallower binary trees is less computationally expens
   Because of how the internals of this RAList are designed, getting a value associated with an index number consists of two steps. First the list element containing the appropriate tree must be found. While we normally think of searching of a list as being \(\mathcal{O}(n)\), this is not the case for this list. Consider this. For any RAList containing more than one value, the number of elements of the list is significantly less than the number of values stored in the list. Using a rule of thumb approach, the complexity of this search must be \(\mathcal{O}(\log n)\).
 </p>
 <p>
-  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a big-endian binary representation and stripping away any trailing zeros. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(\log n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
+  Once the correct tree has been found, it must now be traversed to find the stored value. This is done by converting the \(index\) number into a big-endian binary representation. This binary number is then used to do the traversal as if the code was decoding a message using a Huffman tree. The complexity of the tree traversal is also \(\mathcal{O}(\log n)\). Since there are two \(\mathcal{O}(\log n)\) algorithms one after the other, the algorithm for getting a value by index is also \(\mathcal{O}(\log n)\).
 </p>
 <p>
-  The pseudocode below breaks the task of getting a value at an index into three functions. The \(get\) function is the top-level function that is used. The others are helper functions. The \(get\) function has as parameters \(r\_a\_list\) and \(index\), the list containing the value and the index of the item in the list. The value of the \(get\) function is the item stored at the index or \(none\) if there is no item at the stated index.
+  The pseudocode below breaks the task of getting a value at an index into four functions. The \(get\) function is the top-level function that is used. The others are helper functions. The \(get\) function has as parameters \(r\_a\_list\) and \(index\), the list containing the value and the index of the item in the list. The value of the \(get\) function is the item stored at the index or \(none\) if there is no item at the stated index.
 </p>
 
 \[\begin{align*}
-    get\ &::\ r\_a\_list\ index\rightarrow value\\
+    get\ &::\ r\_a\_list\ index\rightarrow element\\
     \\
     get\ &::\ []\ index\rightarrow none;\\
+    get\ &::\ [\{element,none,none\}\mid t] 0\rightarrow\\
+            &element;\\
     get\ &::\ r\_a\_list\ index\rightarrow\\
             &search\ r\_a\_list\ index\ 0\looparrowright \{skipped\_indices,tree\}\\
-            &search\_list\leftarrow log (int\_to\_binary\_list\ index-skipped\_indices)\\
-            &find\ tree\ search\_list.
-
+            &case\\
+            &\quad tree = none\rightarrow\\
+            &\qquad none\\
+            &\quad \{leaf\_count,\_,\_\}\looparrowleft tree\\
+            &\qquad find\ tree\ (build\_bin\_list\ index-skipped\_indices\ leaf\_count).
 \end{align*}\]
 <p>
-  The code above uses two helper functions. The first executed is the \(search\) function. The \(search\) function has as its value the correct tree for the given \(index\), or \(none\) if there is no such tree, and an integer that indicates the search path for the specified tree. Its parameters are the RAL to search, the index of the desired element, and an accumulator that becomes the \(skipped\_indices\) portion of \(search\)'s value. 
+  The code above uses three helper functions. The first executed is the \(search\) function. The \(search\) function has as its value the correct tree for the given \(index\), or \(none\) if there is no such tree, and an integer that indicates the search path for the specified tree. Its parameters are the RAL to search, the index of the desired element, and an accumulator that becomes the \(skipped\_indices\) portion of \(search\)'s value. 
 </p>
 
 \[\begin{align*}
-    search\ &::\ a:::RAL\ b:::Int\  c:::Int\rightarrow\{d:::Int,e:::tree\}\\
+    search\ &::\ a:::RAL\ b:::Int\  c:::Int\rightarrow\{fail\_success,e:::tree\}\\
     \\
     search\ &::\ []\ index\ \_\rightarrow\\
-                  &none;\\
-    search\ &::\ [\{value,none,none\}] 0\ \_\rightarrow\\
-               &\{0,[\{value,none,none\}]\};\\
+                  &\{fail,none\};\\
+    search\ &::\ [h\mid t] 0\ \_\rightarrow\\
+               &\{0,H\};\\
     search\ &::\ [\{\_,none,none\}\mid t]\ index\ accum\rightarrow\\
                &search\ t\ index\ accum+1;\\
-    search\ &::\ [\{leaf\_count,left,right\}\mid t]\ index\ accum\when leaf\_count < index-accum \rightarrow\\
+    search\ &::\ [\{leaf\_count,next\_l,next\_r\}\mid t]\ index\ accum\when leaf\_count < index-accum \rightarrow\\
                 &search\ t\ index\ accum+leaf\_count;\\
-    search\ &::\ [h\mid t]\ index\rightarrow\\
-               &h.
+    search\ &::\ [h\mid t]\ index\ accum\rightarrow\\
+               &\{accum,h\}.
 \end{align*}\]
 <p>
-  The value of \(search\) is used as the first parameter of the other helper function, \(find\)  and its value is the item associated with the \(index\) or \(none\) if there is no such value. The \(find\) function's second parameter is the \(index\) converted into a big-endian representation as described above. t is referred to as the \(direction\_list\) in the snippet below. The \(find\) function is called recursively examining each element of the \(direction\_list\) one at a time. If the element is \(0\), the tree is traversed to the left. If the element is \(1\), the tree is traversed to the right. 
+  The value of \(search\) is either the tuple \(\{fail,none\}\) or, when successful, \(\{skipped\_indices,tree\}\). The \(skipped\_indices\) and the \(tree\) are both used when generating the traversal list for the tree. The helper function that does this is \(build\_bin\_list\). It has two integers 
+  as parameters and a value that is the first integer converted to a list of 
+  zeros and ones, a binary representation.
 </p>
 \[\begin{align*}
-    find\ &::\ tree\ direction\_list\rightarrow value\\
+    build\_bin\_list\ &::\ a:::Int\ a\rightarrow [a]\\
     \\
-    find\ &::\ none\ direction\_list\rightarrow\\
-                &none;\\
-    find\ &::\ \{value,none,none\}\ []\rightarrow\\
-                &value;\\
-    find\ &::\ \{\_,next\_l,\_\} []\rightarrow\\
-                &find\ next\_l [];\\
-    find\ &::\ \{value,next\_l,next\_r\}\ [0\mid t]\rightarrow\\
-                &find\ next\_l\ t;\\
-    find\ &::\ \{value,next\_l,next\_r\}\ [1\mid t]\rightarrow\\
-                &find\ next\_r\ t;\\
+    build\_bin\_list\ &::\ \_\ 1\ \_\rightarrow\\
+                  &[];\\
+    build\_bin\_list\ &::\ n\ bit\_space\rightarrow\\
+               &lesser\_power\leftarrow bit\_space\div 2,\\
+               &case\\
+               &\quad n \ge lesser\_power\rightarrow\\
+               &\qquad [1]\doubleplus build\_bin\_list n-lesser\_power lesser\_power\\
+               &\quad otherwise\\
+               &\qquad [0]\doubleplus build\_bin\_list n lesser\_power.
 \end{align*}\]
 <p>
-  The pseudocode snippet above describes the \(find\) function.
-</p> 
+    The binary representation will always be somewhere in \((0,bit\_space-1)) and the bit space will always need to be a power of 2.
+</p>
+<p>
+  The binary list that is the value of used as the first parameter of \(build\_bin\_list\) and the tree that is part of the value of \(search\) are the two parameters of the last helper function, \(find\). The \(find\) function is called recursively examining each element of the binary list one at a time. If the element is \(0\), the tree is traversed to the left. If the element is \(1\), the tree is traversed to the right. The value of \(find\) is the value of the leaf found by traversing the tree. 
+</p>
+\[\begin{align*}
+    find\ &::\ tree\ traversal\_list\rightarrow value\\
+    \\
+    find\ &::\ none\ traversal\_list\rightarrow\\
+                &none;\\
+    find\ &::\ \{element,\_,\_\}\ []\rightarrow\\
+                &element;\\
+    find\ &::\ \{\_,next\_l,\_\} [0\mid t]\rightarrow\\
+                &find\ next\_l t;\\
+    find\ &::\ \{\_,next\_l,\_\} [1\mid t]\rightarrow\\
+                &find\ next\_r t.\\
+\end{align*}\]
+
 <h3>Changing a Value</h3>
 <p>
   Unsurprisingly, the algorithm for changing a value is similar to that for getting a value. Being a functional algorithm, when changing an item the \(update\) function requires that a new list and tree be built. To be efficient that new list and tree must avoid unnecessary duplication by reusing list elements and tree nodes that have not changed. 
@@ -199,9 +220,9 @@ It is true that traversing shallower binary trees is less computationally expens
   The biggest, but not only, difference between \(update\) and \(replace\) when compared to \(get\),\(search\), and \(find\) is the duplication of the required list elements and tree nodes. Notice in the snippet above that only those list elements that are before and including the element containing the tree that will be updated are duplicated, but not the trees they contain. This is in line with the behavior of regular functional programming lists as described in week 2. The \(replace\) function also only duplicates the portion of the tree that are traversed in order to replace an item in the leaf of the tree. Since no other nodes are modified, they don't need to be duplicated.
 </p>
 \[\begin{align*}
-    replace\ &::\ tree\ direction\_list\ value\rightarrow node\\
+    replace\ &::\ tree\ traversal\_list\ value\rightarrow node\\
     \\
-    replace\ &::\ none\ direction\_list\ value\rightarrow\\
+    replace\ &::\ none\ traversal\_list\ value\rightarrow\\
                 &error\_indicator;\\
     replace\ &::\ \{old\_value,none,none\}\ []\ value\rightarrow\\
                 &\{value,none,none\};\\
