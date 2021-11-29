@@ -163,18 +163,18 @@ tail\text{ }&::\text{ }\{\_,[h\mid t]\}\text{ }\rightarrow\\
 enqueue\text{ }&::\text{ }\{[a],[a]\}\text{ }a\rightarrow \{[a],[a]\}\\
 \\
 enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\when f=[]\rightarrow\\
-            &\{a\doubleplus f,r\};\\
+            &\{[a]\doubleplus f,r\};\\
 
 enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\otherwise\rightarrow\\
-            &\{f,a\doubleplus r\}.
+            &\{f,[a]\doubleplus r\}.
 \end{align*}
 \]
 </p>
 <p>
-  The only time queue can be empty is when \(f\) is empty. This is enforced by the \(dequeue\) function. This implies that if \(f\) is empty all that needs to be done is to prepend the new element to \(f\). 
+  The only time queue can be empty is when \(f\) is empty. This is enforced by the \(dequeue\) function (you'll see this enforcement soon). This implies that if \(f\) is empty all that needs to be done to enqueue an element is to prepend the element to \(f\). 
 </p>
 <p>
-  The second clause is the one that is most commonly used. As described in the pseudocode and the introduction above, the new element is prepended to \(r\).
+  The second clause is the one that gets exercised most frequently as a queue is used. In the second clause, as described in the pseudocode and the introduction above, the new element is prepended to \(r\).
 </p>
 <p>
   It is when elements are removed that specific care must be taken to ensure the queue pattern is followed. If the tail of \(f\) is an empty list, \(r\) is reversed and becomes \(f\). It, along with an empty \(r\) are used to produce the updated version of the queue as described below and in the introduction above.
@@ -200,7 +200,7 @@ dequeue\text{ }&::\text{ }\{[h\mid t],r\}\text{ }\rightarrow\\
 </p>
 <h4>The Deque Data Structure</h4>
 <p>
-  First off, Deque is pronounced the same ask the English word \(deck\) to distinguish it from \(dequeue\) and stands for double-ended queue. Being double ended, a deque can have elements added and removed from both ends. While this may sound like a completely different from queue, the functional pattern for a deque is the pattern for queue with two additional functions, \(dequeue\_back\) and \(enqueue\_front\). By including these two new functions, the tuple used to represent a queue can also be used as a deque.
+  First off, Deque is pronounced the same ask the English word \(deck\) to distinguish it from \(dequeue\). Deque is short for double-ended queue. Being double ended, a deque can have elements added and removed from both ends. While this may sound like a completely different from queue, the functional pattern for a deque is the pattern for queue with two additional functions, \(dequeue\_back\) and \(enqueue\_front\). By including these two new functions, the tuple used to represent a queue can also be used as a deque.
 </p>
 <p>
   The \(enqueue\_front\) function is strait forward. All that is needed to be done is prepend the a new element to \(f\). The value of the \(enqueue\_front\) function is then a tuple composed of this modified version of \(f\) and an unmodified version of \(r\) as described below.
