@@ -135,7 +135,7 @@ head\text{ }&::\text{ }\{[h\mid t],\_\}\text{ }\rightarrow\\
 \]
 </p>
 <p>
-  The \(tail\) function is very similar to the \(head\)function. If both \(f\) and \(r\) are empty, tail is \(nil\). If \(f\) is empty and \(r\) is not, the value of \(tail\) is the head of \(r\). Otherwise the function's value is the tail of \(f\).
+  The \(tail\) function is very similar to the \(head\) function. If both \(f\) and \(r\) are empty, tail is \(nil\). If \(f\) is empty and \(r\) is not, the value of \(tail\) is the head of \(r\). Otherwise the function's value is the tail of \(f\).
 </p>
 <p>
 \[\begin{align*}
@@ -162,8 +162,8 @@ tail\text{ }&::\text{ }\{\_,[h\mid t]\}\text{ }\rightarrow\\
 \[\begin{align*}
 enqueue\text{ }&::\text{ }\{[a],[a]\}\text{ }a\rightarrow \{[a],[a]\}\\
 \\
-enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\when f=[]\rightarrow\\
-            &\{[a]\doubleplus f,r\};\\
+enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\when f=[] and r=[]\rightarrow\\
+            &\{[a],r\};\\
 
 enqueue\text{ }&::\text{ }\{f,r\}\text{ }a\otherwise\rightarrow\\
             &\{f,[a]\doubleplus r\}.
@@ -209,8 +209,8 @@ dequeue\text{ }&::\text{ }\{[h\mid t],r\}\text{ }\rightarrow\\
 \[\begin{align*}
 enqueue\_front\text{ }&::\text{ }\{[a],[a]\}\text{ }a\rightarrow \{[a],[a]\}\\
 \\
-enqueue_front\text{ }&::\text{ }\{f,r\}\text{ }a\rightarrow\\
-       \     &\{a\doubleplus f,r\}.
+enqueue\_front\text{ }&::\text{ }\{f,r\}\text{ }a\rightarrow\\
+       \     &\{[a]\doubleplus f,r\}.
 \end{align*}
 \]
 </p>
@@ -224,7 +224,7 @@ dequeue\_back\text{ }&::\text{ }\{[a],[a]\}\text{ }\rightarrow\\
 dequeue\_back\text{ }&::\text{ }\{[],[]\}\text{ }\rightarrow\\
             &\{[],[]\};\\
 dequeue\_back\text{ }&::\text{ }\{[h:t],[]\}\text{ }\rightarrow\\
-            &\{t,[]\};
+            &\{h,[]\};\\
 dequeue\_back\text{ }&::\text{ }\{f,[h\mid t]\}\text{ }\rightarrow\\
             &\{f,t\}.
 \end{align*}
