@@ -197,7 +197,7 @@
     make it easier to understand binding, we'll use this symbol, \(\ggg \), to represent binding.
   </p>
   <p>
-    Consider the functions \(f,g\), and \(h) above. Binding these three functions would result in the following situation.
+    Consider the functions \(f,g\), and \(h\) above. Binding these three functions would result in the following situation.
   </p>
   <p>
     \((f\ggg g\ggg h)\ ::\ Ma\rightarrow Md\)
@@ -277,13 +277,13 @@
     \\
     maybe\_chain\ ::&\ Ma\ \_\ []\rightarrow Ma;\\
     maybe\_chain\ ::&\ Ma\ bind\ [h\mid t]\rightarrow\\
-    &result = bind\ Ma\ h\\
-    &result\looparrowright \{ok\_fail,a\}\\
+    &Mb = bind\ Ma\ h\\
+    &Mb\looparrowright \{ok\_fail,b\}\\
     &case\\
     &\quad ok\_fail = fail\\
-    &\qquad \{fail,h,a\}\text{%%Put into the metadata any appropriate items for your situation.}\\
+    &\qquad \{fail,h,b\}\text{%%Put into the metadata any appropriate items for your situation.}\\
     &\quad otherwise\\
-    &\qquad maybe\_chain\ ::\ (bind\ Ma\ h)\ bind\ t
+    &\qquad maybe\_chain\ ::\ Mb\ bind\ t
     \end{align*}\)
   </p>
 
