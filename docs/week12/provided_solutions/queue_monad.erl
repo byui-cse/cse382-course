@@ -10,20 +10,32 @@
 %% they are solutions that you can compare against yours to see
 %% other options and to come up with even better solutions.
 %%
--module(queue_monad).
--module(c_queue).
--export([id/1,bind/2,chain/2,enqueue/2,dequeue/1,enqueue_front/2,dequeue_back/1]).
 
 %%
-%% This monad follows the Maybe pattern. When a function is executed, there may be 
-%% a usable result or there may not be. The <kbd>ok</kbd> atom is used to indicate 
-%% the existence of a usable value, <kbd>fail</kbd> is used to indicate an unusable
-%% value.
-%%
+%% This monad has a specific set of meta-data it is tracking. Your situation may require
+%% a different set. There will be some of the meta-data listed here you don't need. There 
+%% will also be some meta-data you need to add. Examples of this could include things like;
+%% 1) the elements removed,
+%% 2) the elements added,
+%% 3) the source of the elements added,
+%% 4) the number of elements meeting some criteria, or
+%% 5) anything else that meets the needs of your situation.
+%% 
 
+%%
 %% This monad is incomplete. Other custom functions applicable to your specific use 
 %% of queues should be added.
+%%
 
+%%
+%% This monad follows a variation of the Maybe pattern. When a function is executed, 
+%%there may be  a usable result or there may not be. The <kbd>ok</kbd> atom is used 
+%%to indicate the existence of a usable value, <kbd>fail</kbd> is used to indicate 
+%%an unusable value.
+%%
+
+-module(queue_monad).
+-export([id/1,bind/2,chain/2,enqueue/1,enqueue_many/1,dequeue/1,enqueue_front/1,dequeue_back/1]).
 
 %%
 %% @doc Used wrap a queue to be a monadal type.
@@ -45,8 +57,8 @@ id(Q={F,R})->{ok,head(Q),tail(Q),length(F)+length(R),Q}.
 %% Value - a tuple, {ok,queue} on success, {fail,_} on failure
 %% Complexity - O(1) plus the complexity of the parameter that is the function
 %%
-bind(Qd={fail,_,_,_},Func)-> Qd;
-bind(Qd={_,First,Last,Length,Q},Func})->
+bind(Qd={fail,_,_,_},_Func)-> Qd;
+bind({_,First,Last,Length,Q},Func)->
 	case apply(Func,[Q]) of
 		{fail,_,_,_,_} -> {fail,First,Last,Length,Q};
 
@@ -79,9 +91,9 @@ chain(Mq,[H|T])->
 %% Value - the first element of the queue
 %% Complexity - Average case: O(1). Worst case O(n)
 %%
-head(Q={[],[]})->nil
-head(Q={[],R})->lists:last(R);
-head(Q={[H|_],_})->H.
+head({[],[]})->nil;
+head({[],R})->lists:last(R);
+head({[H|_],_})->H.
 
 %%
 %% @doc Peeks at the element that is the end of the queue. Not a publicly available function.
@@ -90,9 +102,9 @@ head(Q={[H|_],_})->H.
 %% Value - the last element or nil as meta-data
 %% Complexity - Average case: O(1). Worst case O(n).
 %%
-tail(Q={[],[]})->nil;
-tail(Q={F,[]})->lists:last(F);
-tail(Q={_,[H|_]})->H.
+tail({[],[]})->nil;
+tail({F,[]})->lists:last(F);
+tail({_,[H|_]})->H.
 
 %%
 %% @doc adds an element to the end of the queue.
@@ -102,8 +114,8 @@ tail(Q={_,[H|_]})->H.
 %% the tail of the tuple, and the data being a queue with both the existing and additional elements.
 %% Complexity - O(1).
 %%
-enqueue({Q={[],R=[]},A})->{ok,A,A,1,{[A],R}};
-enqueue({Q={F,R},A})->{ok,head(F),A,1,{F,[A]++R}}.
+enqueue({{[],R=[]},A})->{ok,A,A,1,{[A],R}};
+enqueue({{F,R},A})->{ok,head(F),A,1,{F,[A]++R}}.
 
 %%
 %% @doc adds a sequence of elements to the end of the queue.
@@ -125,14 +137,14 @@ enqueue_many({{F,R},Elements})->
 %% Complexity - Average case:O(1). Worst case: O(n).
 %%
 dequeue(Q={[],[]})->{fail,nil,nil,0,Q};
-dequeue(Q={[],R})->
+dequeue({[],R})->
 	[_|T]=lists:reverse(R),
 	{ok,head(T),tail(T),-1,{T,[]}};
-dequeue(Q={[_|[]],R={Rh|Rt}})->
-	[Uh|Ut] = Updated = lists:reverse(R),
+dequeue({[_|[]],R=[Rh|_]})->
+	[Uh|_] = Updated = lists:reverse(R),
 	%[Uh|Ut] = Updated,
 	{ok,Uh,Rh,-1,{Updated,[]}};
-dequeue(Q={[_|T],R})->
+dequeue({[_|T],R})->
 	[H|_]=T,
 	[Rh|_]=R,
 	{ok,H,Rh,-1,{T,R}}.
@@ -145,7 +157,7 @@ dequeue(Q={[_|T],R})->
 %% Value - a queue with both the old and new elements
 %% Complexity - O(1).
 %%
-enqueue_front({F,R=[H|T]},A)->{ok,A,H,1,{[A]++F,R}}.
+enqueue_front({{F,R=[H|_]},A})->{ok,A,H,1,{[A]++F,R}}.
 
 %%
 %% @doc removes the element at the end the queue.
@@ -155,7 +167,7 @@ enqueue_front({F,R=[H|T]},A)->{ok,A,H,1,{[A]++F,R}}.
 %% Complexity - Average case: O(1). Worst case: O(n)
 %%
 dequeue_back(Q={[],[]})->{fail,nil,nil,0,Q};
-dequeue_back({F=[H|T],[]})->
+dequeue_back({F=[H|_],[]})->
 	[_Last|Remaining] = lists:reverse(F),
 	{ok,H,lists:first(Remaining),-1,lists:reverse(Remaining)};
 dequeue_back({[H|_],[_|T=[End|_]]})-> {ok,H,End,-1,T}.
