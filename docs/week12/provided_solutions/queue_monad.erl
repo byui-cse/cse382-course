@@ -1,5 +1,5 @@
 %% @author Lee Barney
-%% @copyright 2020 Lee Barney licensed under the <a>
+%% @copyright 2021 Lee Barney licensed under the <a>
 %%        rel="license"
 %%        href="http://creativecommons.org/licenses/by/4.0/"
 %%        target="_blank">
