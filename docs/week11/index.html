@@ -57,6 +57,7 @@
 \newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
 \newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
 \)
+
 <blockquote class="style1">
     <span>Inside every large program is a small program struggling to get out. 
 </span>
@@ -89,7 +90,7 @@
 
     \[
     \begin{align*}
-    (a,[a\looparrowleft b:::trie\_node]):::trie\_node
+    [a\looparrowleft b:::trie]:::trie
     \end{align*}
     \]
 
@@ -142,42 +143,29 @@
 </p>
 <h2>Trie Algorithms</h2>
 <p>
-  In addition to the node above, there are two algorithms that make up the trie behavior. In this reading they are called \(lookup\) and \(add\). Since both of these require the use of recursion to search for either an existing piece of data or a location for another piece of data, it is no surprise that the pseudocode for them is quite similar. 
+  In addition to the node above, there are two algorithms that make up the trie behavior. Here they are called \(lookup\) and \(add\). Since both of these require the use of recursion to search for either an existing piece of data or a location for another piece of data, it is no surprise that the pseudocode for them is quite similar. 
 </p>
 <p>
-  For the \(lookup\) algorithm, the head of the data list is popped for each recursion. If it is found to be the data of a sub-trie of the current trie, then the recursion continues, if not, the recursion ends with a find failure. If, on the other hand, the list is emptied and the current trie has the \(end\) indicator as the data of one of its sub-tries, the recursion ends with a find success. The pseudocode below describes this behavior.
+  In the \(lookup\) algorithm, the head of the data list is popped during each recursion. If it is found to be a key of the current trie, then the recursion continues, if not, the recursion ends with a find failure. If, on the other hand, the list is emptied and the current trie has the \(end\) indicator as a key, the recursion ends with a find success. The pseudocode below describes this behavior.
 </p>
-<aside class="left">
-<h3>Note:</h3>
-<h4>Get? Put? What's That?</h4>
-<p>
-   Your language may or may not have dictionary behaviors. Not to fear. A dictionary can be implemented using a BST with the data being a 2-tuple where the key is the first tuple element and the value is the second. In the pseudocode for this reading, inserting a key-value pair into the dictionary uses \(put\) and searching uses \(get\).
- </p>
-</aside>
  \[
     \begin{align*}
-    lookup\ ::&\ [a]\ root:::Trie\rightarrow \{ok\_fail\}\\
-    \\
-    lookup\ ::&\ []\ \_\rightarrow\\
-              &\{fail\};\\
-    lookup\ ::&\ [h\mid []]\ \{a,tries\}\ when\ (get\ done\ tries) = \{ok,\_\}\rightarrow\\
-              &case\\
-              &\quad a = h\\
-              &\qquad \{ok\}\\
-              &\quad otherwise\\
-              &\qquad \{fail\};\\
-    lookup\ ::&\ [h\mid n\mid t]\ \{a,tries\}\rightarrow\\
-              &\{found,trie\}\leftarrow get\ n\ tries\\
-              &case\\
-              &\quad found = fail\\
-              &\qquad \{fail\}\\
-              &otherwise\\
-              &\qquad lookup\ [n]\doubleplus t\ trie.
+lookup\ ::&\ [a]\ trie:::[a\looparrowleft b]\rightarrow \{ok\_fail,trie\}\\
+\\
+lookup\ ::&\ []\ trie\ when\ end\in\ trie\_keys\rightarrow\\
+  &\{ok,found\};\\
+lookup\ ::&\ []\ trie\ otherwise\rightarrow\\
+  &\{fail,none\};\\
+lookup\ ::&\ [h\mid t]\ trie\ when\ h\not\in\ trie\_keys\rightarrow\\
+  &\{fail,none\};\\
+lookup\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
+  &sub\_trie=h\twoheadrightarrow trie\\
+  &lookup\ t\ sub\_trie.
+\end{align*}
 
-    \end{align*}
  \]
 <p>
-  As mentioned previously, both the \(lookup\) algorithm description above and the \(add\) algorithm description below use recursion and an embedded set of trie nodes. Therefore it is no surprise that the pseudocode is similar for both algorithms. A helper algorithm called \(add\_remaining\) is used by \(add\) to increase readability. The \(add\_remaining\) algorithm is used to add a series of embedded trie nodes when an additional branch is needed. For example, if a trie contained this series of nodes, \(D\rightarrow a\rightarrow n\rightarrow i\rightarrow end\) and the name Daniella needed to be added, branching and the addition of nodes for the e,l,l, and a characters is needed. This is the behavior of the \(add\_remaining\) algorithm. It adds any data still in the list when leaving a common portion of the trie. Figure 4 shows the end result of applying \(add\_remaining\) when adding Daniella to a trie containing Dani.
+  As mentioned previously, both the \(lookup\) algorithm description above and the \(add\) algorithm description below use recursion to evaluate a trie. Therefore it is no surprise that the pseudocode is similar for both algorithms. A helper algorithm called \(add\_remaining\) is used by \(add\) to increase readability. The \(add\_remaining\) algorithm is used to add a series of trie nodes as a branch when needed. For example, if a trie contained this series of nodes, \(D\rightarrow a\rightarrow n\rightarrow i\rightarrow end\) and the name Daniella needed to be added, a branch for the e,l,l, and a characters is needed. The \(add\_remaining\) algorithm handles this. It adds any data still in the list when leaving a common portion of the trie. Figure 4 shows the end result of applying \(add\_remaining\) when adding Daniella to a trie containing Dani.
 </p>
 
 <aside class="right">
@@ -189,38 +177,29 @@
 
 
  \[
-    \begin{align*}
-    add\ ::&\ [a]\ root:::Trie\rightarrow \{ok\_fail,result\_root:::Trie\}\\
-    \\
-    add\ ::&\ []\ root\rightarrow\\
-           &\{fail,root\};\\
-    add\ ::&\ [h\mid t]\ root\ when\ t=[]\rightarrow\\
-           & add\_remaining\ [h]\ root;\\
-    add\ ::&\ [h\mid n\mid t]\ \{a,tries\}\ when\ h=a\rightarrow\\
-           &\{found,trie\} \leftarrow\ get\ n\ tries\\
-           &case\\
-           &\quad found = ok\\
-           &\qquad \{a,add\ [n]\doubleplus t\ trie\}\\
-           &\quad otherwise\\
-           &\qquad \{a,add\_remaining\ [n]\doubleplus t\ trie\}.
-    
-    \end{align*}
+\begin{align*}
+add\ ::&\ [a]\ trie:::[a\looparrowleft trie]\rightarrow trie\\
+\\
+add\ ::&\ []\ trie\rightarrow\\
+  &add\_remaining\ []\ trie;\\
+add\ ::&\ [h\mid t]\ trie\ when\ h\in\ trie\_keys\rightarrow\\
+  &sub\_trie = h\twoheadrightarrow trie\\
+  &trie\twoheadleftarrow\ [h\looparrowleft (add\ t\ sub\_trie)];\\
+add\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
+  &trie\twoheadleftarrow\ [h,(add\_remaining t [\ \looparrowleft\ ])].
+\end{align*}
  \]
 
  \[
     \begin{align*}
-      add\_remaining\ ::&\ [a]\ root:::Trie\rightarrow \{ok\_fail\}\\
-      \\
-      add\_remaining\ ::&\ []\ \{a,tries\}\rightarrow\\
-        &\{a,(put\ end\ \{end\ nil\})\};\\
-      add\_remaining\ ::&\ [h\mid t] \{a,tries\}\rightarrow\\
-      &sub\_tries:::Dictionary\\
-      &trie \leftarrow \{h,sub\_tries\}\\
-      &put\ h\ (add\_remaining\ t\ trie)\ tries.
-    \end{align*}
+add\_remaining\ ::&\ []\ trie\rightarrow\\
+  &[end\looparrowleft\ none];\\
+add\_remaining\ ::&\ [h\mid t]\ trie\rightarrow\\
+  &trie\twoheadleftarrow [a\looparrowleft (add\_remaining\ t\ [\ \looparrowleft\ ])].
+\end{align*}
  \]
 <p>
-  In the pseudocode above, the line \(sub\_tries:::Dictionary\) indicates the creation of an empty dictionary called \(sub\_tries\). How this is done in code is language dependent.
+  In the pseudocode above, there are many interactions with dictionaries. How this is done in code is language dependent. However, \[add\  ``Dani"\ [\ \looparrowleft\ ]\] would initialize a trie with the string \(Dani\).
 </p>
 <h2>Similar Data Structures</h2>
 <p>

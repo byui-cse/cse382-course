@@ -67,7 +67,7 @@ build_bin_list(N,Power2) ->
 %% Complexity: O(log n)
 %%
 search([],_Index,_Accum)->{fail,none};
-search([H|_T],0,_)->
+search([H|_T],0,_)-> 
 	{0,H};
 search([{_,none,none} | T],Index,Accum)->
 	search(T,Index,Accum+1);

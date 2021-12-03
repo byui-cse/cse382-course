@@ -59,7 +59,7 @@ id(Q={F,R})->{ok,head(Q),tail(Q),length(F)+length(R),Q}.
 %%
 bind(Qd={fail,_,_,_},_Func)-> Qd;
 bind({_,First,Last,Length,Q},Func)->
-	case apply(Func,[Q]) of
+	case Func(Q) of
 		{fail,_,_,_,_} -> {fail,First,Last,Length,Q};
 
 		{ok,F_next,L_next,Length_change,Q_next} -> 
