@@ -1,3 +1,15 @@
+%% @author Lee Barney
+%% @copyright 2021 Lee Barney licensed under the <a>
+%%        rel="license"
+%%        href="http://creativecommons.org/licenses/by/4.0/"
+%%        target="_blank">
+%%        Creative Commons Attribution 4.0 International License</a>
+%%
+%%
+%% These solutions are not intended to be ideal solutions. Instead,
+%% they are solutions that you can compare against yours to see
+%% other options and to come up with even better solutions.
+%%
 -module(task2).
 -export([execute/0]).
 
