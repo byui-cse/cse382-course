@@ -165,7 +165,7 @@ lookup\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
 
  \]
 <p>
-  As mentioned previously, both the \(lookup\) algorithm description above and the \(add\) algorithm description below use recursion to evaluate a trie. Therefore it is no surprise that the pseudocode is similar for both algorithms. A helper algorithm called \(add\_remaining\) is used by \(add\) to increase readability. The \(add\_remaining\) algorithm is used to add a series of trie nodes as a branch when needed. For example, if a trie contained this series of nodes, \(D\rightarrow a\rightarrow n\rightarrow i\rightarrow end\) and the name Daniella needed to be added, a branch for the e,l,l, and a characters is needed. The \(add\_remaining\) algorithm handles this. It adds any data still in the list when leaving a common portion of the trie. Figure 4 shows the end result of applying \(add\_remaining\) when adding Daniella to a trie containing Dani.
+  As mentioned previously, both the \(lookup\) algorithm description above and the \(add\) algorithm description below use recursion to evaluate a trie. Therefore it is no surprise that the pseudocode is similar for both algorithms. A helper algorithm called \(build\_branch\) is used by \(add\) to increase readability. The \(build\_branch\) algorithm is used to add a series of trie nodes as a branch when needed. For example, if a trie contained this series of nodes, \(D\rightarrow a\rightarrow n\rightarrow i\rightarrow end\) and the name Daniella needed to be added, a branch for the e,l,l, and a characters is needed. The \(build\_branch\) algorithm handles this. It adds any data still in the list when leaving a common portion of the trie. Figure 4 shows the end result of applying \(build\_branch\) when adding Daniella to a trie containing Dani.
 </p>
 
 <aside class="right">
@@ -181,21 +181,21 @@ lookup\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
 add\ ::&\ [a]\ trie:::[a\looparrowleft trie]\rightarrow trie\\
 \\
 add\ ::&\ []\ trie\rightarrow\\
-  &add\_remaining\ []\ trie;\\
+  &[end\looparrowleft none];\\
 add\ ::&\ [h\mid t]\ trie\ when\ h\in\ trie\_keys\rightarrow\\
   &sub\_trie = h\twoheadrightarrow trie\\
   &trie\twoheadleftarrow\ [h\looparrowleft (add\ t\ sub\_trie)];\\
 add\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
-  &trie\twoheadleftarrow\ [h,(add\_remaining t [\ \looparrowleft\ ])].
+  &trie\twoheadleftarrow\ [h,build\_branch\ t].
 \end{align*}
  \]
 
  \[
     \begin{align*}
-add\_remaining\ ::&\ []\ trie\rightarrow\\
+build\_branch\ ::&\ []\rightarrow\\
   &[end\looparrowleft\ none];\\
-add\_remaining\ ::&\ [h\mid t]\ trie\rightarrow\\
-  &trie\twoheadleftarrow [a\looparrowleft (add\_remaining\ t\ [\ \looparrowleft\ ])].
+build\_branch\ ::&\ [h\mid t]\rightarrow\\
+  &[h\looparrowleft build\_branch\ t].
 \end{align*}
  \]
 <p>

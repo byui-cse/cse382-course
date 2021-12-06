@@ -25,13 +25,13 @@
 %% m is the number of branches encountered when traversing the trie to do the addition.
 %% 
 add([],Trie)->
-	add_remaining([],Trie);
+	dict:store(word_end,none,Trie);
 add([H|T],Trie)->
 	case dict:find(H,Trie) of
 		{ok,Sub_trie}->
 			dict:store(H,add(T,Sub_trie),Trie);
 		_->
-			dict:store(H,add_remaining(T,dict:new()),Trie)
+			dict:store(H,build_branch(T),Trie)
 	end.
 
 %%
@@ -42,10 +42,10 @@ add([H|T],Trie)->
 %% Value - a trie.
 %% Complexity - O(n)
 %%
-add_remaining([],Trie)->
-	dict:store(word_end,none,Trie);
-add_remaining([H|T],Trie)->
-	dict:store(H,add_remaining(T,dict:new()),Trie).
+build_branch([])->
+	dict:store(word_end,none,dict:new());
+build_branch([H|T])->
+	dict:store(H,build_branch(T),dict:new()).
 
 %%
 %% @doc Used to add a list of elements to a trie. The trie is implemented as a dictionary 
