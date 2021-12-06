@@ -184,9 +184,9 @@ add\ ::&\ []\ trie\rightarrow\\
   &[end\looparrowleft none];\\
 add\ ::&\ [h\mid t]\ trie\ when\ h\in\ trie\_keys\rightarrow\\
   &sub\_trie = h\twoheadrightarrow trie\\
-  &trie\twoheadleftarrow\ [h\looparrowleft (add\ t\ sub\_trie)];\\
+  &trie\twoheadleftarrow\ h\looparrowleft (add\ t\ sub\_trie);\\
 add\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
-  &trie\twoheadleftarrow\ [h,build\_branch\ t].
+  &trie\twoheadleftarrow\ h\ (build\_branch\ t).
 \end{align*}
  \]
 
