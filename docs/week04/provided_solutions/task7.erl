@@ -1,7 +1,19 @@
+%% @author Lee Barney
+%% @copyright 2021 Lee Barney licensed under the <a>
+%%        rel="license"
+%%        href="http://creativecommons.org/licenses/by/4.0/"
+%%        target="_blank">
+%%        Creative Commons Attribution 4.0 International License</a>
+%%
+%%
+%% These exercises are not intended to be ideal examples of unit or other 
+%% types of testing, nor are they intended to be ideal examples of how to 
+%% exercise code. Instead, they are here to help you see how someone else 
+%% might minimally exercise code they've written.
+%%
+
 -module(task7).
 -export([c_unfold/3,test_behavior/0]).
-
-
 
 %%
 %% A naive implementation of the unfold functor pattern. This version is 
