@@ -116,8 +116,8 @@ This document is intended to aid you as a student in learning, understanding, an
 <h4>Reducing Lists</h4>
 <p>
   <ul>
-    <li>\(h\mid t\) - popping the first element of a list, set, queue, min_heap, or max_heap. \(h\) is the first element or head of the original data structure and \(t\) is the remaining elements. If the data structure is a list or queue, \(t\) consists of the elements in the first list without the head in their original order.</li>
-    <li>\(h:t\) - popping the last element of a list. \(t\) is the last element or tail of the original list  and \(h\) is the first list without the tail with all elements in their original order.</li>
+    <li>\([h\mid t]\) - popping the first element of a list, set, queue, min_heap, or max_heap. \(h\) is the first element or head of the original data structure and \(t\) is the remaining elements. If the data structure is a list or queue, \(t\) consists of the elements in the first list without the head in their original order.</li>
+    <li>\([h:t]\) - popping the last element of a list. \(t\) is the last element or tail of the original list  and \(h\) is the first list without the tail with all elements in their original order.</li>
   </ul>
 </p>
 <h3>Data Structures</h3>
@@ -131,6 +131,9 @@ This document is intended to aid you as a student in learning, understanding, an
     <li>\([\ \looparrowleft\ ]\) - an empty dictionary</li>
     <li>\(dict\twoheadleftarrow a\ b\) - creating a new dictionary by adding the key-value pair \(a,b\) to the existing dictionary \(dict\) </li>
     <li>\(a\twoheadrightarrow\ dict\) - using the key \(a\) to get the key's associated value from the dictionary \(dict\)</li>
+
+    <li>\(a\twoheadrightarrow\ set\) - using the value \(a\) to determine if \(a\) is or is not in \(set\). The value is a Boolean.</li>  
+
   </ul>
 </p>
 <h3>Function Declarations</h3>
