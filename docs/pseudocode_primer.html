@@ -107,8 +107,8 @@ This document is intended to aid you as a student in learning, understanding, an
 </p>
 <p>
   <ul>
-    <li> \(x\doubleplus [a]\) - creates a new list that is the result of prepending \(x\) to the non-empty list \([a]).</li>
-    <li> \([a]\doubleplus x\) - creates a new list that is the result of appending \(x\) to the non-empty list \([a]\).</li>
+    <li> \(x\doubleplus [a]\) - creates a new list, set, or heap that is the result of prepending \(x\), if \(a\) is a list or stack, or adding \(x\) if \([a]\) is a set or heap.</li>
+    <li> \([a]\doubleplus x\) - creates a new list that is the result of appending \(x\) to the list \([a]\).</li>
     <li> \([a]\doubleplus [b]\) - creates a new list by appending lists containing different elements.</li>
     <li> \([a]\doubleplus [a]\) - creates a new list by appending lists containing the same elements.</li>
   </ul>
@@ -129,10 +129,11 @@ This document is intended to aid you as a student in learning, understanding, an
     <li>\([n]_{max\_heap}\) - a heap of elements sorted with the greatest element at the root.</li>
     <li>\([a\looparrowleft b]\) - a dictionary consisting of a single key \(a\) and value \(b\)</li>
     <li>\([\ \looparrowleft\ ]\) - an empty dictionary</li>
+    <li>\(a\twoheadrightarrow\ set\) - determine if \(a\) is or is not an element of \(set\). The value is a Boolean.</li>  
+    <li>\(set\twoheadleftarrow\ a\) - creating a new set by adding \(a\) to the existing set \(set\).</li>  
+    <li>\(set - a\) - creating a new set by removing \(a\) from the existing set \(set\).</li>  
     <li>\(dict\twoheadleftarrow a\ b\) - creating a new dictionary by adding the key-value pair \(a,b\) to the existing dictionary \(dict\) </li>
     <li>\(a\twoheadrightarrow\ dict\) - using the key \(a\) to get the key's associated value from the dictionary \(dict\)</li>
-
-    <li>\(a\twoheadrightarrow\ set\) - using the value \(a\) to determine if \(a\) is or is not in \(set\). The value is a Boolean.</li>  
 
   </ul>
 </p>
