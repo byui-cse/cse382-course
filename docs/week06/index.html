@@ -248,7 +248,7 @@
     to bind the three functions \(f, g, \text{ and } h\) in that order with the URL is this.
   </p>
   <p>
-    \(maybe\_bind\ ::\ (maybe\_bind\ ::\ (maybe\_bind\ ::\ (maybe\_unit\ ::\ \text{"http://www.somename.com"}) f) g) h\).
+    \(maybe\_bind\ ::\ (maybe\_bind\ ::\ (maybe\_bind\ ::\ (maybe\_id\ ::\ \text{"http://www.somename.com"}) f) g) h\).
   </p>
   <p>
     Ughhh! That's a variation of the example of ugly code from week 05!&#128552; Also, since the monad could consist of any number of functions, not just the three in this example, using \(maybe\_bind\) gets even uglier to use as more functions are bound. Let's fix it by applying the same solution 
