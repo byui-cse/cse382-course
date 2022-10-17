@@ -57,7 +57,6 @@
 \newcommand\when{\ when\ }
 \newcommand\otherwise{\ otherwise\ }
 \newcommand\::{\ ::\ }
-
 \newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
 \newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
 \)
@@ -104,7 +103,7 @@
   </p>
   <p>
     \[ 
-    reduce\text{ }::\text{ }(filter\text{ }::\text{ }(map\text{ }::\text{ }[a]\text{ }f_1\rightarrow [b])
+    reduce\::(filter\::(map\::[a]\text{ }f_1\rightarrow [b])
     \text{ }f_2\rightarrow [c])\text{ }f_3\text{ }\rightarrow d\]
   </p>
   <p>
@@ -152,16 +151,16 @@
   </p>
   \[
     \begin{align*}
-    chain\text{ }&::\text{ }links\text{ }a\rightarrow b\\
+    chain\text{ }&::\ links\text{ }a\rightarrow b\\
     \\
-    chain\text{ }&::\text{ }links\text{ }a\rightarrow \\
-    &chain\_worker\text{ }::\text{ }(rev\ links)\ a.\\
+    chain\text{ }&::\ links\text{ }a\rightarrow \\
+    &chain\_worker\::(rev\ links)\ a.\\
     \\
-    chain\_worker\text{ }&::\text{ }reversed\_links\text{ }a\rightarrow b\\
+    chain\_worker\text{ }&::\ reversed\_links\text{ }a\rightarrow b\\
     \\
     chain\_worker\text{ }&::\ []\ a\rightarrow\ a;\\
-    chain\_worker\text{ }&::\text{ }[h\mid t]\text{ }a\rightarrow\\
-    &h\text{ }::\text{ }(chain\_worker\text{ }::\text{ }t\text{ }a).
+    chain\_worker\text{ }&::\ [h\mid t]\text{ }a\rightarrow\\
+    &h\::(chain\_worker\::t\text{ }a).
     \end{align*}
     \]
   <p>
@@ -172,7 +171,7 @@
   </p>
   \[
     \begin{align*}
-    foldl\text{ }&::\text{ }(\lambda\text{ }::\text{ }link\_to\_apply\text{ }value \rightarrow (link\_to\_apply\text{ }::\text{ }value))\text{ }values\text{ }links
+    foldl\text{ }&::\ (\lambda\::link\_to\_apply\text{ }value \rightarrow (link\_to\_apply\::value))\text{ }values\text{ }links
     \end{align*}
   \]
 
@@ -211,12 +210,12 @@
     be returned from another function.
   </p>
     <p>
-      On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\text{ }::\text{ }card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
+      On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\::card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
     </p>
     <p>
       If, however, this behavior was curried, the code would be called like this.</kbd>
     </p>
-    \[curried\_perform\text{ }::\text{ }card\_number\text{ }::\text{ }pin\text{ }::\text{ }transaction\_id\rightarrow success\]
+    \[curried\_perform\::card\_number\::pin\::transaction\_id\rightarrow success\]
     <p>
       Notice that each function except for the last returns a lambda that is passed an additional, single piece of data. The currying process is accumulating the parameters of the function. When all of the parameters have been passed, the execution of the code can proceed.
     </p>
@@ -228,19 +227,19 @@
     </p>
     <p>
       \(\begin{align*}
-      curry\ ::&\ f\rightarrow\lambda\\
+      -spec\ curry\ ::&\ f\rightarrow\lambda\\
       \\
       curry\ ::&\ f\rightarrow\\
       &curry\_helper\ f (count\ f)\ [].\\
       \\
       \\
-      curry\_helper\ ::&\ f\ a:::Integer\ accumulator:::[b]\rightarrow\lambda\\
+      -spec\ curry\_helper\ ::&\ f\ a:::Integer\ accum:::[b]\rightarrow\lambda\\
       \\
-      curry\_helper\ ::&\ f\ 0\ accumulated\_parameters\rightarrow\\
-      &f\ (list\_to\_params\ accumpulated\_parameters);\\
-      curry\_helper\ ::&\ f\ parameter\_count\ accumulated\_parameters\rightarrow\\
+      curry\_helper\ ::&\ f\ 0\ accum\rightarrow\\
+      &f\ (reverse(list\_to\_params\ accum));\\
+      curry\_helper\ ::&\ f\ count\ accum\rightarrow\\
       &\lambda\ ::\ parameter\rightarrow\\
-      &\quad\quad curry\_helper\ f\ parameter\_count-1\ [parameter]\doubleplus accumulated\_ parameters.
+      &\quad\quad curry\_helper\ f\ count-1\ [parameter]\doubleplus accum.
       \end{align*}\)
     </p>
     <p>
