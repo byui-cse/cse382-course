@@ -125,10 +125,8 @@
   <p>
     It is common among programmers to compose functions where the values of the functions are different. You've 
     done this before. Maybe you started with an \(Integer\) and, after having used two or more functions ended up 
-    with an \(Float\) or some other sort of change. It's just fine for functions in monoids to have non-matching 
-    types. You just have to make sure when composing the functions that the type of each function's value matches 
-    the type of the next function's parameter. That way your functions can compose without issue. There are other 
-    types of changes though.
+    with an \(Float\) or some other sort of change. It is not OK for functions in monoids to have non-matching 
+    types. You could have a monoid and then pass the results of chaining several of those monoidal functions to one that has a different value type. That way your functions can compose without issue. But what about meta-data?
   </p>
   
   <h2>Monads</h2>
