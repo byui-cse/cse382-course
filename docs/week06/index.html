@@ -296,7 +296,7 @@
     Using this version of <kbd>chain</kbd> with our example <kbd>maybe</kbd> monad is much cleaner. 
   </p>
   <p>
-    \(monad\_chain\ ::\ (maybe\_unit\ \text{"http://www.somename.com"})\ maybe\_bind\ [f,g,h]\)
+    \(monad\_chain\ ::\ (maybe\_id\ \text{"http://www.somename.com"})\ maybe\_bind\ [f,g,h]\)
   </p>
   <p>
     Remember that conceptually, bind being applied to these three functions can be represented as \((f\ggg g\ggg h)\ ::\ a\rightarrow Md\) and that the end result of the binding is a monadal type, \(Md\).
