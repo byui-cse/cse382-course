@@ -151,12 +151,12 @@
   </p>
   \[
     \begin{align*}
-    chain\text{ }&::\ links\text{ }a\rightarrow b\\
+    -spec\ chain\text{ }&::\ links\text{ }a\rightarrow b\\
     \\
     chain\text{ }&::\ links\text{ }a\rightarrow \\
     &chain\_worker\::(rev\ links)\ a.\\
     \\
-    chain\_worker\text{ }&::\ reversed\_links\text{ }a\rightarrow b\\
+    -spec\ chain\_worker\text{ }&::\ reversed\_links\text{ }a\rightarrow b\\
     \\
     chain\_worker\text{ }&::\ []\ a\rightarrow\ a;\\
     chain\_worker\text{ }&::\ [h\mid t]\text{ }a\rightarrow\\
