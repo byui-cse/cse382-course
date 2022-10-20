@@ -167,18 +167,18 @@ function\_name&:: list\rightarrow value
   </ul>
 </p>
 <h3>Usage Examples</h3>
-<h4>A function declaration without a defintion</h4>
+<h4>A function specification without a definition</h4>
 <p>
-This function determines the length of a list.
+This function determines the length of a list. Notice that all specifications begin with $-spec$ to differentiate the specification from the function itself. Specifications are used to declare the function's name, parameters, and its value. The types of the parameters are also included. In the example below, $b$ is of type $Integer$. The $a$ is left as an undefined type.
 $$\begin{align*}
-len&::[a]\rightarrow \text{ }Integer
+-spec\ len&::[a]\rightarrow \ b:::Integer
 \end{align*}$$
 </p>
 <h4>A function declaration followed by its two clauses that are the function's definition.</h4>
 <p>
   This function adds all the elements of a list.
 $$\begin{align*}
-sum &::[h\mid t]\rightarrow \text{ }Real\\
+-spec\ sum &::[a]\rightarrow a:::Real\\
 sum &:: [a]\rightarrow 0 \text{ }when\text{ }[a]\text{ is empty;}\\
 sum &:: [h\mid t]\rightarrow h+sum\text{ }t \text{ } otherwise.
 \end{align*}$$
@@ -188,7 +188,7 @@ sum &:: [h\mid t]\rightarrow h+sum\text{ }t \text{ } otherwise.
 <p>
   This function calculates the average of a list of numbers.
 $$\begin{align*}
-average&::[a]\rightarrow \text{ }Real\\
+-spec\ average&::[a]\rightarrow a:::Real\\
 average&= sum\text{ }[a]\div len\text{ }[a].
 \end{align*}$$
 </p>
