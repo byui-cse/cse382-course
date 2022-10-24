@@ -205,14 +205,14 @@ pos\_evens\_stream\ &::\ seed\rightarrow\\
   same generalized pattern. 
   <ol>
     <li>
-      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s) called a seed. 
+      The stream consists of a recursive function with at least one parameter of a type required to do the generation of the stream value(s) called a state. 
     </li>
     <li>
-      Each recursive call updates the value of a seed-type value and passes it to the next recursive call 
+      Each recursive call updates the value of a state-type value and passes it to the next recursive call 
       of itself.
     </li>
     <li>
-      Each recursive call blocks (waits) until a request is made for the next value or set of values.
+      Each recursive call blocks (waits) until a request is made for the next value or grouping of values.
     </li>
     <li>
       Recursion continues until the request made is for termination of the stream or, if the stream is non-infinite, a value after the last value is requested.
@@ -221,13 +221,16 @@ pos\_evens\_stream\ &::\ seed\rightarrow\\
 </p>
 \[
     \begin{align*}
-    stream\ &::\ seed\rightarrow a\\
-    stream\ &::\ seed\rightarrow \\
+    -spec\ stream\ &::\ state\rightarrow ok\\
+    stream\ &::\ state\rightarrow \\
         &request\leftarrow await\\
-        &f\ seed\rightarrow next\_seed\\
-        &respond\ next\_seed\\
-        &next\_seed\text{ when }request\text{ is termination}\\
-        &stream\ next\_seed\text{ otherwise}.
+        &case\ of\ request\\
+        &\quad terminate\rightarrow\\
+        &\quad\quad ok\\
+        &\quad otherwise\rightarrow\\
+        &\quad\quad next\_state\leftarrow (f\ state)\\
+        &\quad\quad respond\ next\_state\\
+        &\quad\quad stream\ next\_state.
     \end{align*}
     \]
 <p>
