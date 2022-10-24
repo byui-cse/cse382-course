@@ -53,8 +53,8 @@
   </div>
 </div>
 \(
-\newcommand\when{\text{ } when\text{ }}
-\newcommand\otherwise{\text{ } otherwise\text{ }}
+\newcommand\when{\  when\ }
+\newcommand\otherwise{\  otherwise\ }
 \)
 <h2>It Can be Good to be Lazy</h2>
 <p>
@@ -64,7 +64,7 @@
   In this way it is similar to Just In Time (JIT), also known as lean, factory management. Why spend the money to store product when the factory could schedule the production of the product just in time to ship it? Most of the products you use today are produced in factories that follow lean management principles. 
 </p>
 <p>
-  Consider this computing situation. You are using a language that has a range structure. It allows you to create a range of numbers using a single function call. Using pseudocode it looks like this. \(range\text{ }::\text{ }i\rightarrow Range\).
+  Consider this computing situation. You are using a language that has a range structure. It allows you to create a range of numbers using a single function call. Using pseudocode it looks like this. \(range\ ::\ i\rightarrow Range\).
 </p>
 
 <p>
@@ -94,8 +94,8 @@
 </p>
     \[
     \begin{align*}
-    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow\lambda\text{ }::\\
-    lazy\_add\text{ }&::\text{ }a\text{ }b\rightarrow (\lambda\text{ }::\text{ }\rightarrow a+b).
+    -spec\ lazy\_add\ &::\ a\ b\rightarrow\lambda\ ::\\
+    lazy\_add\ &::\ a\ b\rightarrow (\lambda\ ::\ \rightarrow a+b).
     \end{align*}
     \]
 <p>
@@ -134,15 +134,15 @@
 </p>
 <p>
 \[\begin{align*}
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow \{Int,(func\text{ }::\text{ }Int)\}\\
+-spec\ pos\_evens\_stream\ &::\ seed\rightarrow \{Int,(func\ ::\ Int)\}\\
 \\
-pos\_evens\_stream\text{ }&::\text{ }seed \when seed < 0\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }0;\\
-pos\_evens\_stream\text{ }&::\text{ }seed \when 1=(seed\mod 2)\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }seed-1;\\
+pos\_evens\_stream\ &::\ seed \when seed < 0\rightarrow\\
+                          &pos\_evens\_stream\ ::\ 0;\\
+pos\_evens\_stream\ &::\ seed \when 1=(seed\mod 2)\rightarrow\\
+                          &pos\_evens\_stream\ ::\ seed-1;\\
 
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
-                          &\{seed+2,(func\text{ }::\text{ }\rightarrow pos\_evens\_stream\text{ }::\text{ }seed+2)\}
+pos\_evens\_stream\ &::\ seed\rightarrow\\
+                          &\{seed+2,(func\ ::\ \rightarrow pos\_evens\_stream\ ::\ seed+2)\}
 
 \end{align*}
 \]
@@ -152,13 +152,13 @@ pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
 </p>
 <p>
 \[\begin{align*}
-&pos\_evens\_stream\text{ }::\text{ }seed\looparrowright \{even\_num,get\_next\}\\
-&get\_next\text{ }::\text{ }\looparrowright \{another\_even, get\_another\}
+&(pos\_evens\_stream\ 0)\looparrowright \{even\_num,get\_next\}\\
+&(get\_next\ even\_num)\looparrowright \{another\_even, get\_another\}
 \end{align*}
 \]
 </p>
 <p>
-  Using this is awkward. Too many variables have to be created when the tuple being returned by \(pos\_evens\_stream\) is decomposed. There is a better way.
+  Using this is awkward. Too many variables have to be created when the tuple being returned by \(pos\_evens\_stream\) is decomposed. This is why this is an anti-pattern. There is a better way.
 </p>
 <h3>Using Concurrency for Streams</h3>
 <p>
@@ -173,21 +173,21 @@ pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
 
 <p>
 \[\begin{align*}
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow (Int,(func\text{ }::\text{ }Int))\\
+-spec\ pos\_evens\_stream\ &::\ seed\rightarrow ok\\
 \\
-pos\_evens\_stream\text{ }&::\text{ }seed \when seed < 0\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }0;\\
-pos\_evens\_stream\text{ }&::\text{ }seed \when 1=(seed\mod 2)\rightarrow\\
-                          &pos\_evens\_stream\text{ }::\text{ }seed-1;\\
-pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
-                          &await\text{ }::\text{ }\rightarrow\\
-                          &\space\space\space\space seed+2\\
-                          &pos\_evens\_stream\text{ }::seed+2.
+pos\_evens\_stream\ &::\ seed \when seed < 0\rightarrow\\
+                          &pos\_evens\_stream\ 2;\\
+pos\_evens\_stream\ &::\ seed \when 1=seed\pmod 2\rightarrow\\
+                          &pos\_evens\_stream\  seed-1;\\
+pos\_evens\_stream\ &::\ seed\rightarrow\\
+                          &await\ \rightarrow\\
+                          &\quad seed\\
+                          &pos\_evens\_stream\ seed+2.
 \end{align*}
 \]
 </p>
 <p>
-  In this pseudo-code, the language's blocking library function is called \(await\). The version of this function used in this case has no parameters since no data is needed from outside \(pos\_evens\_stream\). This version of \(await\) returns the next even number. Then \(pos\_evens\_stream\) calls itself with a new value for \(seed\).
+  In this pseudo-code, the language's blocking library function is called \(await\). When used in a concurrent function, the result of the calculation after await is returned to the calling function. Then \(pos\_evens\_stream\) calls itself with a new value for \(seed\). In this case, \(seed\) is known as the \(state\) of the function.
 </p>
 <p>
   Each language's concurrency library will also have not only makes a function like \(pos\_evens\_stream\) execute concurrently but also has a value that is some sort of identifier for the concurrent process so messages can be passed. This identifier is sometimes called a handle. This is so the handle can be passed as a parameter to functions that will need to do bi-directional message passing with the concurrently executing function. 
@@ -221,8 +221,8 @@ pos\_evens\_stream\text{ }&::\text{ }seed\rightarrow\\
 </p>
 \[
     \begin{align*}
-    stream\text{ }&::\text{ }seed\rightarrow a\\
-    stream\text{ }&::\text{ }seed\rightarrow \\
+    stream\ &::\ seed\rightarrow a\\
+    stream\ &::\ seed\rightarrow \\
         &request\leftarrow await\\
         &f\ seed\rightarrow next\_seed\\
         &respond\ next\_seed\\
