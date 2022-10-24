@@ -134,7 +134,7 @@
 </p>
 <p>
 \[\begin{align*}
--spec\ pos\_evens\_stream\ &::\ seed\rightarrow \{Int,(func\ ::\ Int)\}\\
+-spec\ pos\_evens\_stream\ &::\ seed\rightarrow \{Int,(\lambda\ ::\ Int)\}\\
 \\
 pos\_evens\_stream\ &::\ seed \when seed < 0\rightarrow\\
                           &pos\_evens\_stream\ 0;\\
@@ -142,7 +142,7 @@ pos\_evens\_stream\ &::\ seed \when 1=(seed\mod 2)\rightarrow\\
                           &pos\_evens\_stream\ seed-1;\\
 
 pos\_evens\_stream\ &::\ seed\rightarrow\\
-                          &\{seed+2,(func\ ::\ \rightarrow pos\_evens\_stream\ seed+2)\}
+                          &\{seed+2,(\lambda\ ::\ \rightarrow pos\_evens\_stream\ seed+2)\}
 
 \end{align*}
 \]
@@ -153,7 +153,7 @@ pos\_evens\_stream\ &::\ seed\rightarrow\\
 <p>
 \[\begin{align*}
 &(pos\_evens\_stream\ 0)\looparrowright \{even\_num,get\_next\}\\
-&(get\_next\ even\_num)\looparrowright \{another\_even, get\_another\}
+&get\_next\ \looparrowright \{another\_even, get\_another\}
 \end{align*}
 \]
 </p>
