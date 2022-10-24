@@ -137,12 +137,12 @@
 -spec\ pos\_evens\_stream\ &::\ seed\rightarrow \{Int,(func\ ::\ Int)\}\\
 \\
 pos\_evens\_stream\ &::\ seed \when seed < 0\rightarrow\\
-                          &pos\_evens\_stream\ ::\ 0;\\
+                          &pos\_evens\_stream\ 0;\\
 pos\_evens\_stream\ &::\ seed \when 1=(seed\mod 2)\rightarrow\\
-                          &pos\_evens\_stream\ ::\ seed-1;\\
+                          &pos\_evens\_stream\ seed-1;\\
 
 pos\_evens\_stream\ &::\ seed\rightarrow\\
-                          &\{seed+2,(func\ ::\ \rightarrow pos\_evens\_stream\ ::\ seed+2)\}
+                          &\{seed+2,(func\ ::\ \rightarrow pos\_evens\_stream\ seed+2)\}
 
 \end{align*}
 \]
