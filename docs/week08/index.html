@@ -63,11 +63,12 @@
 
 <h2>The Tree Data Structure</h2>
 <p>
-  Trees follow the monad pattern. There is a group of data organized in some way, a series of functors that 
-  operate on that group, and each of the rules for monad is met. That's why you'll hear, "A tree is a monad" 
+  Well designed trees follow the monad pattern. There is a bunch of data organized in some way, a series of functors that 
+  operate on that bunch, and meta-data to be tracked, added, and removed. Each of the rules for monad is met. That's why you'll hear, "A tree is a monad" 
   used colloquially. The more correct language would be, "Well made trees and the algorithms that operate on 
-  them follow the monad pattern." That's a little long. Maybe we should stick with "A tree is a monad" for 
-  ease of speech and just remember what we actually mean.
+  them follow the monad pattern." That's a little long. Maybe we should use "The tree monad" meaning the monadal type and the functors for 
+  ease of speech and just remember what we actually mean. Of course, this means we'll need to explain it to 
+  everyone else.
 </p>
 <p>
     For this course the functors we'll focus on are \(add\_helper\) and \(contains\). A fully fledged set 
