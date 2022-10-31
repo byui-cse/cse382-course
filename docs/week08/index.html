@@ -65,7 +65,7 @@
 <p>
   Trees follow the monad pattern. There is a group of data organized in some way, a series of functors that 
   operate on that group, and each of the rules for monad is met. That's why you'll hear, "A tree is a monad" 
-  used colloquially. The more correct language would be, "Well made trees and the functions that operate on 
+  used colloquially. The more correct language would be, "Well made trees and the algorithms that operate on 
   them follow the monad pattern." That's a little long. Maybe we should stick with "A tree is a monad" for 
   ease of speech and just remember what we actually mean.
 </p>
@@ -159,7 +159,7 @@
 </p>
 <p>
      Let \(n\in\{-1,0,1\}\) with \(0\) meaning equality, \(-1\) meaning less than, 
-    and \(1\) meaning greater than, and \(comp\) being a comparator function comparing two elements of the tree, 
+    and \(1\) meaning greater than, and \(comp\) being a comparator algorithm comparing two elements of the tree, 
     then the \(add\_helper\) algorithm for BSTs is:  
 \[\begin{align*}
     -spec\ add\ &::\ node\ a\ (comp\  a\ b\rightarrow n)\rightarrow root\_node\\
@@ -209,7 +209,7 @@
 <p>
 <p>
     To help overcome this problem, the BST's node is augmented with an additional piece of data, a color. The two 
-    possible colors are red and black. The \(contains\) function for a red-black tree is nearly identical to that for 
+    possible colors are red and black. The \(contains\) algorithm for a red-black tree is nearly identical to that for 
     a BST. The only difference is that when the elements of the node are accessed, the node's color is ignored.
 </p>
 \[\begin{align*}
@@ -238,8 +238,8 @@
         &\{black,next\_l,next\_r\}.
 \end{align*}\]
 <p>
-    The color is also ignored for the first part of the red-black tree \(add\_helper\) function. That means that until after the node 
-    is added to the tree, the \(add\_helper\) function for red-black trees has the same behavior and rules as the BST. Then the tree may need to be balanced. That's why balancing functions are applied after \(add\_helper\) completes at each level of recursion. 
+    The color is also ignored for the first part of the red-black tree \(add\_helper\) algorithm. That means that until after the node 
+    is added to the tree, the \(add\_helper\) algorithm for red-black trees has the same behavior and rules as the BST. Then the tree may need to be balanced. That's why balancing algorithms are applied after \(add\_helper\) completes at each level of recursion. 
 
     The \(add\_helper\) algorithm for red-black trees is:  
 \[\begin{align*}
@@ -261,7 +261,7 @@
     Just because the node is added to the tree doesn't mean we're done. The tree may be out of balance so red-black 
     trees have two additional rules that are applied after the addition. The first says, "No red child node can 
     have a red parent node." The second says, "Every path from the root to an empty node must have the same 
-    number of black nodes." If either of these rules is violated, a re-balance is needed. You will find the left and right balance functions below. They are written in function matching style as described by <a href="https://www.mew.org/~kazu/proj/red-black-tree/">Yamamoto</a>. Yamamoto follows <a href="https://www.amazon.com/Purely-Functional-Data-Structures-Okasaki/dp/0521663504">Okasaki</a> in his node element order, \(\{color, nextLeft,value,nextRight\}\) as opposed to the order used here which is \(\{color,value,nextLeft,nextRight\}\). 
+    number of black nodes." If either of these rules is violated, a re-balance is needed. You will find the left and right balance algorithms below. They are written in function-matching style as described by <a href="https://www.mew.org/~kazu/proj/red-black-tree/">Yamamoto</a>. Yamamoto follows <a href="https://www.amazon.com/Purely-Functional-Data-Structures-Okasaki/dp/0521663504">Okasaki</a> in his node element order, \(\{color, nextLeft,value,nextRight\}\) as opposed to the order used here which is \(\{color,value,nextLeft,nextRight\}\). 
 </p>
 <h3>balance_l</h3>
 <p>
@@ -302,7 +302,7 @@
 \end{align*}\]
 </p>
 <p>
-	When looking at <a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html">visualizations</a> of red-black trees, it is common for the visualization to separately apply needed color changes and then adjust the node structures. The balance functions above do both of these steps at the same time so don't let the visualization lead you to believe they should be done separately. 
+	When looking at <a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html">visualizations</a> of red-black trees, it is common for the visualization to separately apply needed color changes and then adjust the node structures. The balance algorithms above do both of these steps at the same time so don't let the visualization lead you to believe they should be done separately. 
 </p>
 <h2>Wrap Up</h2>
 <p>
