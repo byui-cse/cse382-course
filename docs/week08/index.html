@@ -231,8 +231,8 @@
 \[\begin{align*}
     -spec\ add\ &::\ node\ a\ (comparitor\ a\ b\rightarrow n)\rightarrow root\_node\\
     \\
-    add\ &::\ none\ a\ \_\rightarrow\\
-        &\{black,a,none,none\};\\
+    add\ &::\ nil\ a\ \_\rightarrow\\
+        &\{black,a,nil,nil\};\\
     add\ &::\ root\ a\ comparitor\rightarrow\\
         &add\_helper\ root\ a\ comparitor\looparrowright \{\_,next\_l,next\_r\}\\
         &\{black,next\_l,next\_r\}.
