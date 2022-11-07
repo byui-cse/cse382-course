@@ -79,8 +79,8 @@
 \[\begin{align*}
     get\_min\ &::\ node\rightarrow a:::Maybe\\
     \\
-    get\_min\text{ }&::\ none\rightarrow\\
-               &\ \{fail,none\};\\
+    get\_min\text{ }&::\ nil\rightarrow\\
+               &\ \{fail,nil\};\\
     get\_min\ &::\ \{rank,value,next_l,next_r\} \rightarrow\\
                &\ \{ok,value\}.
 \end{align*}\]
@@ -91,12 +91,12 @@
 
     insert\ &::\ value\ node\rightarrow b:::Maybe\\
     \\
-    insert\ &::\ none\ none\rightarrow\\
-            &\{fail,none\};\\
-    insert\ &::\ value\ none\rightarrow\\
-            &\{ok,\{1,value,none,none\}\};\\
+    insert\ &::\ nil\ nil\rightarrow\\
+            &\{fail,nil\};\\
+    insert\ &::\ value\ nil\rightarrow\\
+            &\{ok,\{1,value,nil,nil\}\};\\
     insert\ &::\ value\ root\rightarrow\\
-    &merge:: \{1,value,none,none\}\ root.\\
+    &merge:: \{1,value,nil,nil\}\ root.\\
 \end{align*}\]
 <p>
   This means that \(merge\) does all the work for both inserting a value and merging two heaps, \(h\) and \(i\) in the snippet below.
@@ -104,11 +104,11 @@
 \[\begin{align*}
     merge\ &::\ h\ i\rightarrow root\\
     \\
-    merge\ &::\ none\ none\rightarrow\\
-               &none;\\
-    merge\ &::\ none\ i\rightarrow\\
+    merge\ &::\ nil\ nil\rightarrow\\
+               &nil;\\
+    merge\ &::\ nil\ i\rightarrow\\
                &i;\\
-    merge\ &::\ h\ none\rightarrow\\
+    merge\ &::\ h\ nil\rightarrow\\
                &h;\\
     merge\ &::\ h\ i \rightarrow\\
         &i\looparrowright \{i\_rank,i\_value,il\_sub,ir\_sub\}\\
@@ -125,9 +125,9 @@
 \[\begin{align*}
     rank\_and\_swap\ ::&\ root\rightarrow root\\
     \\
-    rank\_and\_swap\ ::&\ none\rightarrow none;\\
-    rank\_and\_swap\ ::&\ \{rank,value,none,\{r\_rank,r\_value,rl\_sub,rr\_sub\}\}\rightarrow\\
-            & \{1,value,\{r\_rank,r\_value,rl\_sub,rr\_sub\},none\};\\
+    rank\_and\_swap\ ::&\ nil\rightarrow nil;\\
+    rank\_and\_swap\ ::&\ \{rank,value,nil,\{r\_rank,r\_value,rl\_sub,rr\_sub\}\}\rightarrow\\
+            & \{1,value,\{r\_rank,r\_value,rl\_sub,rr\_sub\},nil\};\\
     &\%\%\text{This next clause handles the 'do no swap only update rank' case.}\\
     rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank\ l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} when\ l\_rank \ge r\_rank\rightarrow\\
             &\{r\_rank+1,value,\{l\_rank,l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\};\\
@@ -143,8 +143,8 @@ Being a min-heap, usually the only element that is 'popped' or removed is the le
 \[\begin{align*}
     remove\_min\ &::\ node\rightarrow b:::Maybe\\
     \\
-    remove\_min\ &::\ none\rightarrow\\
-               &\{fail,none\};\\
+    remove\_min\ &::\ nil\rightarrow\\
+               &\{fail,nil\};\\
     remove\_min\ &::\ \{rank,value,next\_l,next\_r\}\rightarrow\\
                &\{ok,merge\ ::\ next\_r\text{ }next\_l\}.
 \end{align*}\]
