@@ -127,7 +127,7 @@
     \\
     rank\_and\_swap\ ::&\ nil\rightarrow nil;\\
     rank\_and\_swap\ ::&\ \{rank,value,nil,\{r\_rank,r\_value,rl\_sub,rr\_sub\}\}\rightarrow\\
-            & \{1,value,\{r\_rank,r\_value,rl\_sub,rr\_sub\},nil\};\\
+            & \{1,value,(rank\_and\_swap\ \{r\_rank,r\_value,rl\_sub,rr\_sub\}),nil\};\\
     &\%\%\text{This next clause handles the 'do no swap only update rank' case.}\\
     rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank\ l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} when\ l\_rank \ge r\_rank\rightarrow\\
             &\{r\_rank+1,value,\\
