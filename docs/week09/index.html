@@ -130,9 +130,13 @@
             & \{1,value,\{r\_rank,r\_value,rl\_sub,rr\_sub\},nil\};\\
     &\%\%\text{This next clause handles the 'do no swap only update rank' case.}\\
     rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank\ l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} when\ l\_rank \ge r\_rank\rightarrow\\
-            &\{r\_rank+1,value,\{l\_rank,l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\};\\
+            &\{r\_rank+1,value,\\
+            &\quad(rank\_and\_swap\ \{l\_rank,l\_value,ll\_sub,lr\_sub\}),\\
+            &\quad(rank\_and\_swap\ \{r\_rank,r\_value,rl\_sub,rr\_sub\})\};\\
     rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank,l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} otherwise\rightarrow\\
-            &\{l\_rank+1,value,\{r\_rank,r\_value,rl\_sub,rr\_sub\},\{l\_rank,l\_value,ll\_sub,lr\_sub\}\}.
+            &\{l\_rank+1,value,\\
+            &\quad(rank\_and\_swap\ \{r\_rank,r\_value,rl\_sub,rr\_sub\}),\\
+            &\quad(rank\_and\_swap\ \{l\_rank,l\_value,ll\_sub,lr\_sub\})\}.
 \end{align*}\]
 
 <h3>Data Removal</h3>
