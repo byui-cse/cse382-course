@@ -75,68 +75,72 @@
 <p>
   The ordering rule of min-heaps is this. The data for each of the sub-nodes is less than the data of the parent node. For leftist heaps, left sub-nodes can or can not exist for any node, but if there is a right node, there must first have been a left node added. Being a min-heap, the \(get\_min\) function has a complexity of \(\mathcal{O}(1)\). You can deduce this from the code below which uses a Maybe from week 6.
 </p>
+<p>
+    In the pseudocode below, each Node has a rank. To keep the heap a leftist-heap, the rule for the rank is, "The rank of any left child is at least as large as the rank of its right sibling." Also note that the rank of a \(nil\) node is \(0\).
+</p>
 
 \[\begin{align*}
-    get\_min\ &::\ node\rightarrow a:::Maybe\\
+    get\_min\ &::\ node\rightarrow a:::Integer\ or\ nil\\
     \\
-    get\_min\text{ }&::\ nil\rightarrow\\
-               &\ \{fail,nil\};\\
+    get\_min\ &::\ nil\rightarrow\\
+               &nil;\\
     get\_min\ &::\ \{\_rank,value,\_next\_l,\_next\_r\} \rightarrow\\
-               &\ \{ok,value\}.
+               &value.
 \end{align*}\]
 <p>
   To insert a value into a heap, a fa&ccedil;ade function is used called \(insert\). In the code snippet below this function calls the \(merge\) function that has two parameters, the heap to insert the value into and the value. This creates a single heap node for the value being inserted and adds it to the indicated heap.
 </p>  
 \[\begin{align*}
 
-    insert\ &::\ value\ node\rightarrow b:::Maybe\\
+    insert\ &::\ value\ node\rightarrow b:::Heap\ or\ nil\\
     \\
     insert\ &::\ nil\ nil\rightarrow\\
-            &\{fail,nil\};\\
-    insert\ &::\ value\ nil\rightarrow\\
-            &\{ok,\{1,value,nil,nil\}\};\\
-    insert\ &::\ value\ root\rightarrow\\
-    &merge:: \{1,value,nil,nil\}\ root.\\
+            &nil;\\
+    insert\ &::\ value\ heap\rightarrow\\
+    &merge:: \{1,value,nil,nil\}\ heap.\\
 \end{align*}\]
 <p>
   This means that \(merge\) does all the work for both inserting a value and merging two heaps, \(h\) and \(i\) in the snippet below.
 </p>
 \[\begin{align*}
-    merge\ &::\ h\ i\rightarrow root\\
+    merge\ &::\ h:::Heap\ i:::Heap\rightarrow result:::Heap\\
     \\
-    merge\ &::\ nil\ nil\rightarrow\\
-               &nil;\\
-    merge\ &::\ nil\ i\rightarrow\\
-               &i;\\
-    merge\ &::\ h\ nil\rightarrow\\
-               &h;\\
+    merge\ &::\ nil\ heap\rightarrow\\
+               &heap;\\
+    merge\ &::\ heap\ nil\rightarrow\\
+               &heap;\\
     merge\ &::\ h\ i \rightarrow\\
-        &i\looparrowright \{i\_rank,i\_value,il\_sub,ir\_sub\}\\
         &h\looparrowright \{h\_rank,h\_value,hl\_sub,hr\_sub\}\\
+        &i\looparrowright \{i\_rank,i\_value,il\_sub,ir\_sub\}\\
         &case\\
-               &\quad rank\_and\_swap\ \{h\_rank,h\_value,hl\_sub,(merge\ hr\_sub\ i)\}\when h\_value\le i\_value \\
-               &\quad rank\_and\_swap\ \{i\_rank,i\_value,il\_sub,(merge\ h\ ir\_sub)\}\otherwise.
+            &\quad h\_value =< i\_value\\
+               &\qquad build\_node\ \{h\_rank,h\_value,hl\_sub,(merge\ hr\_sub\ i)\}\\
+            &\quad \otherwise\\
+               &\qquad build\_node\ \{i\_rank,i\_value,il\_sub,(merge\ h\ ir\_sub)\}.
 
 \end{align*}\]
 
 <p>
-    In the above pseudocode, at each level of the heap, the right-side heap spines are merged and, if needed, the sub-heaps are swapped. This swapping is done by the \(rank\_and\_swap\) helper algorithm when the rank of the left sub-heap is less than the rank of the right sub-heap, thus enforcing the leftist requirement. The swap algorithm also updates the rank of the current root as needed. The pseudocode for the \(rank\_and\_swap\) algorithm is seen below. 
+    The swap algorithm also updates the rank of the current root as needed. The merge algorithm uses a sub-algorithm named \(build\_node\). The pseudocode for the \(build\_node\) sub-algorithm is seen below. It updates the rank and also swaps the left and right splines as needed.
 </p>
 \[\begin{align*}
-    rank\_and\_swap\ ::&\ root\rightarrow root\\
+    build\_node\ ::&\ x:::Any\ a:::Heap\ b:::Heap\rightarrow h:::Heap\\
     \\
-    rank\_and\_swap\ ::&\ nil\rightarrow nil;\\
-    rank\_and\_swap\ ::&\ \{rank,value,nil,\{r\_rank,r\_value,rl\_sub,rr\_sub\}\}\rightarrow\\
-            & \{1,value,(rank\_and\_swap\ \{r\_rank,r\_value,rl\_sub,rr\_sub\}),nil\};\\
-    &\%\%\text{This next clause handles the 'do no swap only update rank' case.}\\
-    rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank\ l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} when\ l\_rank \ge r\_rank\rightarrow\\
-            &\{r\_rank+1,value,\\
-            &\quad(rank\_and\_swap\ \{l\_rank,l\_value,ll\_sub,lr\_sub\}),\\
-            &\quad(rank\_and\_swap\ \{r\_rank,r\_value,rl\_sub,rr\_sub\})\};\\
-    rank\_and\_swap\ ::&\ \{rank,value,\{l\_rank,l\_value,ll\_sub,lr\_sub\},\{r\_rank,r\_value,rl\_sub,rr\_sub\}\} otherwise\rightarrow\\
-            &\{l\_rank+1,value,\\
-            &\quad(rank\_and\_swap\ \{r\_rank,r\_value,rl\_sub,rr\_sub\}),\\
-            &\quad(rank\_and\_swap\ \{l\_rank,l\_value,ll\_sub,lr\_sub\})\}.
+    build\_node\ ::&\ x\ a\ b\rightarrow\\
+        &case\\
+        &\quad rank\ a >= rank\ b\\
+        &\qquad \{(rank\ b)+1,x,a,b\};\\
+        &\quad otherwise\\
+        &\qquad \{(rank\ a)+1,x,b,a\}
+\end{align*}\]
+<p>
+    The \(build\_node\) sub-algorithm uses another sub-algorithm, \(rank\), to determine the rank of any node. The pseudocode for it is below.
+</p>
+\[\begin{align*}
+    rank\ ::&\ a:::Heap\rightarrow r:::Integer\\
+    \\
+    rank\ ::&\ nil\rightarrow 0\\
+    rank\ ::&\ \{r,value,left,right\}\rightarrow r;
 \end{align*}\]
 
 <h3>Data Removal</h3>
@@ -145,12 +149,11 @@ Being a min-heap, usually the only element that is 'popped' or removed is the le
 </p>
 
 \[\begin{align*}
-    remove\_min\ &::\ node\rightarrow b:::Maybe\\
+    remove\_min\ &::\ heap\rightarrow b:::Any\ or\ nil\\
     \\
-    remove\_min\ &::\ nil\rightarrow\\
-               &\{fail,nil\};\\
-    remove\_min\ &::\ \{rank,value,next\_l,next\_r\}\rightarrow\\
-               &\{ok,merge\ ::\ next\_r\text{ }next\_l\}.
+    remove\_min\ &::\ nil\rightarrow nil;\\
+    remove\_min\ &::\ \{rank,value,left,right\}\rightarrow\\
+               &merge\ ::\ left\ right.
 \end{align*}\]
 
 <footer>
