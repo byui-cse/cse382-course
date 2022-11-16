@@ -157,17 +157,17 @@ It is true that traversing shallower binary trees is less computationally expens
   zeros and ones, a binary representation.
 </p>
 \[\begin{align*}
-    build\_bin\_list\ &::\ a:::Int\ a\rightarrow [a]\\
+    spec\ build\_bin\_list\ &::\ a\ a:::Int\ a\rightarrow [a]\\
     \\
-    build\_bin\_list\ &::\ \_\ 1\ \_\rightarrow\\
+    build\_bin\_list\ &::\ \_\ 1\rightarrow\\
                   &[];\\
     build\_bin\_list\ &::\ n\ bit\_space\rightarrow\\
                &lesser\_power\leftarrow bit\_space\div 2,\\
                &case\\
                &\quad n \ge lesser\_power\rightarrow\\
-               &\qquad [1]\doubleplus build\_bin\_list n-lesser\_power lesser\_power\\
+               &\qquad [1]\doubleplus (build\_bin\_list\ (n-lesser\_power)\ lesser\_power)\\
                &\quad otherwise\\
-               &\qquad [0]\doubleplus build\_bin\_list n lesser\_power.
+               &\qquad [0]\doubleplus (build\_bin\_list\ n\ lesser\_power).
 \end{align*}\]
 <p>
     The binary representation will always be somewhere in \((0,bit\_space-1)) and the bit space will always need to be a power of 2.
