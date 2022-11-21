@@ -150,14 +150,14 @@
 </p>
  \[
     \begin{align*}
-lookup\ ::&\ [a]\ trie:::[a\looparrowleft b]\rightarrow \{ok\_fail,trie\}\\
+lookup\ ::&\ [a]\ trie:::[a\looparrowleft b]\rightarrow found_fail\\
 \\
 lookup\ ::&\ []\ trie\ when\ end\in\ trie\_keys\rightarrow\\
-  &\{ok,found\};\\
+  &found;\\
 lookup\ ::&\ []\ trie\ otherwise\rightarrow\\
-  &\{fail,none\};\\
+  &fail;\\
 lookup\ ::&\ [h\mid t]\ trie\ when\ h\not\in\ trie\_keys\rightarrow\\
-  &\{fail,none\};\\
+  &fail;\\
 lookup\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
   &sub\_trie=h\twoheadrightarrow trie\\
   &lookup\ t\ sub\_trie.
@@ -181,9 +181,9 @@ lookup\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
 add\ ::&\ [a]\ trie:::[a\looparrowleft trie]\rightarrow trie\\
 \\
 add\ ::&\ []\ trie\rightarrow\\
-  &trie \twoheadleftarrow\ end\ none;\\
+  &trie \twoheadleftarrow\ end\ nil;\\
 add\ ::&\ [h\mid t]\ trie\ when\ h\in\ trie\_keys\rightarrow\\
-  &sub\_trie = h\twoheadrightarrow trie\\
+  &sub\_trie \leftarrow h\twoheadrightarrow trie\\
   &trie\twoheadleftarrow\ h\ (add\ t\ sub\_trie);\\
 add\ ::&\ [h\mid t]\ trie\ otherwise\rightarrow\\
   &trie\twoheadleftarrow\ h\ (build\_branch\ t).
