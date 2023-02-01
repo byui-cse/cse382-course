@@ -207,7 +207,7 @@
     that allows functional programming languages to deeply leverage lambdas. Functions, in a functional 
     programming language, are first-class citizens. Or said differently, you can treat a function like 
     anything other type in the language. It can be stored in a variable. It be passed as a parameter. It can 
-    be returned from another function.
+    be returned from another function. When a function returns a function, this is an example of the <a href="https://www.tutorialspoint.com/design_pattern/factory_pattern.htm">Factory Pattern</a>.
   </p>
     <p>
       On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\ card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
