@@ -154,13 +154,13 @@
     -spec\ chain\text{ }&::\ links\text{ }a\rightarrow b\\
     \\
     chain\text{ }&::\ links\text{ }a\rightarrow \\
-    &chain\_worker\::(rev\ links)\ a.\\
+    &chain\_worker\ (rev\ links)\ a.\\
     \\
     -spec\ chain\_worker\text{ }&::\ reversed\_links\text{ }a\rightarrow b\\
     \\
     chain\_worker\text{ }&::\ []\ a\rightarrow\ a;\\
     chain\_worker\text{ }&::\ [h\mid t]\text{ }a\rightarrow\\
-    &h\::(chain\_worker\::t\text{ }a).
+    &h\ (chain\_worker\ t\text{ }a).
     \end{align*}
     \]
   <p>
@@ -171,7 +171,7 @@
   </p>
   \[
     \begin{align*}
-    foldl\text{ }&::\ (\lambda\::link\_to\_apply\text{ }value \rightarrow (link\_to\_apply\::value))\text{ }values\text{ }links
+    foldl\text{ }&\ (\lambda\ link\_to\_apply\text{ }value \rightarrow (link\_to\_apply\ value))\text{ }values\text{ }links
     \end{align*}
   \]
 
@@ -210,12 +210,12 @@
     be returned from another function.
   </p>
     <p>
-      On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\::card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
+      On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\ card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
     </p>
     <p>
       If, however, this behavior was curried, the code would be called like this.</kbd>
     </p>
-    \[curried\_perform\::card\_number\::pin\::transaction\_id\rightarrow success\]
+    \[curried\_perform\ card\_number\ pin\ transaction\_id\rightarrow success\]
     <p>
       Notice that each function except for the last returns a lambda that is passed an additional, single piece of data. The currying process is accumulating the parameters of the function. When all of the parameters have been passed, the execution of the code can proceed.
     </p>
