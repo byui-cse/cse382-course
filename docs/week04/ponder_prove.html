@@ -4,14 +4,43 @@
 <html>
 
 <head>
-	          <link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-i        con">
-            <script type="text/javascript">
-             var codeType = "Clojure"
-            </script>
-            <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
-            <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
-            <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-            <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-i        con">
+    <script type="text/javascript">
+     var codeType = "Clojure"
+    </script>
+    <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
+    <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
+    <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
+    <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['\\(', '\\)']]
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            equationNumbers: {
+                autoNumber: "AMS"
+            }
+        }
+    });
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            availableFonts: [],
+            preferredFont: null,
+            // force Web fonts
+            webFont: "Latin-Modern"
+        }
+    });
+    MathJax.Hub.Config({
+        TeX: {
+            extensions: ["color.js"]
+        }
+    });
+    </script>
 </head>
 
 <body onload="fetchSource()">
@@ -22,44 +51,36 @@
   </div>
 </div>
 <h1>Your Tasks</h1>
+<p>
+    Your tasks are included in the tasks.erl and speed.erl files found in the <a href="https://byui-cse.github.io/cse382-course/fold_unfold.zip">fold_unfold zip file</a>.
+</p>
 <h3>Task 1</h3>
 <p>
-    Write and test a custom implementation of the foldl functor called c_foldl (see Figure 1 for the description).
+    Complete the implementation of the foldl functor called c_foldl (see Figure 2 for the description) in fold_unfold/src/tasks.erl so that it passes all the unit tests in fold_unfold/src/tasks.erl.
 </p>
 <h3>Task 2</h3>
 <p>
-    Use c_foldl to create a single string from a list of 2000 words of your choice. 
-
+    Complete the implementation of the foldl functor called c_foldr (see Figure 3 for the description) in fold_unfold/src/tasks.erl so that it passes all the unit tests in fold_unfold/src/tasks.erl.
 </p>
 <h3>Task 3</h3>
 <p>
-    Use the appropriate fold BIF from your language to build the same piece of text. Compare the speed and the 
-    accuracy of the two implementations. 
+    Complete the implementation of the unfold functor called c_unfold (see Figure 4 for the description) in fold_unfold/src/tasks.erl so that it passes all the unit tests in fold_unfold/src/tasks.erl. 
 </p>
 <h3>Task 4</h3>
 <p>
-    Write and test a custom implementation of the foldr functor called c_foldr (see Figure 3 for the description).
+    Run the foldl testing function in the speed module of the fold_unfold library multiple times. Note the results.
 </p>
 <h3>Task 5</h3>
 <p>
-    Use c_foldr to create a single string from the same list of 2000 words of your choice. 
-
+    Run the foldr testing function in the speed module of the fold_unfold library multiple times. Note the results.
 </p>
 <h3>Task 6</h3>
 <p>
-    Use the appropriate fold BIF from your language to build the same piece of text. Compare the speed and the 
-    accuracy of the two implementations.
+    Complete the generate_primes function using your c_unfold functor and any other helpers you may need to create. Your code needs to pass all the unit tests in fold_unfold/src/tasks.erl.
 </p>
-<h3>Task 7</h3>
+<h4>Helps:</h4>
 <p>
-    Write and test a custom implementation of the unfold functor called c_unfold (see Figure 4 for the description).
-</p>
-
-<h3>Task 8</h3>
-<p>
-    After completing Tasks 1 through 7, find the source code for 
-    the BIFs for your chosen language and compare them to your implementations of the foldl and foldr functors. Speculate, 
-    in writing, as to why the standard implementations differ, or not, from yours.
+ All prime numbers are of the form \(6n \pm 1\), but not all numbers of the form \(6n \pm 1\) are prime. An example of a \(6n \pm 1\) non-prime would be 25 (\(6\cdot 4+1\)). However for \(n\in\mathbb{Z}^+\)if \(n\) is prime, \((n-1)!\equiv -1\pmod n\) (Wilson's Theorem). While these truths are not computationally efficient, they are sufficient for the limited cases in the unit tests. Use these two truths about primes in your implementation of the generate_primes function.
 </p>
 
 <section>

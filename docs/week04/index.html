@@ -52,7 +52,10 @@
     <p>The Functor Pattern Part 2: reduce/fold and unfold</p>
   </div>
 </div>
-
+\(
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+\)
   <blockquote class="style1">
     <span>Recursive programs have a systematic translation to unfold and fold.</span>
     <p class="style1">- Conal Elliott</p>
@@ -238,7 +241,7 @@
   &[]\text{ } when\text{ }c = 0;\\
   unfold\text{ }&::\text{ }c\text{ }s\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\})\rightarrow\\
   &\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{a,b\}\\
-  &[b]\mid unfold\text{ }::\text{ }a\text{ }b\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\}) otherwise;
+  &[b] \doubleplus unfold\text{ }::\text{ }a\text{ }b\text{ }(\lambda\text{ }::\text{ }c\text{ }s\rightarrow \{u,r\})\ otherwise;
   \end{align*}
   $$ 
   </figure>
@@ -278,14 +281,17 @@
   </p>
   <h3>Laws that Determine if Something is a Functor</h3>
   <ol>
-    <li>\(map\text{ }::\ a\ id = a\) <p>
-      This rule states that the potential functor must be able to apply an identity function to an item and the value of the functor be the same as the item. The item may be a single item or any grouping of items. 
+    <li>\(functor\ ::\ a\ id = a\) <p>
+      This rule states that the potential functor must be able to apply an identity function \(id\) to an item \(a\) and the value of the functor be the same as the item. The item may be a single item or any grouping of items. This also implies that the functor has no side effects since \(a\) is the complete value of the functor.
     </p></li>
     <li>
-      \(map\ ::\ a\ (f\circ g) = (map\text{ }::\ a\ f)\circ (map\ :: a\ g)\)<p>
+      \(functor\ ::\ a\ (f\circ g) = (functor\ ::\ a\ f)\circ (functor\ :: a\ g)\)<p>
         This rule states that the potential functor must be able to apply a composed function and achieve the same 
-        results as applying the individual functions separately and then composing their values. \(map\text{ }::\ a\ id = a\) also implies that the functor has no side effects since \(a\) is the value of the functor.
+        results as applying the individual functions separately and then composing their values..
       </p>
+    </li>
+    <li>
+        The relations between elements does not change when examining the items acted on by the functor and those that are the value of the functor.
     </li>
   </ol>
 

@@ -247,6 +247,19 @@ solved. In problem solving space, this approach is called
   added to a distinct list that is created as the value of the call to the filter functor.
 </p>
 
+<h4>Application</h4>
+<p>
+  Consider this situation. You have been asked to write a small section of a larger app for the company you work for. The data you are given will be a list of tuples. Each tuple describes a person, stored in our database, who has previously applied to work for the company. The list of candiates available to your computation, is sorted, newest to oldest, based on when they submitted their application.
+</p>
+<p>
+  Each person is a 3-tuple of shape, \(\{name,years\_experience,[skill]\}\), with the third element is a list of skills. The end product of your computations needs to be a list of potential employees. Each of these is a 4-tuple of shape \(\{name,front\_or\_backend,years\_experience,[skill]]\}\). Those with Erlang experience have \(backend\) as the second element of the 4-tuple. Those with JavaScript experience but no Erlang experience have \(frontend\) as the second element of the 4-tuple. 
+  Also, if the applicant doesn't have JavaScript or Erlang experience, they are not to be included in the end product of your calculations.
+  In this example, there is are two category changes. The initial category is \(applicants\). The second category, after the filtering, is \(beginners\). The final category is \(potential\_employees\). The relations between the elements, the years of experience of each applicant, is also preserved. 
+
+</p>
+<p>
+  Thnk about the \(f(g\circ h) = f(g)\circ f(h)\) rule for functors. Let either \(map\) or \(filter\) be \(f\) in the rule. You could use \(filter\) multiple times filtering out elements by one property of each list element every time you filtered. You could also filter once based on multiple properties of each list element. Considering \(map\), you could use \(map\) multiple times to make multiple changes, or you could use \(map\) once to make multiple changes.  
+</p>
 
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
