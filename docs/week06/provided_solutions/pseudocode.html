@@ -1,4 +1,17 @@
 <!-- uses https://highlightjs.org/
+
+     @author Lee Barney
+ @copyright 2021 Lee Barney licensed under the <a>
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank">
+        Creative Commons Attribution 4.0 International License</a>
+
+
+ These solutions are not intended to be ideal solutions. Instead,
+ they are solutions that you can compare against yours to see
+ other options and to come up with even better solutions.
+
 -->
 
 <html>
@@ -48,48 +61,70 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 382: Week 07</h1>
-    <p>Ponder and Prove</p>
+    <h1>Task 1 Pseudocode</h1>
+    <p>Some Potential Designs</p>
   </div>
 </div>
 \(
+\newcommand\when{\text{ } when\text{ }}
+\newcommand\otherwise{\text{ } otherwise\text{ }}
+
 \newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
 \newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
 \)
-<h1>Tasks</h1>
-Your tasks are found in the tasks.erl file <a href="https://byui-cse.github.io/cse382-course/week07/actors_lazy.zip">actors_lazy.zip file</a>.
-<h2>Task 1</h2>
+<h1>Function Declarations and Definitions</h1>
+
+<h2>ID</h2>
 <p>
-    Write code to create a LCG pseudo-random number generation stream. The calculation
-    to generate the next pseudo-random number is \((a*seed+c) \mod{m}\). The variables' values are:
-    <ul>
-        <li>a (multiplier) = 1103515245</li>
-        <li>c (incrementer) = 12345, and</li>
-        <li>m (modulus) = 2147483648</li>
-    </ul>
-    as described for the <a href="https://en.wikipedia.org/wiki/Linear_congruential_generator" target="_blank">GCC version of the C standard library</a> random number stream.
+    \[\begin{align*}
+    id\leftarrow [[],[]].
+    \end{align*}
+    \]
 </p>
 <p>
-    Complete all the facade and API functions as well as the \(rand\_stream\) function as described in the documentation in the tasks.erl file.
+    In these definitions, \(\ell_1\) and \(\ell_2\) are of type List and \(a\) and \(b\) can be of the same or different types..
+</p>
+<h2>Append</h2>
+<p>
+    \[\begin{align*}
+    append\ &::\ [[a],[b]]\rightarrow [[a],[b]]\\
+    \\
+    append\ &::\ [\ell_1,\ell_2]\rightarrow\\
+    &[\ell_1\doubleplus \ell_2,[]].
+    \end{align*}
+    \]
+</p>
+<h2>Intersection</h2>
+<p>
+    \[\begin{align*}
+    intersection\ &::\ [[a],[b]]\rightarrow [[a],[b]]\\
+    \\
+    intersection\ &::\ [\ell_1,\ell_2]\rightarrow\\ 
+    &[[e\mid e\in \ell_1\ and\ e\in \ell_2],[]].
+    \end{align*}
+    \]
+</p>
+<h2>Difference</h2>
+<p>
+    \[\begin{align*}
+    difference\ &::\ [[a],[b]]\rightarrow [[a],[b]]\\
+    \\
+    difference\ &::\ [\ell_1,\ell_2]\rightarrow\\
+    &[[e\mid e\in \ell_1\ and\ e\not\in\ell_2],[]].
+    \end{align*}
+    \]
+</p>
+<h2>Symmetric Difference</h2>
+<p>
+    \[\begin{align*}
+    symmetric\_difference\ &::\ [[a],[b]]\rightarrow [[a],[b]]\\
+    \\
+    symmetric\_difference\ &::\ [\ell_1,\ell_2]\rightarrow\\
+    &[[e\mid e\not\in \ell_1\ or\ e\not\in\ell_2],[]].
+    \end{align*}
+    \]
 </p>
 
-<h2>Task 2</h2>
-
-<p>
-    Write code to create a <a href="https://en.wikipedia.org/wiki/Caesar_cipher" target="_blank">Ceasar Cipher</a> stream.
-</p>
-<p>
-    Complete all the facade and API functions as well as the \(cipher\_stream\) function as described in the documentation in the tasks.erl file.
-</p>
-<section>
-      <h3>Review</h3>
-      <h4>After completing the previous tasks:</h4>
-      <ol>
-          <li>Review one of the many <a href="https://byui-cse.github.io/cse382-course/week07/provided_solutions.zip">possible solutions</a> for this task,</li>
-          <li>Compare and contrast your solutions with the possible solutions, and</li>
-          <li>Make note of any improvements you could make for future tasks.</li>
-      </ol>
-  </section>
 <footer>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>

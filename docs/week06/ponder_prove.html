@@ -55,16 +55,20 @@
 <h1>Your Tasks</h1>
 <h2>Task 1</h2>
 <p>
-    Create pseudocode for and, using your language, write as a monoid the following list of monoidal functions.
+    Using the pseudocode learned in this class, write pseudocode for a monoid consisting of the following monoidal functions.
     <ol>
         <li>append</li>
         <li>difference</li>
         <li>merge - intermingle the elements of lists</li>
         <li>id - a function, with no parameters, that returns the identity for these list functions</li>
     </ol>
-    Write code that exercises the functions you've written.
-</p>
+
+
 <h2>Task 2</h2>
+<p>
+    Implement these same functions in the <kbd>tasks.erl</kbd> found in the <a href="https://byui-cse.github.io/cse382-course/week06/monad_monoid.zip">monad_monoid.zip file</a> so they pass the unit tests in that file.
+</p>
+<h2>Task 3</h2>
 <p>
     Consider these behaviors that work on lists. Could they be added the monoid from Task 1? Why or why not?
     <li>is_element_of</li>
@@ -74,25 +78,22 @@
     <li>is_sublist_of</li>
     <li>Assuming the elements of the list are numeric, a pair of functions called divide_all_by and add_to_all</li>
 </p>
-<h2>Task 3</h2>
+<h2>Task 4</h2>
 <p>
     Write, in English, a description of the composition rule for the monoid you've been creating.
 </p>
-<h2>Task 4</h2>
-<p>
-    Consider the <kbd>maybe</kbd> monad. In your language, write  
-    <ol>
-        <li>the\(monad\_chain\) function,</li>
-        <li>the \(maybe\_bind\) function,</li>
-        <li>the \(from_user\) function to get the URL from the user,</li>
-        <li>the \(get\) function to retrieve data,</li>
-        <li>the \(save\) function to save the data retrieved to disk, and</li>
-        <li>code that exercises your code.</li>
-    </ol>
-</p>
 <h2>Task 5</h2>
 <p>
-    Brainstorm and describe, in English, a monad, not the <kbd>maybe</kbd> monad, that you could create and use. Please realize that monads are an architectural pattern, not something you would use as a pattern for a single function.
+    Consider the <kbd>maybe</kbd> monad. In your language, write code for  
+    <ol>
+        <li>the \(monad\_chain\) function,</li>
+        <li>the \(maybe\_bind\) function,</li>
+    </ol>
+    and pass all of the unit tests for these functions.
+</p>
+<h2>Task 6</h2>
+<p>
+    Brainstorm and describe, in English, a monad, not the <kbd>maybe</kbd> monad or one discussed in class, that you could create and use. Please remember that monads are an architectural pattern, not something you would use as a pattern for a single function.
 </p>
 <section>
       <h3>Review</h3>

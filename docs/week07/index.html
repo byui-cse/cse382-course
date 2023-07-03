@@ -48,8 +48,8 @@
 <body onload="fetchSource()">
 <div class="hero-image">
   <div class="hero-text">
-    <h1>CSE 381: Week 11</h1>
-    <p>Lazy Evaluation, Infinite Sets, and Streams</p>
+    <h1>CSE 381: Week 07</h1>
+    <p>Actors, Lazy Evaluation, Infinite Sets, and Streams</p>
   </div>
 </div>
 \(
@@ -162,7 +162,7 @@ pos\_evens\_stream\ &::\ seed\rightarrow\\
 </p>
 <h3>Using Concurrency for Streams</h3>
 <p>
-  Consider approaching streams this way. Concurrency in all modern languages allow some sort of communication between concurrently executing code. Often this is done with bi-directional message passing. There are other ways for this communication to happen, but they tend to be bug-ridden and can cause a lot of unnecessary crashing.
+  Consider approaching streams in an interesting way by using Concurrency. Concurrency in all modern languages allow some sort of communication between concurrently executing sets of code. Often this is done with bi-directional message passing. When fully leveraged, this type of computing follows the <a href="https://doc.akka.io/docs/akka/current/typed/guide/actors-intro.html">actor pattern/model</a>. It is possible to do this communication without the actor pattern, but they tend to be bug-ridden, can cause a lot of unnecessary bottlenecks, and crash.
 </p>
 <p>
   When a functional programming language's concurrency allows for bi-directional message passing, a well designed function that is being run concurrently executes a library blocking function as one of its lines of code. This way, the function can wait for some data or some other message before proceeding, sending a response, and then completing.
@@ -180,28 +180,25 @@ pos\_evens\_stream\ &::\ seed \when seed < 0\rightarrow\\
 pos\_evens\_stream\ &::\ seed \when 1=seed\pmod 2\rightarrow\\
                           &pos\_evens\_stream\  seed-1;\\
 pos\_evens\_stream\ &::\ seed\rightarrow\\
-                          &await\ \rightarrow\\
-                          &\quad seed\\
+                          &await\ requester\ \rightarrow\\
+                          &\quad requester \leftarrow seed\\
                           &pos\_evens\_stream\ seed+2.
 \end{align*}
 \]
 </p>
 <p>
-  In this pseudo-code, the language's blocking library function is called \(await\). When used in a concurrent function, the result of the calculation after await is returned to the calling function. Then \(pos\_evens\_stream\) calls itself with a new value for \(seed\). In this case, \(seed\) is known as the \(state\) of the function.
+  In this pseudo-code, the language's blocking library function is called \(await\). When used in a concurrent function, the result of any calculation that is done as the value of \(await\) is sent to the calling actor, \(requester \leftarrow seed\) in this example. After sending a response to \(requester\), the \(pos\_evens\_stream\) actor function executes itself with a new value for \(seed\). In this case, \(seed\) is known as the \(state\) of the actor.
 </p>
 <p>
-  Each language's concurrency library will also have not only makes a function like \(pos\_evens\_stream\) execute concurrently but also has a value that is some sort of identifier for the concurrent process so messages can be passed. This identifier is sometimes called a handle. This is so the handle can be passed as a parameter to functions that will need to do bi-directional message passing with the concurrently executing function. 
+  Each language's concurrency library will also have a concurrent process generation function that has as its value some sort of identifier for the concurrent process. This idetifier is used to pass messages to the concurrent process. Sometimes this identifier is  called a handle. The handle can be passed as a parameter to functions that will need to do bi-directional message passing with the concurrently executing function.
 </p>
 <h2>Generalization of the Pattern</h2>
 <p>
-  There are many ways such a stream can be created. A common way is to have the stream exist in its own 
-  computational unit, be that a thread, process, network resource, or some other unit that accomplishes the 
-  processing required to generate the next value or group of values. The choice of what type of computational unit to choose depends on the language selected and the situation 
-  within which the stream exists among other possibilities.
+  There are many ways such a stream can be created. The actor pattern yeilds the cleanest implementation and allows the stream to exist in a distributed system. For example, the actor could exist on a different half-way around the world and still work efficiently. The actor pattern is not limited by language type. It can be impmlemented in both declarative and imperative languages. The original idea behind Object Oriented Design was that every instance of a class would be an actor. Such is not the case in most currently used OO languages.
 </p>
 
 <p>
-  Regardless of which of these computational units is selected, the function doing the computation follows the 
+  Regardless of which of what language type is used, the function doing the computation follows the 
   same generalized pattern. 
   <ol>
     <li>
@@ -215,21 +212,24 @@ pos\_evens\_stream\ &::\ seed\rightarrow\\
       Each recursive call blocks (waits) until a request is made for the next value or grouping of values.
     </li>
     <li>
-      Recursion continues until the request made is for termination of the stream or, if the stream is non-infinite, a value after the last value is requested.
+      Recursion continues until termination request is made or, if the stream is non-infinite, a value after the some limiting value is generated.
     </li>
   </ol>
+</p>
+<p>
+  Here is pseudocode describing a stream that follows these rules.
 </p>
 \[
     \begin{align*}
     -spec\ stream\ &::\ state\rightarrow ok\\
     stream\ &::\ state\rightarrow \\
-        &request\leftarrow await\\
+        &\{requester,request\}\leftarrow await\\
         &case\ of\ request\\
         &\quad terminate\rightarrow\\
         &\quad\quad ok\\
         &\quad otherwise\rightarrow\\
         &\quad\quad next\_state\leftarrow (f\ state)\\
-        &\quad\quad respond\ next\_state\\
+        &\quad\quad requester\leftarrow next\_state\\
         &\quad\quad stream\ next\_state.
     \end{align*}
     \]
@@ -237,7 +237,7 @@ pos\_evens\_stream\ &::\ seed\rightarrow\\
   Following this pattern, a function could be a stream producing prime numbers. It could be producing even numbers. 
   It could be a stream accessing a database and supplying data. It could be a stream accessing a network or 
   Internet node and supplying data. For a step in a factory, it could be computing which piece of partially completed product should be worked on next. In the world of Internet software creation, such a stream would be 
-  called a micro-service. The options are limitless. 
+  called a micro-service. The options are limitless when the actor pattern/model is applied. 
 </p>
 <h2>Wrap Up</h2>
 <p>

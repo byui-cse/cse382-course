@@ -212,23 +212,24 @@
     One major difference is that functions bound together have as their value a monadal type, not just a raw computed value.
   </p>
   <p>
-    What then does the function declaration look like for this mysterious bind function? Well...monads have to be designed for specific situations. Let's design a bind function for a monad that helps us deal with successful vs unsuccessful computations. Let's call this the <kbd>maybe</kbd> monad. Let's have the monad type for <kbd>maybe</kbd> be a 2-tuple where the first tuple element is either \(ok\) or \(fail\) indicating success or failure. Bind, in this case, is then
+    What then does the function declaration look like for this mysterious bind function? Well...monads have to be designed for specific situations. Let's design a bind function for a monad that helps us deal with successful vs unsuccessful computations. Let's call this set of monadal functions and the maybe monadal type the <kbd>maybe</kbd> monad. Let's have the monad type for <kbd>maybe</kbd> be a 2-tuple where the first tuple element is either \(ok\) or \(fail\) indicating success or failure. All the \(\lambda\)s used with this monad are required to return \(nil\) if they fail. Bind, in this case, is then
   </p>
 
   <p>
     \(\begin{align*}
-    maybe\_bind\ ::&\ Ma\ f\rightarrow Mb\\
+    maybe\_bind\ ::&\ Ma\ \lambda\rightarrow Mb\\
     \\
-    maybe\_bind\ ::&\ Ma\ f\rightarrow\\
-    &Ma\looparrowright \{ok\_fail,a\}\\
+    maybe\_bind\ ::&\ \{fail,data\}\ \_\lambda\rightarrow \{fail,data\};\\
+    maybe\_bind\ ::&\ \{\_,data\}\ \lambda\rightarrow\\
+    &result \leftarrow \lambda(data),\\
     &case\\
-    &\quad ok\_fail = ok\rightarrow\\
-    &\quad\quad f\ a\\
-    &\quad otherwise\rightarrow \{fail,a\}. 
+    &\quad result = nil\rightarrow\\
+    &\quad\quad \{fail,\lambda,data\}\\
+    &\quad otherwise\rightarrow \{ok,result\}. 
     \end{align*}\)
   </p>
   <p>
-    The value of the \(maybe\_bind\) function is the value of the \(f\) function which is any of the  functions that are part of the <kbd>maybe </kbd>monad.
+    The value of the \(maybe\_bind\) function is a 2-tuple indicating success and and 3-tuple indicating failure. Success and failure are determined by the \(\lambda\)s  which are also part of the <kbd>maybe </kbd>monad.
   </p>
   <p>
     For <kbd>maybe</kbd> to be a monad, there must also be an \(id\) function(see the rules below) that wraps raw data in a monadal type. For the <kbd>maybe</kbd> id function is
@@ -255,51 +256,29 @@
     we used in week 05. Chaining!&#129395; 
   </p>
   <p>
-    Let's make a version of the <kbd>chain</kbd> function that can be used with any monad we choose to create in the future and call it \(monad\_chain\). In the pseudocode below, let \(bind\) be the binding function for a monad and \([f]\) be a subset, proper or improper, of that monad's functions.
+    Let's make a version of the <kbd>chain</kbd> function that can be used with any monad we choose to create in the future and call it \(monad\_chain\). In the pseudocode below, let \(bind\) be the binding function for a monad and \([\lambda]\) be a subset, proper or improper, of that monad's lambda functions.
   </p>
   <p>
     \(\begin{align*}
-    monad\_chain\ ::&\ Ma\ bind\ [f]\rightarrow Mb\\
+    monad\_chain\ ::&\ Ma\ bind\ [\lambda]\rightarrow Mb\\
     \\
     monad\_chain\ ::&\ Ma\ \_\ []\rightarrow Ma;\\
-    monad\_chain\ ::&\ Ma\ bind\ [h\mid t]\rightarrow\\
-    &monad\_chain\ ::\ (bind\ Ma\ h)\ bind\ t
-    \end{align*}\)
-  </p>
-  <p>
-    This version of chain has a specific weakness. Chaining continues even after a failure is indicated by a algorithm having a value with \(fail\) in the metadata. This can be resolved by creating a different chaining function as seen here.
-  </p>
-  <p>
-    \(\begin{align*}
-    maybe\_chain\ ::&\ Ma\ bind\ [f]\rightarrow Mb\\
-    \\
-    maybe\_chain\ ::&\ Ma\ \_\ []\rightarrow Ma;\\
-    maybe\_chain\ ::&\ Ma\ bind\ [h\mid t]\rightarrow\\
-    &Mb = bind\ Ma\ h\\
-    &Mb\looparrowright \{ok\_fail,b\}\\
-    &case\\
-    &\quad ok\_fail = fail\\
-    &\qquad \{fail,h,b\}\text{%%Put into the metadata any appropriate items for your situation.}\\
-    &\quad otherwise\\
-    &\qquad maybe\_chain\ ::\ Mb\ bind\ t
+    monad\_chain\ ::&\ Ma\ bind\ [\lambda\mid t]\rightarrow\\
+    &monad\_chain\ ::\ (bind\ Ma\ \lambda)\ bind\ t
     \end{align*}\)
   </p>
 
   <p>
-    This version of chaining resolves the issue of needing to check the value of each function called prior to executing the next function, an ugly anti-pattern used in many applications, libraries, and code sets.
-  </p>
-
-  <p>
-    Think of the \(maybe\_chain\) version of chaining a template. You can use it to create early exit chaining for any monad. You can also include or exclude any appropriate items in the metadata that is part of the value of your chain function. This could include items such as a counter indicating which function failed, the function that failed, etc. You are limited only by your imagination and what is appropriate for the monad.
+    This version of chaining resolves the issue of needing to check the value of each function called prior to executing the next function, an ugly anti-pattern used in many applications, libraries, and code sets. Instead, when the \(maybe\_bind\) algorithm is used by \(monad\_chain\), if a failure occurs no unnecessary calls to \(\lambda\)s after a failure.
   </p>
   <p>
-    Using this version of <kbd>chain</kbd> with our example <kbd>maybe</kbd> monad is much cleaner. 
+    The code to use this version of <kbd>chain</kbd> with the <kbd>maybe</kbd> monad example is much cleaner. 
   </p>
   <p>
     \(monad\_chain\ ::\ (maybe\_id\ \text{"http://www.somename.com"})\ maybe\_bind\ [f,g,h]\)
   </p>
   <p>
-    Remember that conceptually, bind being applied to these three functions can be represented as \((f\ggg g\ggg h)\ ::\ a\rightarrow Md\) and that the end result of the binding is a monadal type, \(Md\).
+    Remember that conceptually, bind being applied to these three functions can be represented as \((f\ggg g\ggg h)\ ::\ a\rightarrow Md\) and that the end result of the binding is some monadal type, \(Md\).
   </p>
 
   <h2>The Architectural Pattern</h2>
