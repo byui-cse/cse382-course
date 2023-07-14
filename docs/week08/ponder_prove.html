@@ -23,14 +23,46 @@
   </div>
 </div>
 <h1>Tasks</h1>
+Your tasks are found in the <a href="https://byui-cse.github.io/cse382-course/week08/bst_rbt.zip">bst_rbt.zip file</a>.
 <h2>Task 1</h2>
 <p>
-   Write code in your language that implements the BST pseudocode functions found in the reading. Store significant amounts of data in your BST and ensure that it is behaving in accordance with the design as expressed in the pseudocode. 
+   Write Erlang code to pass the <kbd>bst_tasks:default_compare_test_/0</kbd> set of unit tests. 
 </p>
 <h2>Task 2</h2>
 <p>
-   Write code in your language that implements the Red-Black Tree pseudocode functions found in the reading. Store significant amounts of data in your BST and ensure that it is behaving in accordance with the design as expressed in the pseudocode. 
+   Write Erlang code to pass the <kbd>bst_tasks:add_test_/0</kbd> set of tests. 
 </p>
+<h2>Task 3</h2>
+<p>
+  Write Erlang code to pass the <kbd>bst_tasks:contains_test_/0</kbd> set of tests.
+</p>
+<h2>Task 4</h2>
+<p>Write Erlang code to pass the <kbd>rbt_tasks:balance_left_test_/0</kbd> set of tests.</p>
+
+<h2>Task 5</h2>
+<p>Write Erlang code to pass the <kbd>rbt_tasks:balance_right_test_/0</kbd> set of tests.</p>
+
+<h2>Task 6</h2>
+<p>Write Erlang code to pass the <kbd>rbt_tasks:add_test_/0</kbd> set of tests.</p>
+
+<h2>Task 7</h2>
+<p>Write Erlang code to pass the <kbd>rbt_tasks:contains_test_/0</kbd> set of tests.</p>
+<h1>Stretch Challenge</h1>
+<p>
+  In future weeks you will have tasks where you are required to write your own unit tests for happy paths and edge cases that your team comes up with. In preparation for this, we encourage you to complete this stretch challenge.
+</p>
+<p>
+  Write additional unit tests for <kbd>bst_tasks:contains_test_/0</kbd> covering the case where student descriptors, <kbd>{name,age,standing}</kbd>, are in the bst. Specifically include the edge cases:
+  <ol>
+    <li>a nil <kbd>bst</kbd> being searched to see if it contains a specified student description,</li>
+    <li>a non-nil <kbd>bst</kbd> being searched to see if it contains a specifed student description that it does not contain, and</li>
+    <li>any other edge cases you can think of.</li>
+  </ol>
+</p>
+<p>
+  Write additional unit tests for <kbd>rbt_tasks:contains_test_/0</kbd> covering the case where student descriptors, <kbd>{name,age,standing}</kbd>, are in the bst. Add as many happy paths and edge cases as are appropriate.
+</p>
+
 <section>
       <h3>Review</h3>
       <h4>After completing the previous tasks:</h4>

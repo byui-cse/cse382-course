@@ -55,6 +55,7 @@
 \(
 \newcommand\when{\  when\ }
 \newcommand\otherwise{\  otherwise\ }
+\newcommand\f{\textit{f}}
 \)
 <blockquote class="style1">
     <span>The programmer's primary weapon in the never-ending battle against slow systems is to change the intra-modular structure. Our first response should be to reorganize the modules' data structures.</span>
@@ -63,16 +64,14 @@
 
 <h2>The Tree Data Structure</h2>
 <p>
-  Well designed trees follow the monad pattern. There is a bunch of data organized in some way, a series of functors that 
+  Well designed trees follow the monad pattern. There is a bunch of data organized in some way, a series of monadal functions that 
   operate on that bunch, and meta-data to be tracked, added, and removed. Each of the rules for monad is met. That's why you'll hear, "A tree is a monad" 
   used colloquially. The more correct language would be, "Well made trees and the algorithms that operate on 
-  them follow the monad pattern." That's a little long. Maybe we should use "The tree monad" meaning the monadal type and the functors for 
-  ease of speech and just remember what we actually mean. Of course, this means we'll need to explain it to 
+  them follow the monad pattern." That's a little long. Maybe we should use "The tree monad" meaning the monadal type and the monadal functions. If we do this, it makes it easer to talk about. The we have to remember what we actually mean. Of course, this means we'll need to explain what we mean to 
   everyone else.
 </p>
 <p>
-    For this course the functors we'll focus on are \(add\_helper\) and \(contains\). A fully fledged set 
-    of functors would include other behaviors.
+    For this course the monadal functions we'll focus on are \(add\_helper\) and \(contains\). A fully fledged set of monadal functions would also include other behaviors.
 </p>
 <h3>The Data Organization of Binary Trees</h3>
 <aside class="right">
@@ -83,18 +82,18 @@
     </aside>
 <p>
     All types of trees consist of nodes. These nodes have a value and one or more \(next\) indicators. The lists 
-    you learned about in week 02 are a subset of trees where there is only one \(next\) and are called a unary 
-    tree. Binary trees have two \(next\)s, these are usually referred to as next-left and next-right as you see in 
+    you learned about in week 02 are a subset of trees where there is only one \(next\) indicator. These types of trees are called a unary 
+    trees. Binary trees have two \(next\)s, these are usually referred to as next-left and next-right as you see in 
     Figure 1. 
 </p>
 
 <P>
     The order with which you code the left and right indicators is irrelevant. The indicators just need 
-    to be used consistently since there is no actual \(leftness\) or \(rightness\) to the indicators. 
-    That is a relic of the visualizations of trees like you see below and that you may have seen in your previous 
+    to be used consistently since there is no actual \(le\f tness\) or \(rightness\) to the indicators. 
+    This \(le\f tness\) or \(rightness\) is a relic of the visualizations of trees like you see below and that you may have seen in your previous 
     coursework. In Figure 2, you see arrows representing the relationships between nodes. They go from from what is often called the parent node to the 
     child node. The parent-child relationship is actually 
-    a form of 'contains' .  
+    a form of the 'contains' relationship.  
 </P>
 <aside class="left_wide">
 <figure>
@@ -105,8 +104,8 @@
 </aside>
 <p>
     To say this in another way, all child nodes are sub components of their parent node. Using tuples, the diagram 
-    above would describe this parent-child contains relationship more explicitly with \(nil\) meaning there is 
-    no child node.
+    above would be described explicitly by the parent-child contains relationship below with \(nil\) meaning the parent has 
+    no child node. If both child nodes are nil, the node is a leaf-type node.
 </p>
 <aside class="right">
 <figure>
@@ -124,10 +123,9 @@
 </p>
 <h4>Ordering Rule For BSTs</h4>
 <p>
-    Binary Search Trees (BST), a special type of binary tree, have a simple ordering rule used for adding and 
+    Binary Search Trees (BST), a special type of binary tree, have a simple ordering rule used for adding values, removing values, and 
     checking to see if values are in the tree. The rule is that lesser values go 'left' and greater or equal values 
-    go 'right.' This rule must be followed every time you add a value so when you need to search the tree, you can 
-    easily do so.
+    go 'right.' This rule must be followed every time you add a value. If you follow this rule, when you need to search the tree or add a value to the tree, it can be done more simply.
 </p>
 <p>
     An interesting result of this rule is that a tree can, but not always, have a different structure depending on 
