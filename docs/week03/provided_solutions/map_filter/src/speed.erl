@@ -1,11 +1,11 @@
 -module(speed).
--export([filter_test/0,map_test/0]).
+-export([filter_speed/0,map_speed/0]).
 
 %%% A function to evaluate the speed of c_map relative to lists:map.
 %%% To be even close to accurate, standard speed testing behaviors 
 %%% such as disconnecting from any network, closing all other applications,
 %%% turning off background processes, etc. would have to be done.
-map_test() ->
+map_speed() ->
 	Numbers = lists:seq(1,10_000_000),
 	% Versions of the statistics function are used to time the execution of functions.
 
@@ -37,7 +37,7 @@ map_test() ->
 %%% To be even close to accurate, standard speed testing behaviors 
 %%% such as disconnecting from any network, closing all other applications,
 %%% turning off background processes, etc. would have to be done.
-filter_test() ->
+filter_speed() ->
 	Numbers = lists:seq(1,10_000_000),
 
 	
