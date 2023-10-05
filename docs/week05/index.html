@@ -103,8 +103,8 @@
   </p>
   <p>
     \[ 
-    reduce\::(filter\::(map\::[a]\text{ }f_1\rightarrow [b])
-    \text{ }f_2\rightarrow [c])\text{ }f_3\text{ }\rightarrow d\]
+    reduce\::(filter\::(map\::[a]\ f_1\rightarrow [b])
+    \ f_2\rightarrow [c])\ f_3\ \rightarrow d\]
   </p>
   <p>
     This code is not harmonious. To understand it, you eventually have to realize that you need to read it 
@@ -144,42 +144,43 @@
     <figcaption>Fig. 2</figcaption>
   </aside>
   <p>
-    If we take another look at how the <kbd>map-filter-reduce</kbd> example above could be written using chaining, beauty emerges. To make this happen, we need to create a list that we choose to call <kbd>links</kbd> where each lambda to be applied to is a link and each link is in the desired order of execution. But before we take express <kbd>chain</kbd> using pseudocode let's express it in mathematical notation. Doing so, it would look like this \([f_1,f_2,f_3]\).
+    If we take another look at how the <kbd>map-filter-reduce</kbd> example above could be written using chaining, beauty emerges. To make this happen, we need to create a list that we choose to call <kbd>links</kbd> where each lambda to be applied to is a link and each link is in the desired order of execution. But before we express <kbd>chain</kbd> using pseudocode let's express it in mathematical notation. Doing so, it would look like this \([f_1,f_2,f_3]\).
   </p>
   <p>
    Consider a situation where you have a series of numbers and need to double them, keep only those results which are greater than 200, and then sum them. You can put together a list of functions or lambdas that apply a mapping that does the doubling, a filtering that keeps only those greater than 200, and then a reduction that sums those that are left. Then what is needed is a function to execute each of those functions. Let's call that function <kbd>chain</kbd> and pass it the links and the data to act on. The code below shows <kbd>chain</kbd> as a facade function with <kbd>chain_worker</kbd> being the function that does the actual computation.
   </p>
   \[
     \begin{align*}
-    -spec\ chain\text{ }&::\ links\text{ }a\rightarrow b\\
+    -spec\ chain\ &::\ [\lambda]\ a\rightarrow b\\
     \\
-    chain\text{ }&::\ links\text{ }a\rightarrow \\
-    &chain\_worker\ (rev\ links)\ a.\\
-    \\
-    -spec\ chain\_worker\text{ }&::\ reversed\_links\text{ }a\rightarrow b\\
-    \\
-    chain\_worker\text{ }&::\ []\ a\rightarrow\ a;\\
-    chain\_worker\text{ }&::\ [h\mid t]\text{ }a\rightarrow\\
-    &h\ (chain\_worker\ t\text{ }a).
+    chain\ &::\ []\ a\rightarrow\ a;\\
+    chain\ &::\ [h\mid t]\ a\rightarrow\\
+    &h\ (chain\ t\ a).
     \end{align*}
     \]
   <p>
-  Notice that <kbd>chain</kbd> reverses the list of links. This ensures that the functions are executed in the intended order as <kbd>chain_worker</kbd> gets called recursively. Also not that \(a\) and \(b\) in the pseudocode can be of the same type or their types can differ. Additionally, \(a\) can be any type. It is not limited to being a list.
+  Notice that the execution of each lambda link is delayed until the lambda function after it in the chain list completes. Also note that \(a\) and \(b\) in the pseudocode can be of the same type or their types can differ. All that matters is that they, \(a\) and \(b\), are any valid type for what ever language you are using.
   </p>
   <p>
-    While the use of this pattern does lend to the code being more beautiful than the original inside-to-outside <kbd>map-filter-reduce</kbd> example, it is still not as beautiful as it could be. It still uses more lines of code than necessary, is not very audacious, and requires the list to be reversed. Therefore, it could be viewed as an anti-pattern in functional programming. There is a much better option, your language's <kbd>foldl</kbd> BIF if it has one. Using this BIF, all of the code for the <kbd>chain</kbd> function goes away. It isn't needed. The single line of code below replaces it.
+    While the use of this pattern does lend itself to producing code that is more beautiful than the original inside-to-outside <kbd>map-filter-reduce</kbd> example, it is still not as beautiful as it could be. It still uses more lines of code than necessary and is not very audacious. Therefore, it could be viewed as an anti-pattern in functional design. There is a much better option, using your language's <kbd>foldl</kbd> BIF equivalent. Using this BIF, all of the code for the <kbd>chain</kbd> function goes away. It isn't needed. The single line of code below replaces it. 
   </p>
   \[
     \begin{align*}
-    foldl\text{ }&\ (\lambda\ link\_to\_apply\text{ }value \rightarrow (link\_to\_apply\ value))\text{ }values\text{ }links
+    foldl\ &\ (\lambda\ link\ value \rightarrow\\
+      &\quad link\ value))\ initial\_value\ links
     \end{align*}
   \]
-
   <p>
-    If your language doesn't have <kbd>foldl</kbd>, you can still reverse the <kbd>links</kbd> list and apply the <kbd>foldr</kbd> BIF.
+    Starting with the right-most parameter, there is a list of lambdas to apply in the order they should be executed, the \(links\). Left of the \(links\) list is a parameter that is the initial value that is gradually modified by the links to produce a final result. The value can be any valid type. It could be a list of valid types. The value could also be any tuple or other data structure containing the initial data.
   </p>
   <p>
-    Chaining can be a very useful pattern when a series of functions or lambdas can be considered as a single computational unit. Sometimes the opposite of combining is needed. Then you use currying.
+    The first parameter, \(foldl\) only has three, is a lambda that has two of its own parameters. The first parameter is a link from the \(links\) chain and the second is the result of applying previous links. The value of the lambda is the result of applying the lambda to the link. This lambda is not a member of the chain. It is one you write.
+  </p>
+  <p>
+    Chaining is a very useful pattern when a series of functions or lambdas can be considered as a single computational unit. Think of all the functions you've written that call a series of other functions. How many of those could be replaced with a call to \(chain\)? Probably a lot of them.
+  </p>
+  <p>
+    Sometimes the opposite of combining is needed. Then you use something called currying.
   </p>
 
     <h3>Currying</h3>
@@ -198,32 +199,28 @@
   <p>
     The basic idea behind currying is to map a function that has multiple parameters to a series of functions 
     that each have only one. Then, by executing each of the functions, the same result can be achieved. For 
-    example, you could think of this as \(f(a,b)\) being the same as \(f(a)(b)\) if \(f(a)\) returned a 
+    example, you could think of the mathematical function \(f(a,b)\) as being the same as \(f(a)(b)\) if \(f(a)\) returned a 
     function that was then passed the parameter \(b\). 
     What you are really doing here, is storing parameters that you do have while you wait for those you don't have yet.
   </p>
   <p>
     It may seem strange that a function could or should return a function, but that's one of the principles 
-    that allows functional programming languages to deeply leverage lambdas. Functions, in a functional 
+    that allows functional programming languages to deeply leverage lambdas and produce beautiful code. Functions, in a functional 
     programming language, are first-class citizens. Or said differently, you can treat a function like 
     anything other type in the language. It can be stored in a variable. It be passed as a parameter. It can 
     be returned from another function. When a function returns a function, this is an example of the <a href="https://www.tutorialspoint.com/design_pattern/factory_pattern.htm">Factory Pattern</a>.
   </p>
     <p>
-      On of the very beautiful things about the currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\ card\_number\text{ }pin\text{ }transaction\_id\rightarrow boolean\).
+      One of the very beautiful things about currying in general, is how it can more closely map a function requiring multiple parameters to a real world situation. Consider how people interact with an ATM (cash machine). First they enter a card, then a pin, and finally they indicate what transaction type they want. These three pieces of data could be acted on  by a single function after the data has been collected. This is traditionally what you would see in code and the function could be something like \(perform\_transaction\ card\_number\ pin\ transaction\_id\rightarrow boolean\). But now you have to write more code that does all the waiting. You also have to do much more thinking about how to keep the state of the transction being done correctly. Why? Because you have to do all of that while you are gathering the data.
     </p>
     <p>
-      If, however, this behavior was curried, the code would be called like this.</kbd>
-    </p>
-    \[curried\_perform\ card\_number\ pin\ transaction\_id\rightarrow success\]
-    <p>
-      Notice that each function except for the last returns a lambda that is passed an additional, single piece of data. The currying process is accumulating the parameters of the function. When all of the parameters have been passed, the execution of the code can proceed.
+      If you used currying instead of this monolithic function, each lambda returned from a function could have its own 'wait until' the right thing happens before returning. Now the waiting and state management is done where the result of the waiting and state management have an effect. There is no need to search through the code to find where the waiting and state management are happening. The currying done in this example makes the code much easier to debug.
     </p>
     <p>
-      When you are creating a new function and know that there will be times when only some of the parameters are known and others will be known later, you can create your function curried. You can also do this when there are more than a few parameters and currying will make the use of your function more beautiful. You are not limited to currying when creating functions. You can curry an existing function from any library, custom or language standard, using a function that generates the intermediate lambda functions for you. The pseudocode for such a function is below.
+      As in this example, when you are creating a new function and know that there will be times when only some of the parameters are known and others will be known later, you can create your function curried. You can also do this when there are more than a few parameters and currying will make the use of your function more beautiful. You are not limited to currying when creating functions. You can curry an existing function from any library, custom or language standard, using a function that generates the intermediate lambda functions for you. The pseudocode for such a function is below.
     </p>
     <p>
-      In the pseudocode you will find a mystery function called \(count\) with one parameter, a function. This represents the tools your language makes available to you so you can find out the arity of a function. Another mystery function is \(list\_t0\_params\). This represents the tools you language makes available, if any, to convert a list to a bunch of parameters.
+      In the pseudocode you will find a mystery function called \(count\) with one parameter, a function. This represents the tools your language makes available to you so you can find out the arity of a function. Another mystery function is \(list\_to\_params\). This represents the tools your language makes available, if any, to convert a list to a bunch of parameters.
     </p>
     <p>
       \(\begin{align*}
@@ -244,7 +241,7 @@
     </p>
     <p>
       Now be careful and be wise. Remember that your code must be beautiful. If you start using currying 
-      when other choices would be better, your code will quickly digress into ugliness. Use currying to add 
+      when other choices would be better, your code will quickly digress into ugliness. Use currying when it adds 
       beauty.
     </p>
     <h3>Partial Completion</h3>
@@ -290,25 +287,25 @@
       If you were to use partial completion, you could write a function, let's call this one <kbd>load_and_prep</kbd>, that loads and prepares the data and has as its value a lambda waiting for which column to work with. Let's call that the <kbd>column lambda</kbd>. The <kbd>column lambda</kbd> could have as its value a lambda, we'll call this one the <kbd>stats lambda</kbd>, that performs the statistical calculations you want done. Now you've covered all possible combinations, even those you haven't thought of yet. Using this setup would look like this.
     </p>
     <p>
-      \(data\leftarrow load\_and\_prep\ \ 'nation\_wide\_purchases.csv'\)
+      \(data\_\lambda\leftarrow load\_and\_prep\ \ 'nation\_wide\_purchases.csv'\)
     </p>
     <p>
       Later, when conditional choices had been made due to further data gathering and calculation, you could decide which column or columns you need to manipulate. Such a use could look like this.
     </p>
     <p>
-      \(columns\leftarrow data\ [zip,region,state,amount]\)
+      \(columns\_\lambda\leftarrow data\_lambda\ [zip\ region\ state\ amount]\)
     </p>
     <p>
       Even later, you could apply some lambda to get the statistics you want. You could even apply different lambdas depending on the specific situation.
     </p>
     <p>
-      \(stats\_by\_zip\leftarrow\ columns\ \lambda\)
+      \(stats\_by\_zip\leftarrow\ columns\_\lambda\ stats\_\lambda\)
     </p>
     <p>
       It is also possible, if you know all of these elements at the same time to apply them to the loaded and prepared data. For example,
     </p>
     <p>
-      \(stats\_by\_zip\leftarrow data\ \ 'nation\_wide\_purchases.csv'\ [zip,region,state,amount]\ \lambda\).
+      \(stats\_by\_zip\leftarrow load\_and\_prep\ \ 'nation\_wide\_purchases.csv'\ [zip,region,state,amount]\ \lambda\).
     </p>
     <p>
       Partial completion gives you the most flexibility with the least complicatedness in these types of situations. Remember, use it when it will increase the beauty of your code.
