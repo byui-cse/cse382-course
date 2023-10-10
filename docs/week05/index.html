@@ -227,13 +227,13 @@
       -spec\ curry\ ::&\ f\rightarrow\lambda\\
       \\
       curry\ ::&\ f\rightarrow\\
-      &curry\_helper\ f (count\ f)\ [].\\
+      &curry\_helper\ f\ (count\ f)\ [].\\
       \\
       \\
       -spec\ curry\_helper\ ::&\ f\ a:::Integer\ accum:::[b]\rightarrow\lambda\\
       \\
       curry\_helper\ ::&\ f\ 0\ accum\rightarrow\\
-      &f\ (reverse(list\_to\_params\ accum));\\
+      &f\ list\_to\_params\ (reverse\ accum);\\
       curry\_helper\ ::&\ f\ count\ accum\rightarrow\\
       &\lambda\ ::\ parameter\rightarrow\\
       &\quad\quad curry\_helper\ f\ count-1\ [parameter]\doubleplus accum.
