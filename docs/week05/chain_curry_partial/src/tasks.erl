@@ -71,9 +71,9 @@ chain_test_()->
 gather_and_execute_test_()->
 	Do_math = fun(A,B,C,D)->(A+2)*B+(C div 3)+(10*D) end,
 	No_params = fun()->ok end,
-	[?_assertEqual(28,gather_and_execute(Do_math,[1,2,3,4],0)),%happy path
+	[?_assertEqual(28,gather_and_execute(Do_math,0,[1,2,3,4])),%happy path
 	 %nasty thoughts start here
-	 ?_assertException(error,{badarity,{_,[a]}},gather_and_execute(No_params,[a],0)),
+	 ?_assertException(error,{badarity,{_,[a]}},gather_and_execute(No_params,0,[a])),
 	 ?_assert(is_function(gather_and_execute(Do_math,[],4)))
 	].
 -endif.
