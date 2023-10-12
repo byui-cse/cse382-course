@@ -147,7 +147,7 @@
     If we take another look at how the <kbd>map-filter-reduce</kbd> example above could be written using chaining, beauty emerges. To make this happen, we need to create a list that we choose to call <kbd>links</kbd> where each lambda to be applied to is a link and each link is in the desired order of execution. But before we express <kbd>chain</kbd> using pseudocode let's express it in mathematical notation. Doing so, it would look like this \([f_1,f_2,f_3]\).
   </p>
   <p>
-   Consider a situation where you have a series of numbers and need to double them, keep only those results which are greater than 200, and then sum them. You can put together a list of functions or lambdas that apply a mapping that does the doubling, a filtering that keeps only those greater than 200, and then a reduction that sums those that are left. Then what is needed is a function to execute each of those functions. Let's call that function <kbd>chain</kbd> and pass it the links and the data to act on. The code below shows <kbd>chain</kbd> as a facade function with <kbd>chain_worker</kbd> being the function that does the actual computation.
+   Consider a situation where you have a series of numbers and need to double them, keep only those results which are greater than 200, and then sum them. You can put together a list of functions or lambdas that apply a mapping that does the doubling, a filtering that keeps only those greater than 200, and then a reduction that sums those that are left. Then what is needed is a function to execute each of those functions. Let's call that function <kbd>chain</kbd> and pass it the links and the data to act on.
   </p>
   \[
     \begin{align*}
