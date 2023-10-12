@@ -57,7 +57,7 @@ curry(F) ->
 %%% Hint: look at the apply functions. 
 %%% https://erlang.org/documentation/doc-6.0/erts-6.0/doc/html/erlang.html#apply-2
 %%%
-gather_and_execute(F,Args,0) -> 
+gather_and_execute(F,0,Args) -> 
 	apply(F,lists:reverse(Args)); 
 gather_and_execute(F,Arity,Args) -> 
 	fun (Arg) -> gather_and_execute(F,Arity - 1,Arg ++ Args) end.
@@ -89,9 +89,9 @@ chain_test_()->
 gather_and_execute_test_()->
 	Do_math = fun(A,B,C,D)->(A+2)*B+(C div 3)+(10*D) end,
 	No_params = fun()->ok end,
-	[?_assertEqual(28,gather_and_execute(Do_math,[1,2,3,4],0)),%happy path
+	[?_assertEqual(28,gather_and_execute(Do_math,0,[1,2,3,4])),%happy path
 	 %nasty thoughts start here
-	 ?_assertException(error,{badarity,{_,[a]}},gather_and_execute(No_params,[a],0)),
+	 ?_assertException(error,{badarity,{_,[a]}},gather_and_execute(No_params,0,[a])),
 	 ?_assert(is_function(gather_and_execute(Do_math,[],4)))
 	].
 -endif.
