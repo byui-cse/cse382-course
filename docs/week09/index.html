@@ -114,9 +114,9 @@
         &i\looparrowright \{i\_rank,i\_value,il\_sub,ir\_sub\}\\
         &case\\
             &\quad h\_value =< i\_value\\
-               &\qquad build\_node\ \{h\_rank,h\_value,hl\_sub,(merge\ hr\_sub\ i)\}\\
+               &\qquad build\_node\ h\_value,hl\_sub,(merge\ hr\_sub\ i)\\
             &\quad \otherwise\\
-               &\qquad build\_node\ \{i\_rank,i\_value,il\_sub,(merge\ h\ ir\_sub)\}.
+               &\qquad build\_node\ i\_value,il\_sub,(merge\ h\ ir\_sub).
 
 \end{align*}\]
 
