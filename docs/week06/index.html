@@ -217,7 +217,7 @@
 
   <p>
     \(\begin{align*}
-    -spec maybe\_bind\ ::&\ Ma\ \lambda\rightarrow Mb\\
+    -spec\ maybe\_bind\ ::&\ Ma\ \lambda\rightarrow Mb\\
     \\
     maybe\_bind\ ::&\ \{fail,data\}\ \_\lambda\rightarrow \{fail,data\};\\
     maybe\_bind\ ::&\ \{\_,data\}\ \lambda\rightarrow\\
@@ -236,7 +236,7 @@
   </p>
   <p>
     \(\begin{align*}
-    -spec maybe\_id\ ::&\ a\rightarrow Ma\\
+    -spec\ maybe\_id\ ::&\ a\rightarrow Ma\\
     \\
     maybe\_id\ ::&\ a\rightarrow\\
     &\{ok, a\}.
@@ -261,7 +261,7 @@
   </p>
   <p>
     \(\begin{align*}
-    -spec monad\_chain\ ::&\ Ma\ bind\ [\lambda]\rightarrow Mb\\
+    -spec\ monad\_chain\ ::&\ Ma\ bind\ [\lambda]\rightarrow Mb\\
     \\
     monad\_chain\ ::&\ Ma\ \_\ []\rightarrow Ma;\\
     monad\_chain\ ::&\ Ma\ bind\ [\lambda\mid t]\rightarrow\\
