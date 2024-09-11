@@ -1,0 +1,124 @@
+
+\documentclass[12pt]{amsart}
+\usepackage{geometry} % see geometry.pdf on how to lay out the page. There's lots.
+\geometry{a4paper} % or letter or a5paper or ... etc
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+%\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{amssymb}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+\usepackage{makecell}
+\usepackage{pifont}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{stringcolor}{rgb}{0.7,0.23,0.36}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{keycolor}{rgb}{0.007,0.01,1.0}
+\definecolor{itemcolor}{rgb}{0.01,0.0,0.49}
+ 
+\lstset{
+ basicstyle=\ttfamily,
+ columns=fullflexible,
+ upquote,
+ keepspaces,
+ literate={*}{{\char42}}1
+ {-}{{\char45}}1
+}
+
+\title{CSE 382 Syllabus}
+
+\date{\today}
+
+
+
+\makeatletter
+\newcommand{\skipitems}[1]{%
+  \addtocounter{\@enumctr}{#1}%
+}
+\makeatother
+
+%%% BEGIN DOCUMENT
+\begin{document}
+\maketitle
+This course introduces you to how to design, write, and scale massively concurrent distributed systems. Systems that can handle millions of requests per second.
+
+
+\section{Objectives}
+\begin{itemize}
+	\item Translate well-defined designs of several highly used, industry data structures such as trees, deques, etc. to working code.
+\item Translate well-defined, highly used industry patterns to working code.
+\item Apply generative AI in an industry appropriate way.
+
+\end{itemize}
+
+\section{Prerequisites}
+
+  You must have successfully completed the following courses:
+\begin{itemize}
+    \item CSE 121e Erlang Language
+\end{itemize}
+  It is very strongly suggested that you have successfully completed the following courses:
+\begin{itemize}
+    \item CSE 381 Algorithms and Complexity
+\end{itemize}
+
+\section{Requirements}
+You are required to obtain
+\subsection{Software}
+	\begin{itemize}
+		\item The Erlang compiler and runtime
+		\item Rebar3
+		\item A text editor of your choice
+	\end{itemize}
+\subsection{Hardware}
+	\begin{itemize}
+		\item A laptop computer running MacOS, Windows Subsystem for Linux, or Linux. Internet connectivity is also required.
+	\end{itemize}
+\section{Behavioral Requirements}
+
+You are required to\ldots
+\begin{itemize}
+\item attend class, as personal assessments will happen in class each day that are not reproducible outside of class.
+\item Use the provided Learning Assistants to help you learn the concepts of data structures and patterns.
+\item complete all tasks as part of a team in order to deepen your understanding of selected topics.
+\end{itemize}
+
+\subsection{Late Work} There are no assignments, quizzes, or exams that can be late.
+
+\subsection{Grades} In each of our three personal meetings, you will present a letter based grade-to-date claim. Afterwards I will give you my thoughts on the strength of your claim. The last claim that you make, taking into account any feedback from me, will be your final grade for the course. All of your claims must be evidence based.
+
+\subsection{Letter-Based-Grades}You are required to use the definition of the grades from the University Catalog:
+\begin{enumerate}[label=\textbf{\Alph*}]
+	\item represents outstanding understanding, application, and integration of subject material and extensive evidence of original thinking, skillful use of concepts, and ability to analyze and solve complex problems. Demonstrates diligent application of Learning Model principles, including initiative in serving other students.
+	Note: To claim this grade, throughout the 4 week period being reviewed, you \textit{must} have consistently done things similar to what you see in the list below  and recorded evidence of this behavior in your portfolio. 
+Examples of the required types of behaviors are:
+\begin{itemize}  
+\item teaching and/or helping others in the class but not in your group,
+\item applying what you've learned in this class in your job or another class you are currently taking, and
+\item doing work not assigned such as writing code using what you are learning that has not been assigned, etc.
+\end{itemize}
+Another evidence of attaining this level of understanding is you are seeing what you are learning around you in the everyday world on a weekly-ish basis.
+
+	\item represents considerable/significant understanding, application, and incorporation of the material which would prepare a student to be successful in next level courses, graduate school or employment. The student participates in the Learning Model as applied in the course. 
+	\item represents sufficient understanding of subject matter. The student demonstrates minimal initiative to be prepared for class. Sequenced courses could be attempted, but mastering new materials might prove challenging. The student participates only marginally in the Learning Model.
+	\item represents poor performance and initiative to learn and understand and apply course materials. Retaking a course or remediation may be necessary to prepare for additional instruction in this subject matter. 
+\end{enumerate}
+
+\section{University Policies}
+To review University policies regarding disabilities, sexual harassment, etc., or to arrange for a tutor from the Academic Support Center, select \textbf{Modules} in the iLearn course, scroll to the Student Resources module, and select the appropriate link.
+
+\section{Other}
+This document may be modified by the instructor at any time without notification.
+\end{document}
