@@ -15,26 +15,18 @@
 
 %% put add documentation here
 -spec add(term(),node())->node().
-prepend(Element,List) ->
-	to_do.
 
 
 %% put pop documentation here
 -spec pop(term(),node())->node().
-pop(List) ->
-	to_do.
 
 
 %% put first documentation here
 -spec first(node())->term().
-split_head(nil)->
-	to_do.
 
 
 %% put contains documentation here
 -spec contains(term(),node())->boolean().
-split_tail(nil)->
-	to_do.
 
 
 %% This code is included in the compiled code only if 
