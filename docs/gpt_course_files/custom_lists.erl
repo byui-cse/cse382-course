@@ -18,7 +18,7 @@
 
 
 %% put pop documentation here
--spec pop(term(),node())->node().
+-spec pop(node())->node().
 
 
 %% put first documentation here
@@ -61,9 +61,9 @@ first_test_()->
     ].
 
 contains_test_()->
-	[?_assertEqual(true, contains(grace,{bob,{sally,{grace,{sue}}}})),%happy path
+	[?_assertEqual(true, contains(grace,{bob,{sally,{grace,{sue,nil}}}})),%happy path
      %nasty paths start here
-     ?_assertEqual(false, contains(gertrude,{bob,{sally,{grace,{sue}}}})),
+     ?_assertEqual(false, contains(gertrude,{bob,{sally,{grace,{sue,nil}}}})),
      ?_assertEqual(false, contains(gertrude,nil)),%non-existant list
      ?_assertEqual(false, contains(gertrude,{})) %empty list
     ].
