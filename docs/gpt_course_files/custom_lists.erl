@@ -10,8 +10,7 @@
 %%%
 
 
-%% The to_do atom indicates there is a coding task to do to 
-%% complete the function.
+%% Complete each of these functions.
 
 %% put add documentation here
 -spec add(term(),node())->node().
