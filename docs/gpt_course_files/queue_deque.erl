@@ -80,10 +80,10 @@ enqueue_test_() ->
         ?_assertEqual({[1], [3, 2]}, enqueue({[1], [2]}, 3)),
 
         % Adding an element to a queue where the front list is empty but the back list has elements
-        ?_assertEqual({[2,3],[4]}, enqueue({[], [2, 3]}, 4)),
+        ?_assertEqual({[2,3],[4]}, enqueue({[], [3, 2]}, 4)),
 
         % Adding a complex term (a tuple)
-        ?_assertEqual({[2,3],[{a,b}]}, enqueue({[], [2, 3]}, {a, b})),
+        ?_assertEqual({[2,3],[{a,b}]}, enqueue({[], [3, 2]}, {a, b})),
 
         % Adding a term to a large queue
         ?_assertEqual({lists:seq(1, 100), [101]},
